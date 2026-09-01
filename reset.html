@@ -1,1 +1,20 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Réinitialisation</title></head><body><script>localStorage.removeItem('tournoi-couleurs-v1');localStorage.removeItem('tournoi-couleurs-v2');sessionStorage.clear();location.replace('./');</script></body></html>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Réinitialisation de la journée</title></head><body><script>
+(function(){
+  const STORAGE_KEY='tournoi-couleurs-v2';
+  const now=new Date();
+  const y=now.getFullYear();
+  const m=String(now.getMonth()+1).padStart(2,'0');
+  const d=String(now.getDate()).padStart(2,'0');
+  const today=`${y}-${m}-${d}`;
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    const db=raw?JSON.parse(raw):{records:{},overrides:{}};
+    db.records=db.records||{};
+    Object.keys(db.records).forEach(key=>{
+      if(key.startsWith(today+'_') || key.startsWith(today+'|')) delete db.records[key];
+    });
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(db));
+  }catch(e){}
+  location.replace('./');
+})();
+</script></body></html>
