@@ -21,19 +21,19 @@
     <div class="section-head"><div><p class="kicker">MES MATCHS</p><h2 id="gymTitle">Gymnase</h2></div></div>
     <p class="helper">Les résultats s’enregistrent automatiquement. Reclique sur un résultat sélectionné pour l’enlever.</p>
     <div id="matches" class="schedule"></div>
-    <section><div class="section-head"><div><p class="kicker">POINTS BONUS PARTAGÉS</p><h2>1 point par critère</h2></div></div><p class="helper">Les bonus restent modifiables tant que la journée n’est pas soumise.</p><div id="bonusGrid" class="bonus-grid"></div></section>
+    <section><div class="section-head"><div><p class="kicker">POINTS BONUS PARTAGÉS</p><h2>1 point par critère</h2></div></div><p class="helper">Les bonus sont facultatifs. Non cochés = 0 point; ils ne bloquent jamais la soumission des matchs.</p><div id="bonusGrid" class="bonus-grid"></div></section>
     <section><div class="section-head"><div><p class="kicker">APERÇU</p><h2>Points de la journée</h2></div></div><div id="dayPoints" class="points-grid"></div></section>
     <section id="submitCard" class="submit-card"></section>
     <div class="autosave"><span>●</span><span id="saveState">Sauvegarde automatique</span></div>
   </div>
 </section>
 <section id="view-ranking" class="view">
-  <div class="page-head"><p class="kicker">CLASSEMENT</p><h2>Classement général</h2><p>Seules les journées soumises comptent au classement. Victoire 2 pts · Nulle 1 pt · Défaite 0 pt · jusqu’à 3 bonus.</p></div>
+  <div class="page-head"><p class="kicker">CLASSEMENT</p><h2>Classement général</h2><p>Une journée compte au classement lorsque les gymnases A et B ont chacun soumis leurs 3 matchs. Victoire 2 pts · Nulle 1 pt · Défaite 0 pt · jusqu’à 3 bonus.</p></div>
   <div class="segmented"><button class="segment active" data-filter="all">Tous</button><button class="segment" data-filter="S1">Sec. 1</button><button class="segment" data-filter="S2">Sec. 2</button><button class="segment" data-filter="S345">Sec. 3-4-5</button></div>
   <div id="rankingCards" class="ranking-list"></div><p class="helper center">Bris d’égalité : points totaux, points de match, puis victoires.</p>
 </section>
 <section id="view-history" class="view">
-  <div class="page-head"><p class="kicker">HISTORIQUE</p><h2>Journées</h2><p>Les brouillons sont conservés, mais ne comptent pas au classement tant qu’ils ne sont pas soumis.</p></div>
+  <div class="page-head"><p class="kicker">HISTORIQUE</p><h2>Journées</h2><p>Chaque gym peut enregistrer ses 3 matchs séparément. La journée devient officielle quand les deux gyms sont soumis.</p></div>
   <div id="historyList" class="history-list"></div>
 </section>
 <section id="view-settings" class="view">
@@ -48,6 +48,6 @@
 <div id="toast" class="toast"></div>
 </div>
 <div id="gymGate" class="gym-gate hidden"><div class="gym-dialog"><div class="emoji">🏀</div><h2>Quel gymnase arbitres-tu?</h2><p>L’application mémorise ce gymnase sur cet appareil et affiche uniquement ses 3 matchs.</p><div class="gym-choice"><button data-pick-gym="A">GYMNASE A</button><button data-pick-gym="B">GYMNASE B</button></div></div></div>
-<script type="module" src="./tournoi-v3.js?v=1"></script>
+<script type="module" src="./tournoi-v3.js?v=2"></script>
 </body>
 </html>
