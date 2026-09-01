@@ -5,57 +5,40 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111827">
 <title>Tournoi des couleurs</title>
-<style>
-:root{--bg:#f5f7fb;--surface:#fff;--surface2:#eef2f7;--text:#111827;--muted:#667085;--line:#dfe5ec;--dark:#111827;--red:#c62828;--green:#2e7d32;--blue:#1565c0;--yellow:#f4b400;--shadow:0 12px 30px rgba(17,24,39,.08);--safe:env(safe-area-inset-bottom,0px)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid rgba(21,101,192,.25);outline-offset:2px}#app{min-height:100vh;padding-bottom:calc(92px + var(--safe))}.topbar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px 13px;background:rgba(245,247,251,.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(223,229,236,.8)}.topbar h1{margin:2px 0 0;font-size:clamp(1.25rem,4vw,1.75rem);letter-spacing:-.035em}.eyebrow,.kicker{margin:0;color:var(--muted);font-size:.7rem;font-weight:850;letter-spacing:.12em}.top-actions{display:flex;gap:7px;align-items:center}.gym-chip,.ghost-btn,.icon-btn,.secondary-btn,.danger-btn{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:14px;font-weight:850}.gym-chip{padding:9px 11px;white-space:nowrap}.ghost-btn{padding:9px 12px}.icon-btn{height:46px;font-size:1.55rem}.secondary-btn,.danger-btn{min-height:48px;padding:10px 14px}.danger-btn{color:#b42318;border-color:#fda29b}.sync-pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 9px;font-size:.72rem;font-weight:900;background:#fff3cd;color:#7a5900}.sync-pill.live{background:#d1fae5;color:#065f46}.sync-dot{width:8px;height:8px;border-radius:50%;background:currentColor}main{width:min(100%,820px);margin:auto;padding:16px}.view{display:none}.view.active{display:block}.date-toolbar{display:grid;grid-template-columns:46px 1fr 46px;gap:10px;align-items:end;margin-bottom:12px}.date-field,.override-form label{display:grid;gap:6px;color:var(--muted);font-size:.78rem;font-weight:750}.date-field input,.override-form input,.override-form select{width:100%;min-height:46px;border:1px solid var(--line);border-radius:14px;background:#fff;padding:10px 12px;color:var(--text);font-weight:750}.hero-card{padding:22px;border-radius:26px;background:var(--dark);color:#fff;box-shadow:var(--shadow);margin-bottom:22px}.big-day{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.cycle-badge{display:inline-flex;align-items:center;justify-content:center;min-height:36px;border-radius:999px;padding:7px 12px;background:#fff;color:var(--dark);font-size:.82rem;font-weight:900}.hero-card h2{margin:12px 0 4px;font-size:clamp(1.6rem,6vw,2.3rem);letter-spacing:-.045em}.hero-card p{margin:5px 0 0;color:#d4dbe6;line-height:1.45}.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:22px 2px 11px}.section-head h2,.page-head h2{margin:4px 0 0;letter-spacing:-.035em}.section-head h2{font-size:1.35rem}.page-head{margin:8px 2px 18px}.page-head h2{font-size:clamp(1.7rem,5vw,2.3rem)}.page-head p:last-child,.helper{color:var(--muted);line-height:1.45}.helper{font-size:.86rem;margin:-3px 2px 12px}.helper.center{text-align:center;margin-top:16px}.schedule{display:grid;gap:16px}.slot-time{font-size:.83rem;color:var(--muted);font-weight:900;margin:0 2px 7px}.match-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:17px;box-shadow:0 5px 16px rgba(17,24,39,.035)}.match-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}.gym-badge{display:inline-flex;border-radius:999px;background:var(--surface2);padding:6px 10px;font-size:.76rem;font-weight:950}.live-badge{font-size:.72rem;color:var(--muted);font-weight:850}.matchup{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:9px;margin-bottom:13px}.team-pill{min-height:49px;display:grid;place-items:center;border-radius:15px;padding:8px;color:#fff;font-weight:950;text-transform:uppercase}.team-jaune{color:#111827!important}.vs{color:var(--muted);font-size:.76rem;font-weight:900}.result-buttons{display:grid;grid-template-columns:1fr .75fr 1fr;gap:7px}.result-btn{min-height:48px;border:2px solid transparent;border-radius:13px;background:var(--surface2);color:var(--text);font-weight:900;padding:7px}.result-btn.selected{border-color:#111827;box-shadow:inset 0 0 0 1px #111827;background:#fff}.result-btn.team-result.selected{color:#fff}.result-btn.team-result.team-jaune.selected{color:#111827}.team-rouge{background:var(--red)!important}.team-vert{background:var(--green)!important}.team-bleu{background:var(--blue)!important}.team-jaune{background:var(--yellow)!important}.bonus-grid{display:grid;gap:11px}.bonus-card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden}.bonus-title{padding:10px 14px;color:#fff;font-weight:950;text-transform:uppercase}.bonus-options{display:grid;grid-template-columns:repeat(3,1fr)}.bonus-toggle{min-height:73px;border:0;border-right:1px solid var(--line);background:#fff;color:var(--muted);font-size:.73rem;font-weight:850;padding:7px;text-align:center}.bonus-toggle:last-child{border-right:0}.bonus-toggle.active{background:#ecfdf3;color:#067647}.bonus-toggle .icon{display:block;font-size:1.08rem;margin-bottom:4px}.points-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.point-card{border-radius:17px;padding:13px;color:#fff;min-height:88px;display:flex;flex-direction:column;justify-content:space-between}.point-card small{font-weight:850;opacity:.85}.point-card strong{font-size:1.7rem}.autosave{display:flex;align-items:center;justify-content:center;gap:7px;color:var(--muted);font-size:.8rem;font-weight:800;margin:18px 0 2px}.segmented{display:grid;grid-template-columns:repeat(4,1fr);background:#e7ebf1;padding:4px;border-radius:14px;margin-bottom:15px}.segment{min-height:42px;border:0;background:transparent;border-radius:11px;color:var(--muted);font-weight:850;font-size:.77rem}.segment.active{background:#fff;color:var(--text);box-shadow:0 2px 8px rgba(17,24,39,.06)}.ranking-list,.history-list{display:grid;gap:10px}.rank-card{display:grid;grid-template-columns:44px 1fr auto;gap:11px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:19px;padding:13px}.rank-pos{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:var(--surface2);font-weight:950}.rank-name{display:flex;align-items:center;gap:7px;font-weight:950;text-transform:uppercase}.color-dot{width:11px;height:11px;border-radius:50%;border:1px solid rgba(0,0,0,.1)}.rank-stats{margin-top:5px;color:var(--muted);font-size:.73rem;line-height:1.35}.rank-total{text-align:right}.rank-total strong{display:block;font-size:1.65rem}.rank-total span{color:var(--muted);font-size:.68rem;font-weight:850}.history-card,.settings-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px}.history-top{display:flex;justify-content:space-between;align-items:start;gap:8px}.history-top h3{margin:0;font-size:1rem}.history-top p{margin:4px 0 0;color:var(--muted);font-size:.79rem}.history-points{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:11px}.history-team{border-radius:11px;padding:7px 4px;text-align:center;color:#fff;font-size:.75rem;font-weight:900}.edit-link{border:0;background:var(--surface2);border-radius:11px;padding:7px 10px;font-weight:850}.empty-state{background:#fff;border:1px dashed #cbd5e1;border-radius:20px;padding:25px 18px;text-align:center;color:var(--muted)}.empty-state strong{display:block;color:var(--text);margin-bottom:4px}.settings-card{margin-bottom:13px}.settings-card h3{margin:0 0 7px}.settings-card p{color:var(--muted);font-size:.88rem;line-height:1.5}.settings-actions,.override-form{display:grid;gap:9px}.override-list{display:grid;gap:7px;margin-top:11px}.override-row{display:flex;justify-content:space-between;gap:8px;align-items:center;background:var(--surface2);border-radius:12px;padding:9px 10px;font-size:.8rem;font-weight:800}.override-row button{border:0;background:transparent;color:#b42318;font-weight:900}.firebase-box{background:#fffbeb;border-color:#fde68a}.firebase-box code{display:block;white-space:pre-wrap;background:#111827;color:#fff;border-radius:12px;padding:12px;font-size:.72rem;line-height:1.45;overflow:auto}.bottom-nav{position:fixed;z-index:30;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,255,255,.96);border-top:1px solid var(--line);padding:8px 8px calc(8px + var(--safe));backdrop-filter:blur(16px)}.nav-btn{min-height:57px;border:0;background:transparent;color:#7a8493;border-radius:14px;display:grid;place-items:center;align-content:center;gap:2px;font-size:.68rem;font-weight:850}.nav-btn.active{background:#eef2f7;color:var(--text)}.nav-icon{font-size:1.2rem}.toast{position:fixed;z-index:80;left:50%;bottom:calc(92px + var(--safe));transform:translate(-50%,20px);max-width:calc(100vw - 30px);background:#111827;color:#fff;padding:11px 14px;border-radius:999px;font-weight:850;font-size:.8rem;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}.gym-gate{position:fixed;inset:0;z-index:100;background:rgba(17,24,39,.7);backdrop-filter:blur(10px);display:grid;place-items:center;padding:20px}.gym-gate.hidden{display:none}.gym-dialog{width:min(100%,460px);background:#fff;border-radius:28px;padding:24px;box-shadow:0 25px 70px rgba(0,0,0,.3)}.gym-dialog .emoji{font-size:2.1rem}.gym-dialog h2{font-size:1.8rem;letter-spacing:-.04em;margin:9px 0 6px}.gym-dialog p{color:var(--muted);line-height:1.45}.gym-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:17px}.gym-choice button{min-height:92px;border:0;border-radius:18px;background:#111827;color:#fff;font-weight:950;font-size:1.12rem}.gym-choice button:last-child{background:#344054}.danger-card{border-color:#fecaca;background:#fffafa}@media(min-width:650px){main{padding:22px}.bonus-grid{grid-template-columns:repeat(2,1fr)}.points-grid{grid-template-columns:repeat(4,1fr)}.settings-actions{grid-template-columns:repeat(2,1fr)}}
-</style>
+<link rel="stylesheet" href="./tournoi-v3.css?v=1">
 </head>
 <body>
 <div id="app">
 <header class="topbar">
   <div><p class="eyebrow">ÉCOLE DES PIONNIERS</p><h1>Tournoi des couleurs</h1></div>
-  <div class="top-actions">
-    <span id="syncPill" class="sync-pill"><span class="sync-dot"></span><span id="syncText">Mode local</span></span>
-    <button id="gymChip" class="gym-chip" type="button">Choisir gym</button>
-  </div>
+  <div class="top-actions"><span id="syncPill" class="sync-pill"><span class="sync-dot"></span><span id="syncText">Mode local</span></span><button id="gymChip" class="gym-chip" type="button">Choisir gym</button></div>
 </header>
 <main>
 <section id="view-today" class="view active">
-  <div class="date-toolbar">
-    <button id="prevDayBtn" class="icon-btn" type="button">‹</button>
-    <label class="date-field"><span>Date</span><input id="datePicker" type="date"></label>
-    <button id="nextDayBtn" class="icon-btn" type="button">›</button>
-  </div>
+  <div class="date-toolbar"><button id="prevDayBtn" class="icon-btn" type="button">‹</button><label class="date-field"><span>Date</span><input id="datePicker" type="date"></label><button id="nextDayBtn" class="icon-btn" type="button">›</button></div>
   <section id="dayStatus" class="hero-card"></section>
   <div id="competitionArea" hidden>
     <div class="section-head"><div><p class="kicker">MES MATCHS</p><h2 id="gymTitle">Gymnase</h2></div></div>
-    <p class="helper">Ton gymnase reste mémorisé sur cet appareil. Les résultats s’enregistrent automatiquement.</p>
+    <p class="helper">Les résultats s’enregistrent automatiquement. Reclique sur un résultat sélectionné pour l’enlever.</p>
     <div id="matches" class="schedule"></div>
-    <section>
-      <div class="section-head"><div><p class="kicker">POINTS BONUS PARTAGÉS</p><h2>1 point par critère</h2></div></div>
-      <p class="helper">Les deux arbitres voient les mêmes bonus en direct.</p>
-      <div id="bonusGrid" class="bonus-grid"></div>
-    </section>
-    <section>
-      <div class="section-head"><div><p class="kicker">APERÇU</p><h2>Points de la journée</h2></div></div>
-      <div id="dayPoints" class="points-grid"></div>
-    </section>
+    <section><div class="section-head"><div><p class="kicker">POINTS BONUS PARTAGÉS</p><h2>1 point par critère</h2></div></div><p class="helper">Les bonus restent modifiables tant que la journée n’est pas soumise.</p><div id="bonusGrid" class="bonus-grid"></div></section>
+    <section><div class="section-head"><div><p class="kicker">APERÇU</p><h2>Points de la journée</h2></div></div><div id="dayPoints" class="points-grid"></div></section>
+    <section id="submitCard" class="submit-card"></section>
     <div class="autosave"><span>●</span><span id="saveState">Sauvegarde automatique</span></div>
   </div>
 </section>
 <section id="view-ranking" class="view">
-  <div class="page-head"><p class="kicker">CLASSEMENT</p><h2>Classement général</h2><p>Victoire 2 pts · Nulle 1 pt · Défaite 0 pt · jusqu’à 3 points bonus par journée.</p></div>
+  <div class="page-head"><p class="kicker">CLASSEMENT</p><h2>Classement général</h2><p>Seules les journées soumises comptent au classement. Victoire 2 pts · Nulle 1 pt · Défaite 0 pt · jusqu’à 3 bonus.</p></div>
   <div class="segmented"><button class="segment active" data-filter="all">Tous</button><button class="segment" data-filter="S1">Sec. 1</button><button class="segment" data-filter="S2">Sec. 2</button><button class="segment" data-filter="S345">Sec. 3-4-5</button></div>
-  <div id="rankingCards" class="ranking-list"></div>
-  <p class="helper center">Bris d’égalité : points totaux, points de match, puis victoires.</p>
+  <div id="rankingCards" class="ranking-list"></div><p class="helper center">Bris d’égalité : points totaux, points de match, puis victoires.</p>
 </section>
 <section id="view-history" class="view">
-  <div class="page-head"><p class="kicker">HISTORIQUE</p><h2>Journées enregistrées</h2><p>Consulte ou corrige une journée précédente.</p></div>
+  <div class="page-head"><p class="kicker">HISTORIQUE</p><h2>Journées</h2><p>Les brouillons sont conservés, mais ne comptent pas au classement tant qu’ils ne sont pas soumis.</p></div>
   <div id="historyList" class="history-list"></div>
 </section>
 <section id="view-settings" class="view">
   <div class="page-head"><p class="kicker">GESTION</p><h2>Paramètres</h2></div>
-  <article id="firebaseCard" class="settings-card firebase-box"><h3>Synchronisation Firebase</h3><p id="firebaseStatusText">Firebase n’est pas encore configuré. Le site fonctionne localement, mais les deux téléphones ne se synchronisent pas encore.</p><p>Quand ton projet Firebase est créé, colle sa configuration dans la section <b>firebaseConfig</b> tout en bas de ce fichier.</p></article>
+  <article class="settings-card firebase-box"><h3>Synchronisation Firebase</h3><p id="firebaseStatusText">Firebase n’est pas encore configuré. Le site fonctionne localement, mais deux téléphones ne se synchronisent pas encore.</p></article>
   <article class="settings-card"><h3>Gymnase de cet appareil</h3><p id="deviceGymText">Aucun gymnase choisi.</p><button id="changeGymBtn" class="secondary-btn" type="button">Changer de gymnase</button></article>
   <article class="settings-card"><h3>Correction manuelle du jour-cycle</h3><p>Utile si une fermeture ou un changement exceptionnel modifie le calendrier.</p><div class="override-form"><label><span>Date</span><input id="overrideDate" type="date"></label><label><span>Jour-cycle</span><select id="overrideCycle"><option value="">Automatique</option><option value="none">Aucun cours</option><option value="1">Jour 1</option><option value="2">Jour 2</option><option value="3">Jour 3</option><option value="4">Jour 4</option><option value="5">Jour 5</option><option value="6">Jour 6</option><option value="7">Jour 7</option><option value="8">Jour 8</option><option value="9">Jour 9</option></select></label><button id="saveOverrideBtn" class="secondary-btn" type="button">Enregistrer la correction</button></div><div id="overrideList" class="override-list"></div></article>
   <article class="settings-card danger-card"><h3>Réinitialiser les données locales</h3><p>N’efface pas Firebase; efface seulement la copie locale de cet appareil.</p><button id="resetBtn" class="danger-btn" type="button">Effacer la copie locale</button></article>
@@ -64,109 +47,7 @@
 <nav class="bottom-nav"><button class="nav-btn active" data-view="today"><span class="nav-icon">⚽</span><span>Matchs</span></button><button class="nav-btn" data-view="ranking"><span class="nav-icon">🏆</span><span>Classement</span></button><button class="nav-btn" data-view="history"><span class="nav-icon">📅</span><span>Journées</span></button><button class="nav-btn" data-view="settings"><span class="nav-icon">⚙️</span><span>Gestion</span></button></nav>
 <div id="toast" class="toast"></div>
 </div>
-<div id="gymGate" class="gym-gate hidden"><div class="gym-dialog"><div class="emoji">🏀</div><h2>Quel gymnase arbitres-tu?</h2><p>Choisis une seule fois. L’application mémorisera ce gymnase sur cet appareil et affichera uniquement ses 3 matchs.</p><div class="gym-choice"><button data-pick-gym="A">GYMNASE A</button><button data-pick-gym="B">GYMNASE B</button></div></div></div>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-import { getDatabase, ref, onValue, update, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "COLLE_TON_API_KEY",
-  authDomain: "COLLE_TON_AUTH_DOMAIN",
-  databaseURL: "COLLE_TON_DATABASE_URL",
-  projectId: "COLLE_TON_PROJECT_ID",
-  storageBucket: "COLLE_TON_STORAGE_BUCKET",
-  messagingSenderId: "COLLE_TON_MESSAGING_SENDER_ID",
-  appId: "COLLE_TON_APP_ID"
-};
-
-const STORAGE_KEY="tournoi-couleurs-v2";
-const GYM_KEY="tournoi-gym-selection";
-const SCHOOL_START="2026-08-31", SCHOOL_END="2027-06-23";
-const TEAMS={rouge:{label:"Rouge"},vert:{label:"Vert"},bleu:{label:"Bleu"},jaune:{label:"Jaune"}};
-const TEAM_ORDER=["rouge","vert","bleu","jaune"];
-const LEVELS={S1:"Secondaire 1",S2:"Secondaire 2",S345:"Secondaire 3-4-5"};
-const DAILY_MATCHES=[
-{id:1,slot:1,time:"11 h 30 – 11 h 40",gym:"A",a:"rouge",b:"vert"},
-{id:2,slot:1,time:"11 h 30 – 11 h 40",gym:"B",a:"bleu",b:"jaune"},
-{id:3,slot:2,time:"11 h 40 – 11 h 50",gym:"A",a:"rouge",b:"bleu"},
-{id:4,slot:2,time:"11 h 40 – 11 h 50",gym:"B",a:"vert",b:"jaune"},
-{id:5,slot:3,time:"11 h 50 – 12 h 00",gym:"A",a:"rouge",b:"jaune"},
-{id:6,slot:3,time:"11 h 50 – 12 h 00",gym:"B",a:"vert",b:"bleu"}
-];
-
-const fixedNoSchool=new Map();
-const addNo=(d,l)=>fixedNoSchool.set(d,l);
-function addRange(s,e,l){let d=parseDate(s),last=parseDate(e);while(d<=last){if(d.getDay()!=0&&d.getDay()!=6)addNo(fmt(d),l);d.setDate(d.getDate()+1)}}
-addNo("2026-09-07","Congé");addNo("2026-10-05","Journée pédagogique");addNo("2026-10-12","Congé");addNo("2026-10-23","Journée pédagogique");addNo("2026-11-19","Journée pédagogique");addNo("2026-11-20","Journée pédagogique");addRange("2026-12-21","2027-01-01","Congé des Fêtes");addNo("2027-01-04","Journée pédagogique");addNo("2027-02-12","Journée pédagogique");addRange("2027-03-01","2027-03-05","Semaine de relâche");addNo("2027-03-26","Congé");addNo("2027-03-29","Congé");addNo("2027-04-09","Journée pédagogique");addNo("2027-04-19","Journée pédagogique / reprise possible");addNo("2027-05-10","Journée pédagogique / reprise possible");addNo("2027-05-21","Journée pédagogique");addNo("2027-05-24","Congé");
-const floatingPed=new Map([["2026-09-25","Journée pédagogique flottante"],["2027-01-29","Journée pédagogique flottante"]]);
-const specialCycle={"2027-06-21":1,"2027-06-22":3};
-
-let localDB=loadLocal();
-let cloudRecords={};
-let selectedDate=fmt(new Date());
-let selectedGym=localStorage.getItem(GYM_KEY)||null;
-let rankingFilter="all";
-let firebaseLive=false, realtimeDB=null;
-let toastTimer=null;
-const $=id=>document.getElementById(id);
-const els={datePicker:$("datePicker"),dayStatus:$("dayStatus"),competitionArea:$("competitionArea"),matches:$("matches"),bonusGrid:$("bonusGrid"),dayPoints:$("dayPoints"),rankingCards:$("rankingCards"),historyList:$("historyList"),overrideDate:$("overrideDate"),overrideCycle:$("overrideCycle"),overrideList:$("overrideList"),toast:$("toast"),gymGate:$("gymGate"),gymChip:$("gymChip"),gymTitle:$("gymTitle"),saveState:$("saveState"),syncPill:$("syncPill"),syncText:$("syncText"),deviceGymText:$("deviceGymText"),firebaseStatusText:$("firebaseStatusText")};
-
-init();
-async function init(){els.datePicker.value=selectedDate;els.overrideDate.value=selectedDate;bind();updateGymUI();renderAll();await initFirebase();if(!selectedGym)openGymGate()}
-
-function firebaseConfigured(){return firebaseConfig.apiKey&&!firebaseConfig.apiKey.startsWith("COLLE_")&&firebaseConfig.databaseURL.startsWith("https://")}
-async function initFirebase(){if(!firebaseConfigured()){setSync(false,"Mode local");return}try{const app=initializeApp(firebaseConfig);const auth=getAuth(app);await signInAnonymously(auth);realtimeDB=getDatabase(app);firebaseLive=true;setSync(true,"En direct");els.firebaseStatusText.textContent="Firebase est connecté. Les résultats et bonus se synchronisent en direct entre les appareils.";onValue(ref(realtimeDB,"tournoi/records"),snap=>{cloudRecords=snap.val()||{};localDB.records=cloudRecords;persistLocal();renderAll()});}catch(e){console.error(e);firebaseLive=false;setSync(false,"Erreur sync");els.firebaseStatusText.textContent="Firebase est configuré, mais la connexion a échoué. Vérifie Authentication anonyme, Realtime Database et les règles."}}
-function setSync(live,text){els.syncPill.classList.toggle("live",live);els.syncText.textContent=text;els.saveState.textContent=live?"Synchronisation en direct":"Sauvegarde locale"}
-
-function bind(){
-$("prevDayBtn").onclick=()=>shiftDate(-1);$("nextDayBtn").onclick=()=>shiftDate(1);els.datePicker.onchange=()=>setDate(els.datePicker.value);
-els.gymChip.onclick=openGymGate;$("changeGymBtn").onclick=openGymGate;document.querySelectorAll("[data-pick-gym]").forEach(b=>b.onclick=()=>chooseGym(b.dataset.pickGym));
-document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>showView(b.dataset.view));document.querySelectorAll(".segment").forEach(b=>b.onclick=()=>{rankingFilter=b.dataset.filter;document.querySelectorAll(".segment").forEach(x=>x.classList.toggle("active",x===b));renderRanking()});
-$("saveOverrideBtn").onclick=saveOverride;$("resetBtn").onclick=resetLocal;
-}
-function openGymGate(){els.gymGate.classList.remove("hidden")}
-function chooseGym(g){selectedGym=g;localStorage.setItem(GYM_KEY,g);els.gymGate.classList.add("hidden");updateGymUI();renderToday();showToast(`Gymnase ${g} sélectionné`)}
-function updateGymUI(){els.gymChip.textContent=selectedGym?`Gym ${selectedGym}`:"Choisir gym";els.gymTitle.textContent=selectedGym?`Gymnase ${selectedGym}`:"Choisis ton gymnase";els.deviceGymText.textContent=selectedGym?`Cet appareil est assigné au gymnase ${selectedGym}.`:"Aucun gymnase choisi."}
-function showView(v){document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===`view-${v}`));document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("active",x.dataset.view===v));if(v==="ranking")renderRanking();if(v==="history")renderHistory();if(v==="settings")renderOverrides();window.scrollTo({top:0,behavior:"smooth"})}
-function setDate(iso){if(!iso)return;selectedDate=iso;els.datePicker.value=iso;els.overrideDate.value=iso;renderToday()}
-function shiftDate(n){const d=parseDate(selectedDate);d.setDate(d.getDate()+n);setDate(fmt(d))}
-
-function getLevel(day){if(day===2||day===6)return"S1";if(day===3||day===7)return"S2";if(day===4||day===8)return"S345";return null}
-function schoolInfo(iso){const manual=localDB.overrides?.[iso];if(manual==="none")return{isSchoolDay:false,reason:"Aucun cours — correction manuelle"};if(manual&&/^[1-9]$/.test(manual)){const cycleDay=Number(manual);return{isSchoolDay:true,cycleDay,level:getLevel(cycleDay),manual:true}}const d=parseDate(iso),start=parseDate(SCHOOL_START),end=parseDate(SCHOOL_END);if(d<start||d>end)return{isSchoolDay:false,reason:"Hors de l’année scolaire"};if(d.getDay()===0||d.getDay()===6)return{isSchoolDay:false,reason:"Fin de semaine"};if(specialCycle[iso]){const cycleDay=specialCycle[iso];return{isSchoolDay:true,cycleDay,level:getLevel(cycleDay),special:true}}if(iso==="2027-06-23")return{isSchoolDay:false,reason:"Jour-cycle à confirmer dans Gestion"};if(fixedNoSchool.has(iso))return{isSchoolDay:false,reason:fixedNoSchool.get(iso)};if(floatingPed.has(iso))return{isSchoolDay:false,reason:floatingPed.get(iso)};let cycle=1,cursor=new Date(start);while(cursor<=d){const key=fmt(cursor),weekday=cursor.getDay()!==0&&cursor.getDay()!==6;if(weekday){if(fixedNoSchool.has(key)){}else if(floatingPed.has(key)){cycle=cycle%9+1}else{if(key===iso)return{isSchoolDay:true,cycleDay:cycle,level:getLevel(cycle)};cycle=cycle%9+1}}cursor.setDate(cursor.getDate()+1)}return{isSchoolDay:false,reason:"Date non reconnue"}}
-
-function recordKey(date,level){return `${date}_${level}`}
-function blankRecord(date,info){return{date,cycleDay:info.cycleDay,level:info.level,matches:Object.fromEntries(DAILY_MATCHES.map(m=>[`m${m.id}`,{...m,result:null}])),bonuses:Object.fromEntries(TEAM_ORDER.map(t=>[t,{attendance:false,shirts:false,spirit:false}]))}}
-function getRecord(date,level){if(!level)return null;const key=recordKey(date,level);return cloudRecords[key]||localDB.records[key]||null}
-async function ensureRecord(date,info){const key=recordKey(date,info.level),blank=blankRecord(date,info);if(firebaseLive){await runTransaction(ref(realtimeDB,`tournoi/records/${key}`),cur=>cur||blank);return}if(!localDB.records[key]){localDB.records[key]=blank;persistLocal()}}
-
-async function renderToday(){const info=schoolInfo(selectedDate),dateLabel=pretty(selectedDate);if(!info.isSchoolDay){els.competitionArea.hidden=true;els.dayStatus.innerHTML=`<div class="big-day"><span class="cycle-badge">—</span></div><h2>Aucune compétition</h2><p>${esc(dateLabel)} · ${esc(info.reason||"Aucun cours")}</p>`;return}if(!info.level){els.competitionArea.hidden=true;els.dayStatus.innerHTML=`<div class="big-day"><span class="cycle-badge">Jour ${info.cycleDay}</span></div><h2>Aucune compétition aujourd’hui</h2><p>${esc(dateLabel)} · Compétitions aux jours 2, 3, 4, 6, 7 et 8.</p>`;return}await ensureRecord(selectedDate,info);els.competitionArea.hidden=!selectedGym;els.dayStatus.innerHTML=`<div class="big-day"><span class="cycle-badge">Jour ${info.cycleDay}</span>${selectedGym?`<span class="cycle-badge">Gym ${selectedGym}</span>`:""}</div><h2>${esc(LEVELS[info.level])}</h2><p>${esc(dateLabel)} · 11 h 30 à midi · 2 matchs simultanés par plage.</p>`;if(!selectedGym){openGymGate();return}renderMatches();renderBonuses();renderDayPoints()}
-
-function normalizedMatches(r){if(!r)return[];if(Array.isArray(r.matches))return r.matches;return Object.values(r.matches||{}).sort((a,b)=>a.id-b.id)}
-function renderMatches(){const info=schoolInfo(selectedDate),r=getRecord(selectedDate,info.level)||blankRecord(selectedDate,info);const ms=normalizedMatches(r).filter(m=>m.gym===selectedGym);els.matches.innerHTML=ms.map(m=>`<section><p class="slot-time">${m.time}</p><article class="match-card"><div class="match-meta"><span class="gym-badge">GYM ${m.gym}</span><span class="live-badge">Match ${m.slot} sur 3</span></div><div class="matchup"><div class="team-pill team-${m.a}">${TEAMS[m.a].label}</div><span class="vs">VS</span><div class="team-pill team-${m.b}">${TEAMS[m.b].label}</div></div><div class="result-buttons"><button class="result-btn team-result team-${m.a} ${m.result===m.a?"selected":""}" data-match-id="${m.id}" data-result="${m.a}">${TEAMS[m.a].label}</button><button class="result-btn ${m.result==="draw"?"selected":""}" data-match-id="${m.id}" data-result="draw">Nulle</button><button class="result-btn team-result team-${m.b} ${m.result===m.b?"selected":""}" data-match-id="${m.id}" data-result="${m.b}">${TEAMS[m.b].label}</button></div></article></section>`).join("");els.matches.querySelectorAll("[data-match-id]").forEach(b=>b.onclick=()=>saveMatch(Number(b.dataset.matchId),b.classList.contains("selected")?null:b.dataset.result))}
-async function saveMatch(id,result){const info=schoolInfo(selectedDate),key=recordKey(selectedDate,info.level),path=`tournoi/records/${key}/matches/m${id}`;if(firebaseLive){await update(ref(realtimeDB,path),{result,updatedAt:serverTimestamp()})}else{const r=localDB.records[key]||blankRecord(selectedDate,info);r.matches[`m${id}`].result=result;localDB.records[key]=r;persistLocal();renderAll()}showToast(result===null?"Sélection retirée":"Résultat enregistré ✓")}
-
-function renderBonuses(){const info=schoolInfo(selectedDate),r=getRecord(selectedDate,info.level)||blankRecord(selectedDate,info);const labels={attendance:["👥","80 % et +"],shirts:["👕","Chandails"],spirit:["👏","Esprit d’équipe"]};els.bonusGrid.innerHTML=TEAM_ORDER.map(t=>`<article class="bonus-card"><div class="bonus-title team-${t}">${TEAMS[t].label}</div><div class="bonus-options">${Object.entries(labels).map(([k,[icon,label]])=>{const on=!!r.bonuses?.[t]?.[k];return`<button class="bonus-toggle ${on?"active":""}" data-team="${t}" data-bonus="${k}"><span><span class="icon">${on?"✓":icon}</span>${label}</span></button>`}).join("")}</div></article>`).join("");els.bonusGrid.querySelectorAll("[data-bonus]").forEach(b=>b.onclick=()=>saveBonus(b.dataset.team,b.dataset.bonus,!b.classList.contains("active")))}
-async function saveBonus(team,bonus,value){const info=schoolInfo(selectedDate),key=recordKey(selectedDate,info.level);if(firebaseLive){await update(ref(realtimeDB,`tournoi/records/${key}/bonuses/${team}`),{[bonus]:value,updatedAt:serverTimestamp()})}else{const r=localDB.records[key]||blankRecord(selectedDate,info);r.bonuses[team][bonus]=value;localDB.records[key]=r;persistLocal();renderAll()}showToast("Bonus mis à jour")}
-
-function pointsFor(r){const s=Object.fromEntries(TEAM_ORDER.map(t=>[t,{matches:0,wins:0,draws:0,losses:0,matchPoints:0,bonusPoints:0,total:0}]));normalizedMatches(r).forEach(m=>{if(!m.result)return;s[m.a].matches++;s[m.b].matches++;if(m.result==="draw"){s[m.a].draws++;s[m.b].draws++;s[m.a].matchPoints++;s[m.b].matchPoints++}else if(m.result===m.a){s[m.a].wins++;s[m.b].losses++;s[m.a].matchPoints+=2}else if(m.result===m.b){s[m.b].wins++;s[m.a].losses++;s[m.b].matchPoints+=2}});TEAM_ORDER.forEach(t=>{const b=r?.bonuses?.[t]||{};s[t].bonusPoints=["attendance","shirts","spirit"].filter(k=>!!b[k]).length;s[t].total=s[t].matchPoints+s[t].bonusPoints});return s}
-function renderDayPoints(){const info=schoolInfo(selectedDate),r=getRecord(selectedDate,info.level)||blankRecord(selectedDate,info),p=pointsFor(r);els.dayPoints.innerHTML=TEAM_ORDER.map(t=>`<div class="point-card team-${t}"><small>${TEAMS[t].label.toUpperCase()}</small><strong>${p[t].total} pts</strong><small>${p[t].matchPoints} match + ${p[t].bonusPoints} bonus</small></div>`).join("")}
-function aggregate(filter){const a=Object.fromEntries(TEAM_ORDER.map(t=>[t,{matches:0,wins:0,draws:0,losses:0,matchPoints:0,bonusPoints:0,total:0}]));Object.values(activeRecords()).forEach(r=>{if(filter!=="all"&&r.level!==filter)return;const p=pointsFor(r);TEAM_ORDER.forEach(t=>Object.keys(a[t]).forEach(k=>a[t][k]+=p[t][k]))});return a}
-function activeRecords(){return firebaseLive?cloudRecords:localDB.records}
-function renderRanking(){const a=aggregate(rankingFilter),ranked=TEAM_ORDER.map((team,i)=>({team,i,...a[team]})).sort((x,y)=>y.total-x.total||y.matchPoints-x.matchPoints||y.wins-x.wins||x.i-y.i);els.rankingCards.innerHTML=ranked.map((r,i)=>`<article class="rank-card"><div class="rank-pos">${i+1}</div><div><div class="rank-name"><span class="color-dot team-${r.team}"></span>${TEAMS[r.team].label}</div><div class="rank-stats">${r.matches} matchs · ${r.wins} V · ${r.draws} N · ${r.losses} D<br>${r.matchPoints} pts matchs + ${r.bonusPoints} bonus</div></div><div class="rank-total"><strong>${r.total}</strong><span>points</span></div></article>`).join("")}
-function renderHistory(){const rs=Object.values(activeRecords()).sort((a,b)=>b.date.localeCompare(a.date));if(!rs.length){els.historyList.innerHTML=`<div class="empty-state"><strong>Aucune journée enregistrée</strong>Les journées apparaîtront ici dès les premiers résultats.</div>`;return}els.historyList.innerHTML=rs.map(r=>{const p=pointsFor(r);return`<article class="history-card"><div class="history-top"><div><h3>${esc(pretty(r.date))}</h3><p>Jour ${r.cycleDay} · ${esc(LEVELS[r.level])}</p></div><button class="edit-link" data-edit="${r.date}">Ouvrir</button></div><div class="history-points">${TEAM_ORDER.map(t=>`<div class="history-team team-${t}">${TEAMS[t].label}<br>${p[t].total} pts</div>`).join("")}</div></article>`}).join("");els.historyList.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>{setDate(b.dataset.edit);showView("today")})}
-
-function saveOverride(){const date=els.overrideDate.value,val=els.overrideCycle.value;if(!date)return;if(!val)delete localDB.overrides[date];else localDB.overrides[date]=val;persistLocal();renderAll();showToast("Calendrier mis à jour")}
-function renderOverrides(){const es=Object.entries(localDB.overrides||{}).sort(([a],[b])=>a.localeCompare(b));els.overrideList.innerHTML=es.length?es.map(([d,v])=>`<div class="override-row"><span>${esc(pretty(d))} — ${v==="none"?"Aucun cours":`Jour ${v}`}</span><button data-remove="${d}">Retirer</button></div>`).join(""):`<p class="helper">Aucune correction manuelle.</p>`;els.overrideList.querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>{delete localDB.overrides[b.dataset.remove];persistLocal();renderAll()})}
-function resetLocal(){if(prompt('Écris EFFACER pour confirmer')!=="EFFACER")return;localDB={records:{},overrides:{}};persistLocal();renderAll();showToast("Copie locale effacée")}
-function renderAll(){renderToday();renderRanking();renderHistory();renderOverrides();updateGymUI()}
-function loadLocal(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY));if(x?.records)return{records:x.records||{},overrides:x.overrides||{}}}catch{}return{records:{},overrides:{}}}
-function persistLocal(){localStorage.setItem(STORAGE_KEY,JSON.stringify(localDB))}
-function parseDate(iso){const[y,m,d]=iso.split("-").map(Number);return new Date(y,m-1,d,12)}
-function fmt(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
-function pretty(iso){return new Intl.DateTimeFormat("fr-CA",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(parseDate(iso))}
-function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
-function showToast(msg){clearTimeout(toastTimer);els.toast.textContent=msg;els.toast.classList.add("show");toastTimer=setTimeout(()=>els.toast.classList.remove("show"),2000)}
-</script>
+<div id="gymGate" class="gym-gate hidden"><div class="gym-dialog"><div class="emoji">🏀</div><h2>Quel gymnase arbitres-tu?</h2><p>L’application mémorise ce gymnase sur cet appareil et affiche uniquement ses 3 matchs.</p><div class="gym-choice"><button data-pick-gym="A">GYMNASE A</button><button data-pick-gym="B">GYMNASE B</button></div></div></div>
+<script type="module" src="./tournoi-v3.js?v=1"></script>
 </body>
 </html>
