@@ -1,0 +1,4667 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="Compilation simple des résultats du Tournoi des couleurs sur l'heure du midi.">
+  <title>Tournoi des couleurs</title>
+
+  <style>
+    :root {
+      --bg:#f5f7fb;
+      --surface:#fff;
+      --surface2:#eef2f7;
+      --text:#111827;
+      --muted:#667085;
+      --line:#dfe5ec;
+      --dark:#111827;
+      --red:#c62828;
+      --green:#2e7d32;
+      --blue:#1565c0;
+      --yellow:#f4b400;
+      --shadow:0 12px 30px rgba(17,24,39,.08);
+      --radius:22px;
+      --safe:env(safe-area-inset-bottom,0px);
+    }
+
+    *{box-sizing:border-box}
+
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible{
+      outline:3px solid rgba(21,101,192,.25);
+      outline-offset:2px;
+    }
+
+    #app{
+      min-height:100vh;
+      padding-bottom:calc(92px + var(--safe));
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      padding:18px 18px 14px;
+      background:rgba(245,247,251,.94);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(223,229,236,.8);
+    }
+
+    .topbar h1{
+      margin:2px 0 0;
+      font-size:clamp(1.3rem,4vw,1.75rem);
+      letter-spacing:-.035em;
+    }
+
+    .eyebrow,
+    .kicker{
+      margin:0;
+      color:var(--muted);
+      font-size:.72rem;
+      font-weight:800;
+      letter-spacing:.12em;
+    }
+
+    main{
+      width:min(100%,820px);
+      margin:0 auto;
+      padding:16px;
+    }
+
+    .view{display:none}
+
+    .view.active{
+      display:block;
+      animation:fade .18s ease-out;
+    }
+
+    @keyframes fade{
+      from{
+        opacity:.35;
+        transform:translateY(3px);
+      }
+    }
+
+    .date-toolbar{
+      display:grid;
+      grid-template-columns:46px 1fr 46px;
+      gap:10px;
+      align-items:end;
+      margin-bottom:12px;
+    }
+
+    .date-field,
+    .override-form label{
+      display:grid;
+      gap:6px;
+      color:var(--muted);
+      font-size:.78rem;
+      font-weight:700;
+    }
+
+    .date-field input,
+    .override-form input,
+    .override-form select{
+      width:100%;
+      min-height:46px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:var(--surface);
+      padding:10px 12px;
+      color:var(--text);
+      font-weight:700;
+    }
+
+    .icon-btn,
+    .ghost-btn,
+    .secondary-btn,
+    .danger-btn{
+      border:1px solid var(--line);
+      background:var(--surface);
+      color:var(--text);
+      border-radius:14px;
+      font-weight:800;
+    }
+
+    .icon-btn{
+      height:46px;
+      font-size:1.65rem;
+      line-height:1;
+    }
+
+    .ghost-btn{
+      min-height:42px;
+      padding:9px 13px;
+    }
+
+    .ghost-btn.compact{
+      min-height:38px;
+      padding:8px 11px;
+      font-size:.82rem;
+    }
+
+    .ghost-btn:disabled{
+      opacity:.4;
+      cursor:default;
+    }
+
+    .hero-card{
+      padding:22px;
+      border-radius:26px;
+      background:var(--dark);
+      color:white;
+      box-shadow:var(--shadow);
+      margin-bottom:24px;
+    }
+
+    .hero-card .big-day{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .cycle-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:78px;
+      min-height:38px;
+      border-radius:999px;
+      padding:7px 13px;
+      background:white;
+      color:var(--dark);
+      font-size:.9rem;
+      font-weight:900;
+    }
+
+    .hero-card h2{
+      margin:12px 0 4px;
+      font-size:clamp(1.65rem,6vw,2.35rem);
+      letter-spacing:-.045em;
+    }
+
+    .hero-card p{
+      margin:5px 0 0;
+      color:#d4dbe6;
+      line-height:1.45;
+    }
+
+    .saved-pill{
+      display:inline-flex;
+      margin-top:15px;
+      margin-right:6px;
+      padding:7px 10px;
+      border-radius:999px;
+      background:#d1fae5;
+      color:#065f46;
+      font-weight:900;
+      font-size:.78rem;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:16px;
+      margin:24px 2px 12px;
+    }
+
+    .section-head h2,
+    .page-head h2{
+      margin:4px 0 0;
+      letter-spacing:-.035em;
+    }
+
+    .section-head h2{
+      font-size:1.35rem;
+    }
+
+    .page-head{
+      margin:10px 2px 18px;
+    }
+
+    .page-head h2{
+      font-size:clamp(1.75rem,5vw,2.3rem);
+    }
+
+    .page-head p:last-child{
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .match-list{
+      display:grid;
+      gap:13px;
+    }
+
+    .match-card{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:17px;
+      box-shadow:0 5px 16px rgba(17,24,39,.035);
+    }
+
+    .match-meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color:var(--muted);
+      font-size:.77rem;
+      font-weight:800;
+      margin-bottom:12px;
+    }
+
+    .matchup{
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      gap:10px;
+      margin-bottom:14px;
+    }
+
+    .team-pill{
+      min-height:50px;
+      display:grid;
+      place-items:center;
+      border-radius:16px;
+      padding:8px;
+      color:white;
+      font-weight:950;
+      letter-spacing:.02em;
+      text-transform:uppercase;
+    }
+
+    .team-pill.team-jaune{
+      color:#111827;
+    }
+
+    .vs{
+      font-size:.78rem;
+      color:var(--muted);
+      font-weight:900;
+    }
+
+    .result-buttons{
+      display:grid;
+      grid-template-columns:1fr .8fr 1fr;
+      gap:8px;
+    }
+
+    .result-btn{
+      min-height:50px;
+      border-radius:14px;
+      border:2px solid transparent;
+      background:var(--surface2);
+      color:var(--text);
+      font-weight:900;
+      padding:7px 8px;
+    }
+
+    .result-btn.selected{
+      border-color:var(--dark);
+      box-shadow:inset 0 0 0 1px var(--dark);
+      background:white;
+    }
+
+    .result-btn.team-result.selected{
+      color:white;
+    }
+
+    .result-btn.team-result.team-jaune.selected{
+      color:#111827;
+    }
+
+    .bonus-section,
+    .live-score{
+      margin-top:26px;
+    }
+
+    .helper{
+      color:var(--muted);
+      font-size:.88rem;
+      line-height:1.45;
+      margin:-4px 2px 12px;
+    }
+
+    .helper.centered{
+      text-align:center;
+      margin-top:18px;
+    }
+
+    .bonus-grid{
+      display:grid;
+      gap:12px;
+    }
+
+    .bonus-card{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      overflow:hidden;
+    }
+
+    .bonus-title{
+      padding:11px 15px;
+      font-weight:950;
+      text-transform:uppercase;
+      color:white;
+    }
+
+    .bonus-title.team-jaune{
+      color:#111827;
+    }
+
+    .bonus-options{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+    }
+
+    .bonus-toggle{
+      display:grid;
+      place-items:center;
+      text-align:center;
+      min-height:76px;
+      padding:8px 5px;
+      border:0;
+      border-right:1px solid var(--line);
+      background:white;
+      color:var(--muted);
+      font-size:.75rem;
+      font-weight:800;
+    }
+
+    .bonus-toggle:last-child{
+      border-right:0;
+    }
+
+    .bonus-toggle.active{
+      background:#ecfdf3;
+      color:#067647;
+    }
+
+    .bonus-toggle .check{
+      display:block;
+      font-size:1.15rem;
+      margin-bottom:4px;
+    }
+
+    .points-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+    }
+
+    .point-card{
+      border-radius:18px;
+      padding:14px;
+      color:white;
+      min-height:92px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .point-card.team-jaune{
+      color:#111827;
+    }
+
+    .point-card small{
+      font-weight:800;
+      opacity:.85;
+    }
+
+    .point-card strong{
+      font-size:1.8rem;
+      letter-spacing:-.04em;
+    }
+
+    .primary-btn{
+      width:100%;
+      min-height:58px;
+      border:0;
+      border-radius:17px;
+      background:var(--dark);
+      color:white;
+      font-size:1rem;
+      font-weight:950;
+      box-shadow:var(--shadow);
+    }
+
+    .sticky-save{
+      margin-top:22px;
+    }
+
+    .save-hint{
+      color:var(--muted);
+      text-align:center;
+      min-height:22px;
+      font-size:.83rem;
+    }
+
+    .segmented{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      background:#e7ebf1;
+      padding:4px;
+      border-radius:14px;
+      margin-bottom:16px;
+    }
+
+    .segment{
+      min-height:42px;
+      border:0;
+      background:transparent;
+      border-radius:11px;
+      color:var(--muted);
+      font-weight:850;
+      font-size:.78rem;
+    }
+
+    .segment.active{
+      background:white;
+      color:var(--text);
+      box-shadow:0 2px 8px rgba(17,24,39,.06);
+    }
+
+    .ranking-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .rank-card{
+      display:grid;
+      grid-template-columns:46px 1fr auto;
+      gap:12px;
+      align-items:center;
+      background:white;
+      border:1px solid var(--line);
+      border-radius:19px;
+      padding:14px;
+    }
+
+    .rank-pos{
+      width:44px;
+      height:44px;
+      display:grid;
+      place-items:center;
+      border-radius:14px;
+      font-weight:950;
+      background:var(--surface2);
+    }
+
+    .rank-main{
+      min-width:0;
+    }
+
+    .rank-name{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-weight:950;
+      text-transform:uppercase;
+    }
+
+    .color-dot{
+      width:12px;
+      height:12px;
+      border-radius:99px;
+      flex:0 0 auto;
+      border:1px solid rgba(17,24,39,.12);
+    }
+
+    .rank-stats{
+      margin-top:5px;
+      color:var(--muted);
+      font-size:.75rem;
+      line-height:1.35;
+    }
+
+    .rank-total{
+      text-align:right;
+    }
+
+    .rank-total strong{
+      display:block;
+      font-size:1.7rem;
+      letter-spacing:-.045em;
+    }
+
+    .rank-total span{
+      color:var(--muted);
+      font-size:.7rem;
+      font-weight:800;
+      text-transform:uppercase;
+    }
+
+    .history-list{
+      display:grid;
+      gap:12px;
+    }
+
+    .history-card{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:16px;
+    }
+
+    .history-top{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:start;
+    }
+
+    .history-top h3{
+      margin:0;
+      font-size:1rem;
+    }
+
+    .history-top p{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:.8rem;
+    }
+
+    .history-points{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:6px;
+      margin-top:12px;
+    }
+
+    .history-team{
+      border-radius:12px;
+      padding:8px 5px;
+      text-align:center;
+      color:white;
+      font-weight:950;
+      font-size:.78rem;
+    }
+
+    .history-team.team-jaune{
+      color:#111827;
+    }
+
+    .edit-link{
+      border:0;
+      background:var(--surface2);
+      color:var(--text);
+      min-height:36px;
+      padding:7px 10px;
+      border-radius:11px;
+      font-weight:850;
+    }
+
+    .empty-state{
+      background:white;
+      border:1px dashed #cbd5e1;
+      border-radius:20px;
+      padding:26px 20px;
+      text-align:center;
+      color:var(--muted);
+    }
+
+    .empty-state strong{
+      display:block;
+      color:var(--text);
+      margin-bottom:4px;
+    }
+
+    .settings-card{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      margin-bottom:14px;
+    }
+
+    .settings-card h3{
+      margin:0 0 7px;
+    }
+
+    .settings-card p{
+      color:var(--muted);
+      line-height:1.5;
+      font-size:.9rem;
+    }
+
+    .settings-actions{
+      display:grid;
+      gap:9px;
+    }
+
+    .secondary-btn,
+    .danger-btn{
+      min-height:48px;
+      padding:10px 14px;
+    }
+
+    .file-btn{
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      text-align:center;
+    }
+
+    .file-btn input{
+      display:none;
+    }
+
+    .override-form{
+      display:grid;
+      gap:10px;
+    }
+
+    .override-list{
+      margin-top:12px;
+      display:grid;
+      gap:7px;
+    }
+
+    .override-row{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      padding:9px 11px;
+      border-radius:12px;
+      background:var(--surface2);
+      font-size:.82rem;
+      font-weight:750;
+    }
+
+    .override-row button{
+      border:0;
+      background:transparent;
+      color:#b42318;
+      font-weight:900;
+    }
+
+    .danger-card{
+      border-color:#fecaca;
+      background:#fffafa;
+    }
+
+    .danger-btn{
+      color:#b42318;
+      border-color:#fda29b;
+      background:white;
+    }
+
+    .bottom-nav{
+      position:fixed;
+      z-index:30;
+      left:0;
+      right:0;
+      bottom:0;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      background:rgba(255,255,255,.96);
+      border-top:1px solid var(--line);
+      padding:8px 8px calc(8px + var(--safe));
+      backdrop-filter:blur(16px);
+    }
+
+    .nav-btn{
+      min-height:58px;
+      border:0;
+      background:transparent;
+      color:#7a8493;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      align-content:center;
+      gap:2px;
+      font-size:.69rem;
+      font-weight:850;
+    }
+
+    .nav-btn.active{
+      background:#eef2f7;
+      color:var(--text);
+    }
+
+    .nav-icon{
+      font-size:1.25rem;
+    }
+
+    .toast{
+      position:fixed;
+      z-index:60;
+      left:50%;
+      bottom:calc(92px + var(--safe));
+      transform:translate(-50%,20px);
+      max-width:calc(100vw - 32px);
+      background:#111827;
+      color:white;
+      padding:11px 15px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:.82rem;
+      box-shadow:var(--shadow);
+      opacity:0;
+      pointer-events:none;
+      transition:.2s ease;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translate(-50%,0);
+    }
+
+    .team-rouge{background:var(--red)!important}
+    .team-vert{background:var(--green)!important}
+    .team-bleu{background:var(--blue)!important}
+    .team-jaune{background:var(--yellow)!important}
+
+    @media(min-width:650px){
+      main{padding:22px}
+
+      .topbar{
+        padding-left:max(24px,calc((100vw - 820px)/2 + 22px));
+        padding-right:max(24px,calc((100vw - 820px)/2 + 22px));
+      }
+
+      .bonus-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .points-grid{
+        grid-template-columns:repeat(4,1fr);
+      }
+
+      .settings-actions{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="app">
+
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">ÉCOLE DES PIONNIERS</p>
+      <h1>Tournoi des couleurs</h1>
+    </div>
+
+    <button id="todayBtn" class="ghost-btn compact" type="button">
+      Aujourd’hui
+    </button>
+  </header>
+
+  <main>
+
+    <section id="view-today" class="view active">
+
+      <div class="date-toolbar">
+
+        <button
+          id="prevDayBtn"
+          class="icon-btn"
+          type="button"
+          aria-label="Jour précédent"
+        >
+          ‹
+        </button>
+
+        <label class="date-field">
+          <span>Date</span>
+          <input id="datePicker" type="date">
+        </label>
+
+        <button
+          id="nextDayBtn"
+          class="icon-btn"
+          type="button"
+          aria-label="Jour suivant"
+        >
+          ›
+        </button>
+
+      </div>
+
+      <section
+        id="dayStatus"
+        class="hero-card"
+        aria-live="polite"
+      ></section>
+
+      <div id="competitionArea" hidden>
+
+        <div class="section-head">
+
+          <div>
+            <p class="kicker">RÉSULTATS</p>
+            <h2>3 matchs · 10 minutes</h2>
+          </div>
+
+          <button
+            id="undoBtn"
+            class="ghost-btn"
+            type="button"
+            disabled
+          >
+            Annuler
+          </button>
+
+        </div>
+
+        <div id="matches" class="match-list"></div>
+
+        <section class="bonus-section">
+
+          <div class="section-head">
+            <div>
+              <p class="kicker">POINTS BONUS</p>
+              <h2>1 point par critère</h2>
+            </div>
+          </div>
+
+          <p class="helper">
+            Active seulement les critères réellement obtenus par l’équipe.
+          </p>
+
+          <div id="bonusGrid" class="bonus-grid"></div>
+
+        </section>
+
+        <section class="live-score">
+
+          <div class="section-head">
+            <div>
+              <p class="kicker">APERÇU</p>
+              <h2>Points de la journée</h2>
+            </div>
+          </div>
+
+          <div id="dayPoints" class="points-grid"></div>
+
+        </section>
+
+        <button
+          id="saveDayBtn"
+          class="primary-btn sticky-save"
+          type="button"
+        >
+          Enregistrer la journée
+        </button>
+
+        <p id="saveHint" class="save-hint"></p>
+
+      </div>
+
+    </section>
+
+
+    <section id="view-ranking" class="view">
+
+      <div class="page-head">
+
+        <p class="kicker">CLASSEMENT</p>
+
+        <h2>Classement général</h2>
+
+        <p>
+          Victoire 2 pts · Nulle 1 pt · Défaite 0 pt ·
+          Bonus jusqu’à 3 pts par équipe et par journée.
+        </p>
+
+      </div>
+
+      <div class="segmented">
+
+        <button
+          class="segment active"
+          data-filter="all"
+          type="button"
+        >
+          Tous
+        </button>
+
+        <button
+          class="segment"
+          data-filter="S1"
+          type="button"
+        >
+          Sec. 1
+        </button>
+
+        <button
+          class="segment"
+          data-filter="S2"
+          type="button"
+        >
+          Sec. 2
+        </button>
+
+        <button
+          class="segment"
+          data-filter="S345"
+          type="button"
+        >
+          Sec. 3-4-5
+        </button>
+
+      </div>
+
+      <div id="rankingCards" class="ranking-list"></div>
+
+      <p class="helper centered">
+        Bris d’égalité : points totaux, puis points de match, puis victoires.
+      </p>
+
+    </section>
+
+
+    <section id="view-history" class="view">
+
+      <div class="page-head">
+
+        <p class="kicker">HISTORIQUE</p>
+
+        <h2>Journées enregistrées</h2>
+
+        <p>
+          Ouvre une journée pour revoir ou corriger les résultats.
+        </p>
+
+      </div>
+
+      <div id="historyList" class="history-list"></div>
+
+    </section>
+
+
+    <section id="view-settings" class="view">
+
+      <div class="page-head">
+
+        <p class="kicker">GESTION</p>
+
+        <h2>Sauvegarde et calendrier</h2>
+
+      </div>
+
+
+      <article class="settings-card">
+
+        <h3>Sauvegarde des résultats</h3>
+
+        <p>
+          Les résultats sont conservés automatiquement
+          sur cet appareil.
+        </p>
+
+        <div class="settings-actions">
+
+          <button
+            id="exportBtn"
+            class="secondary-btn"
+            type="button"
+          >
+            Exporter une sauvegarde
+          </button>
+
+          <label class="secondary-btn file-btn">
+
+            Importer une sauvegarde
+
+            <input
+              id="importInput"
+              type="file"
+              accept="application/json,.json"
+            >
+
+          </label>
+
+        </div>
+
+      </article>
+
+
+      <article class="settings-card">
+
+        <h3>Correction manuelle du jour-cycle</h3>
+
+        <p>
+          Utile si une fermeture d’école ou une modification
+          exceptionnelle change le calendrier.
+        </p>
+
+        <div class="override-form">
+
+          <label>
+
+            <span>Date</span>
+
+            <input id="overrideDate" type="date">
+
+          </label>
+
+          <label>
+
+            <span>Jour-cycle</span>
+
+            <select id="overrideCycle">
+
+              <option value="">
+                Automatique
+              </option>
+
+              <option value="none">
+                Aucun cours
+              </option>
+
+              <option value="1">Jour 1</option>
+              <option value="2">Jour 2</option>
+              <option value="3">Jour 3</option>
+              <option value="4">Jour 4</option>
+              <option value="5">Jour 5</option>
+              <option value="6">Jour 6</option>
+              <option value="7">Jour 7</option>
+              <option value="8">Jour 8</option>
+              <option value="9">Jour 9</option>
+
+            </select>
+
+          </label>
+
+          <button
+            id="saveOverrideBtn"
+            class="secondary-btn"
+            type="button"
+          >
+            Enregistrer la correction
+          </button>
+
+        </div>
+
+        <div
+          id="overrideList"
+          class="override-list"
+        ></div>
+
+      </article>
+
+
+      <article class="settings-card danger-card">
+
+        <h3>Réinitialiser</h3>
+
+        <p>
+          Efface tous les résultats enregistrés sur cet appareil.
+        </p>
+
+        <button
+          id="resetBtn"
+          class="danger-btn"
+          type="button"
+        >
+          Effacer toutes les données
+        </button>
+
+      </article>
+
+    </section>
+
+  </main>
+
+
+  <nav class="bottom-nav">
+
+    <button
+      class="nav-btn active"
+      data-view="today"
+      type="button"
+    >
+      <span class="nav-icon">⚽</span>
+      <span>Matchs</span>
+    </button>
+
+    <button
+      class="nav-btn"
+      data-view="ranking"
+      type="button"
+    >
+      <span class="nav-icon">🏆</span>
+      <span>Classement</span>
+    </button>
+
+    <button
+      class="nav-btn"
+      data-view="history"
+      type="button"
+    >
+      <span class="nav-icon">📅</span>
+      <span>Journées</span>
+    </button>
+
+    <button
+      class="nav-btn"
+      data-view="settings"
+      type="button"
+    >
+      <span class="nav-icon">⚙️</span>
+      <span>Gestion</span>
+    </button>
+
+  </nav>
+
+
+  <div
+    id="toast"
+    class="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+</div>
+
+
+<script>
+
+(() => {
+
+  "use strict";
+
+
+  const STORAGE_KEY = "tournoi-couleurs-v1";
+
+  const SCHOOL_START = "2026-08-31";
+
+  const SCHOOL_END = "2027-06-23";
+
+
+  const TEAMS = {
+
+    rouge:{
+      label:"Rouge"
+    },
+
+    vert:{
+      label:"Vert"
+    },
+
+    bleu:{
+      label:"Bleu"
+    },
+
+    jaune:{
+      label:"Jaune"
+    }
+
+  };
+
+
+  const TEAM_ORDER = [
+    "rouge",
+    "vert",
+    "bleu",
+    "jaune"
+  ];
+
+
+  const LEVELS = {
+
+    S1:"Secondaire 1",
+
+    S2:"Secondaire 2",
+
+    S345:"Secondaire 3-4-5"
+
+  };
+
+
+  /*
+  ============================
+  MATCHS DU TOURNOI
+  ============================
+
+  4 équipes donnent 6 confrontations.
+
+  Premier midi :
+  3 matchs.
+
+  Deuxième midi :
+  3 autres matchs.
+
+  À la fin, tout le monde
+  a joué contre tout le monde.
+  */
+
+
+  const MATCH_SETS = {
+
+    A:[
+
+      ["rouge","vert"],
+
+      ["bleu","jaune"],
+
+      ["rouge","bleu"]
+
+    ],
+
+    B:[
+
+      ["vert","jaune"],
+
+      ["rouge","jaune"],
+
+      ["vert","bleu"]
+
+    ]
+
+  };
+
+
+  /*
+  ============================
+  CALENDRIER SCOLAIRE
+  ============================
+  */
+
+
+  const fixedNoSchool = new Map();
+
+
+  function addNoSchool(date,label){
+
+    fixedNoSchool.set(
+      date,
+      label
+    );
+
+  }
+
+
+  function addNoSchoolRange(start,end,label){
+
+    let d = parseLocalDate(start);
+
+    const last = parseLocalDate(end);
+
+
+    while(d <= last){
+
+      if(
+        d.getDay() !== 0 &&
+        d.getDay() !== 6
+      ){
+
+        addNoSchool(
+          formatISO(d),
+          label
+        );
+
+      }
+
+      d.setDate(
+        d.getDate()+1
+      );
+
+    }
+
+  }
+
+
+  /*
+  Calendrier Pionniers
+  Laure-Gaudreault
+  2026-2027
+  */
+
+
+  addNoSchool(
+    "2026-09-07",
+    "Congé"
+  );
+
+
+  addNoSchool(
+    "2026-10-05",
+    "Journée pédagogique"
+  );
+
+
+  addNoSchool(
+    "2026-10-12",
+    "Congé"
+  );
+
+
+  addNoSchool(
+    "2026-10-23",
+    "Journée pédagogique"
+  );
+
+
+  addNoSchool(
+    "2026-11-19",
+    "Journée pédagogique"
+  );
+
+
+  addNoSchool(
+    "2026-11-20",
+    "Journée pédagogique"
+  );
+
+
+  addNoSchoolRange(
+    "2026-12-21",
+    "2027-01-01",
+    "Congé des Fêtes"
+  );
+
+
+  addNoSchool(
+    "2027-01-04",
+    "Journée pédagogique"
+  );
+
+
+  addNoSchool(
+    "2027-02-12",
+    "Journée pédagogique"
+  );
+
+
+  addNoSchoolRange(
+    "2027-03-01",
+    "2027-03-05",
+    "Semaine de relâche"
+  );
+
+
+  addNoSchool(
+    "2027-03-26",
+    "Congé"
+  );
+
+
+  addNoSchool(
+    "2027-03-29",
+    "Congé"
+  );
+
+
+  addNoSchool(
+    "2027-04-09",
+    "Journée pédagogique"
+  );
+
+
+  addNoSchool(
+    "2027-04-19",
+    "Journée pédagogique / reprise possible"
+  );
+
+
+  addNoSchool(
+    "2027-05-10",
+    "Journée pédagogique / reprise possible"
+  );
+
+
+  addNoSchool(
+    "2027-05-21",
+    "Journée pédagogique"
+  );
+
+
+  addNoSchool(
+    "2027-05-24",
+    "Congé"
+  );
+
+
+  /*
+  Journées pédagogiques flottantes.
+
+  Elles font avancer le cycle.
+  */
+
+
+  const floatingPed = new Map([
+
+    [
+      "2026-09-25",
+      "Journée pédagogique flottante"
+    ],
+
+    [
+      "2027-01-29",
+      "Journée pédagogique flottante"
+    ]
+
+  ]);
+
+
+  /*
+  Reprises de juin.
+
+  Le 21 juin reprend J1.
+  Le 22 juin reprend J3.
+
+  Le 23 juin demeure à confirmer
+  selon la troisième flottante ou
+  une éventuelle fermeture.
+  */
+
+
+  const specialCycle = {
+
+    "2027-06-21":1,
+
+    "2027-06-22":3
+
+  };
+
+
+  let db = loadDB();
+
+
+  let selectedDate =
+    formatISO(
+      new Date()
+    );
+
+
+  let currentDraft = null;
+
+
+  let undoStack = [];
+
+
+  let rankingFilter = "all";
+
+
+  let toastTimer = null;
+
+
+  const $ =
+    id =>
+      document.getElementById(id);
+
+
+  const els = {
+
+    datePicker:$("datePicker"),
+
+    dayStatus:$("dayStatus"),
+
+    competitionArea:
+      $("competitionArea"),
+
+    matches:$("matches"),
+
+    bonusGrid:$("bonusGrid"),
+
+    dayPoints:$("dayPoints"),
+
+    saveDayBtn:$("saveDayBtn"),
+
+    saveHint:$("saveHint"),
+
+    undoBtn:$("undoBtn"),
+
+    rankingCards:$("rankingCards"),
+
+    historyList:$("historyList"),
+
+    overrideDate:$("overrideDate"),
+
+    overrideCycle:$("overrideCycle"),
+
+    overrideList:$("overrideList"),
+
+    toast:$("toast")
+
+  };
+
+
+  init();
+
+
+  function init(){
+
+    els.datePicker.value =
+      selectedDate;
+
+
+    els.overrideDate.value =
+      selectedDate;
+
+
+    bindEvents();
+
+
+    renderAll();
+
+  }
+
+
+  function bindEvents(){
+
+
+    $("prevDayBtn")
+      .addEventListener(
+        "click",
+        () =>
+          shiftSelectedDate(-1)
+      );
+
+
+    $("nextDayBtn")
+      .addEventListener(
+        "click",
+        () =>
+          shiftSelectedDate(1)
+      );
+
+
+    $("todayBtn")
+      .addEventListener(
+        "click",
+        () =>
+          setSelectedDate(
+            formatISO(
+              new Date()
+            )
+          )
+      );
+
+
+    els.datePicker
+      .addEventListener(
+        "change",
+        () =>
+          setSelectedDate(
+            els.datePicker.value
+          )
+      );
+
+
+    els.saveDayBtn
+      .addEventListener(
+        "click",
+        saveCurrentDay
+      );
+
+
+    els.undoBtn
+      .addEventListener(
+        "click",
+        undoLastChange
+      );
+
+
+    document
+      .querySelectorAll(
+        ".nav-btn"
+      )
+      .forEach(btn=>{
+
+        btn.addEventListener(
+          "click",
+          () =>
+            showView(
+              btn.dataset.view
+            )
+        );
+
+      });
+
+
+    document
+      .querySelectorAll(
+        ".segment"
+      )
+      .forEach(btn=>{
+
+        btn.addEventListener(
+          "click",
+          ()=>{
+
+            rankingFilter =
+              btn.dataset.filter;
+
+
+            document
+              .querySelectorAll(
+                ".segment"
+              )
+              .forEach(
+                x =>
+                  x.classList.toggle(
+                    "active",
+                    x===btn
+                  )
+              );
+
+
+            renderRanking();
+
+          }
+        );
+
+      });
+
+
+    $("exportBtn")
+      .addEventListener(
+        "click",
+        exportBackup
+      );
+
+
+    $("importInput")
+      .addEventListener(
+        "change",
+        importBackup
+      );
+
+
+    $("saveOverrideBtn")
+      .addEventListener(
+        "click",
+        saveOverride
+      );
+
+
+    $("resetBtn")
+      .addEventListener(
+        "click",
+        resetAllData
+      );
+
+  }
+
+
+  function showView(name){
+
+
+    document
+      .querySelectorAll(
+        ".view"
+      )
+      .forEach(v=>{
+
+        v.classList.toggle(
+          "active",
+          v.id ===
+            `view-${name}`
+        );
+
+      });
+
+
+    document
+      .querySelectorAll(
+        ".nav-btn"
+      )
+      .forEach(b=>{
+
+        b.classList.toggle(
+          "active",
+          b.dataset.view===name
+        );
+
+      });
+
+
+    if(name==="ranking"){
+      renderRanking();
+    }
+
+
+    if(name==="history"){
+      renderHistory();
+    }
+
+
+    if(name==="settings"){
+      renderOverrides();
+    }
+
+
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+
+  }
+
+
+  function setSelectedDate(iso){
+
+
+    if(!iso){
+      return;
+    }
+
+
+    selectedDate=iso;
+
+
+    els.datePicker.value=iso;
+
+
+    els.overrideDate.value=iso;
+
+
+    undoStack=[];
+
+
+    renderToday();
+
+  }
+
+
+  function shiftSelectedDate(days){
+
+
+    const d =
+      parseLocalDate(
+        selectedDate
+      );
+
+
+    d.setDate(
+      d.getDate()+days
+    );
+
+
+    setSelectedDate(
+      formatISO(d)
+    );
+
+  }
+
+
+  /*
+  ============================
+  DÉTECTION DU JOUR-CYCLE
+  ============================
+  */
+
+
+  function getSchoolInfo(iso){
+
+
+    const manual =
+      db.overrides?.[iso];
+
+
+    if(manual==="none"){
+
+      return{
+
+        isSchoolDay:false,
+
+        cycleDay:null,
+
+        reason:
+          "Aucun cours — correction manuelle",
+
+        manual:true
+
+      };
+
+    }
+
+
+    if(
+      manual &&
+      /^[1-9]$/.test(
+        String(manual)
+      )
+    ){
+
+      const cycleDay =
+        Number(manual);
+
+
+      return{
+
+        isSchoolDay:true,
+
+        cycleDay,
+
+        level:
+          getLevel(
+            cycleDay
+          ),
+
+        session:
+          getSession(
+            cycleDay
+          ),
+
+        manual:true
+
+      };
+
+    }
+
+
+    const d =
+      parseLocalDate(iso);
+
+
+    const start =
+      parseLocalDate(
+        SCHOOL_START
+      );
+
+
+    const end =
+      parseLocalDate(
+        SCHOOL_END
+      );
+
+
+    if(
+      d<start ||
+      d>end
+    ){
+
+      return{
+
+        isSchoolDay:false,
+
+        cycleDay:null,
+
+        reason:
+          "Hors de l’année scolaire"
+
+      };
+
+    }
+
+
+    if(
+      d.getDay()===0 ||
+      d.getDay()===6
+    ){
+
+      return{
+
+        isSchoolDay:false,
+
+        cycleDay:null,
+
+        reason:
+          "Fin de semaine"
+
+      };
+
+    }
+
+
+    if(
+      specialCycle[iso]
+    ){
+
+      const cycleDay =
+        specialCycle[iso];
+
+
+      return{
+
+        isSchoolDay:true,
+
+        cycleDay,
+
+        level:
+          getLevel(
+            cycleDay
+          ),
+
+        session:
+          getSession(
+            cycleDay
+          ),
+
+        special:true
+
+      };
+
+    }
+
+
+    if(
+      iso==="2027-06-23"
+    ){
+
+      return{
+
+        isSchoolDay:false,
+
+        cycleDay:null,
+
+        reason:
+          "Jour-cycle à confirmer. Utilise Gestion pour le préciser."
+
+      };
+
+    }
+
+
+    if(
+      fixedNoSchool.has(iso)
+    ){
+
+      return{
+
+        isSchoolDay:false,
+
+        cycleDay:null,
+
+        reason:
+          fixedNoSchool.get(iso)
+
+      };
+
+    }
+
+
+    if(
+      floatingPed.has(iso)
+    ){
+
+      return{
+
+        isSchoolDay:false,
+
+        cycleDay:null,
+
+        reason:
+          floatingPed.get(iso)
+
+      };
+
+    }
+
+
+    /*
+    J1 = 31 août 2026.
+
+    Les pédagogiques fixes
+    mettent le cycle sur pause.
+
+    Les pédagogiques flottantes
+    consomment leur jour-cycle.
+    */
+
+
+    let cycle=1;
+
+
+    const cursor =
+      new Date(start);
+
+
+    while(cursor<=d){
+
+
+      const key =
+        formatISO(cursor);
+
+
+      const weekday =
+
+        cursor.getDay()!==0 &&
+
+        cursor.getDay()!==6;
+
+
+      if(weekday){
+
+
+        if(
+          fixedNoSchool.has(key)
+        ){
+
+          /*
+          Le cycle ne bouge pas.
+          */
+
+        }
+
+
+        else if(
+          floatingPed.has(key)
+        ){
+
+          cycle =
+            cycle%9+1;
+
+        }
+
+
+        else{
+
+
+          if(key===iso){
+
+            return{
+
+              isSchoolDay:true,
+
+              cycleDay:cycle,
+
+              level:
+                getLevel(cycle),
+
+              session:
+                getSession(cycle),
+
+              manual:false
+
+            };
+
+          }
+
+
+          cycle=
+            cycle%9+1;
+
+        }
+
+      }
+
+
+      cursor.setDate(
+        cursor.getDate()+1
+      );
+
+    }
+
+
+    return{
+
+      isSchoolDay:false,
+
+      cycleDay:null,
+
+      reason:
+        "Date non reconnue"
+
+    };
+
+  }
+
+
+  /*
+  ============================
+  NIVEAU SELON JOUR-CYCLE
+  ============================
+  */
+
+
+  function getLevel(day){
+
+
+    if(
+      day===2 ||
+      day===6
+    ){
+
+      return "S1";
+
+    }
+
+
+    if(
+      day===3 ||
+      day===7
+    ){
+
+      return "S2";
+
+    }
+
+
+    if(
+      day===4 ||
+      day===8
+    ){
+
+      return "S345";
+
+    }
+
+
+    return null;
+
+  }
+
+
+  /*
+  Bloc A :
+  J2, J3, J4.
+
+  Bloc B :
+  J6, J7, J8.
+  */
+
+
+  function getSession(day){
+
+
+    if(
+      [2,3,4]
+        .includes(day)
+    ){
+
+      return "A";
+
+    }
+
+
+    if(
+      [6,7,8]
+        .includes(day)
+    ){
+
+      return "B";
+
+    }
+
+
+    return null;
+
+  }
+
+
+  function renderAll(){
+
+    renderToday();
+
+    renderRanking();
+
+    renderHistory();
+
+    renderOverrides();
+
+  }
+
+
+  /*
+  ============================
+  PAGE DU JOUR
+  ============================
+  */
+
+
+  function renderToday(){
+
+
+    const info =
+      getSchoolInfo(
+        selectedDate
+      );
+
+
+    const saved =
+      findRecord(
+        selectedDate,
+        info.level
+      );
+
+
+    const dateLabel =
+      prettyDate(
+        selectedDate
+      );
+
+
+    if(
+      !info.isSchoolDay
+    ){
+
+
+      currentDraft=null;
+
+
+      els.competitionArea.hidden=true;
+
+
+      els.dayStatus.innerHTML=`
+
+        <div class="big-day">
+
+          <span class="cycle-badge">
+            —
+          </span>
+
+        </div>
+
+        <h2>
+          Aucune compétition
+        </h2>
+
+        <p>
+
+          ${escapeHTML(dateLabel)}
+
+          ·
+
+          ${escapeHTML(
+            info.reason ||
+            "Aucun cours"
+          )}
+
+        </p>
+
+      `;
+
+
+      return;
+
+    }
+
+
+    if(
+      !info.level
+    ){
+
+
+      currentDraft=null;
+
+
+      els.competitionArea.hidden=true;
+
+
+      els.dayStatus.innerHTML=`
+
+        <div class="big-day">
+
+          <span class="cycle-badge">
+
+            Jour ${info.cycleDay}
+
+          </span>
+
+        </div>
+
+
+        <h2>
+
+          Aucune compétition aujourd’hui
+
+        </h2>
+
+
+        <p>
+
+          ${escapeHTML(dateLabel)}
+
+          ·
+
+          Les compétitions ont lieu
+          aux jours 2, 3, 4, 6, 7 et 8.
+
+        </p>
+
+
+        ${
+          info.manual
+          ?
+          `
+          <span class="saved-pill">
+            Correction manuelle active
+          </span>
+          `
+          :
+          ""
+        }
+
+      `;
+
+
+      return;
+
+    }
+
+
+    const recordKey =
+      makeRecordKey(
+        selectedDate,
+        info.level
+      );
+
+
+    currentDraft =
+      saved
+      ?
+      deepClone(saved)
+      :
+      makeEmptyRecord(
+        selectedDate,
+        info
+      );
+
+
+    currentDraft.key =
+      recordKey;
+
+
+    els.competitionArea.hidden=false;
+
+
+    els.dayStatus.innerHTML=`
+
+      <div class="big-day">
+
+        <span class="cycle-badge">
+
+          Jour ${info.cycleDay}
+
+        </span>
+
+
+        <span class="cycle-badge">
+
+          ${
+            info.session==="A"
+            ?
+            "Bloc 1/2"
+            :
+            "Bloc 2/2"
+          }
+
+        </span>
+
+      </div>
+
+
+      <h2>
+
+        ${
+          escapeHTML(
+            LEVELS[
+              info.level
+            ]
+          )
+        }
+
+      </h2>
+
+
+      <p>
+
+        ${
+          escapeHTML(
+            dateLabel
+          )
+        }
+
+        ·
+
+        3 matchs consécutifs
+        de 10 minutes.
+
+      </p>
+
+
+      ${
+        saved
+        ?
+        `
+        <span class="saved-pill">
+
+          ✓ Journée déjà enregistrée
+          — tu peux la modifier
+
+        </span>
+        `
+        :
+        ""
+      }
+
+
+      ${
+        info.manual
+        ?
+        `
+        <span class="saved-pill">
+
+          Correction manuelle
+          du calendrier
+
+        </span>
+        `
+        :
+        ""
+      }
+
+    `;
+
+
+    renderMatches();
+
+    renderBonuses();
+
+    renderDayPoints();
+
+    updateUndoButton();
+
+    updateSaveHint();
+
+  }
+
+
+  /*
+  ============================
+  CRÉATION D'UNE JOURNÉE
+  ============================
+  */
+
+
+  function makeEmptyRecord(
+    date,
+    info
+  ){
+
+
+    return{
+
+      date,
+
+      cycleDay:
+        info.cycleDay,
+
+      level:
+        info.level,
+
+      session:
+        info.session,
+
+      matches:
+
+        MATCH_SETS[
+          info.session
+        ]
+        .map(
+          ([a,b],idx)=>({
+
+            id:idx+1,
+
+            a,
+
+            b,
+
+            result:null
+
+          })
+        ),
+
+      bonuses:
+
+        Object.fromEntries(
+
+          TEAM_ORDER.map(
+
+            team=>[
+
+              team,
+
+              {
+
+                attendance:false,
+
+                shirts:false,
+
+                spirit:false
+
+              }
+
+            ]
+
+          )
+
+        ),
+
+      savedAt:null
+
+    };
+
+  }
+
+
+  /*
+  ============================
+  MATCHS
+  ============================
+  */
+
+
+  function renderMatches(){
+
+
+    if(!currentDraft){
+      return;
+    }
+
+
+    els.matches.innerHTML =
+
+      currentDraft.matches
+      .map(
+        (m,idx)=>{
+
+
+          const a =
+            TEAMS[m.a].label;
+
+
+          const b =
+            TEAMS[m.b].label;
+
+
+          return`
+
+            <article class="match-card">
+
+
+              <div class="match-meta">
+
+                <span>
+                  MATCH ${idx+1}
+                </span>
+
+                <span>
+                  10 min
+                </span>
+
+              </div>
+
+
+              <div class="matchup">
+
+
+                <div
+                  class="
+                    team-pill
+                    team-${m.a}
+                  "
+                >
+
+                  ${a}
+
+                </div>
+
+
+                <span class="vs">
+                  VS
+                </span>
+
+
+                <div
+                  class="
+                    team-pill
+                    team-${m.b}
+                  "
+                >
+
+                  ${b}
+
+                </div>
+
+
+              </div>
+
+
+              <div class="result-buttons">
+
+
+                <button
+
+                  class="
+                    result-btn
+                    team-result
+                    team-${m.a}
+
+                    ${
+                      m.result===m.a
+                      ?
+                      "selected"
+                      :
+                      ""
+                    }
+                  "
+
+                  data-match="${idx}"
+
+                  data-result="${m.a}"
+
+                  type="button"
+
+                >
+
+                  ${a}
+
+                </button>
+
+
+                <button
+
+                  class="
+                    result-btn
+
+                    ${
+                      m.result==="draw"
+                      ?
+                      "selected"
+                      :
+                      ""
+                    }
+                  "
+
+                  data-match="${idx}"
+
+                  data-result="draw"
+
+                  type="button"
+
+                >
+
+                  Nulle
+
+                </button>
+
+
+                <button
+
+                  class="
+                    result-btn
+                    team-result
+                    team-${m.b}
+
+                    ${
+                      m.result===m.b
+                      ?
+                      "selected"
+                      :
+                      ""
+                    }
+                  "
+
+                  data-match="${idx}"
+
+                  data-result="${m.b}"
+
+                  type="button"
+
+                >
+
+                  ${b}
+
+                </button>
+
+
+              </div>
+
+
+            </article>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+    els.matches
+      .querySelectorAll(
+        ".result-btn"
+      )
+      .forEach(btn=>{
+
+
+        btn.addEventListener(
+          "click",
+          ()=>{
+
+
+            rememberForUndo();
+
+
+            const i =
+              Number(
+                btn.dataset.match
+              );
+
+
+            currentDraft
+              .matches[i]
+              .result =
+                btn.dataset.result;
+
+
+            renderMatches();
+
+            renderDayPoints();
+
+            updateSaveHint();
+
+          }
+        );
+
+      });
+
+  }
+
+
+  /*
+  ============================
+  BONUS
+  ============================
+  */
+
+
+  function renderBonuses(){
+
+
+    if(!currentDraft){
+      return;
+    }
+
+
+    const labels = {
+
+      attendance:[
+        "👥",
+        "80 % et +"
+      ],
+
+      shirts:[
+        "👕",
+        "Tous les chandails"
+      ],
+
+      spirit:[
+        "👏",
+        "Esprit d’équipe"
+      ]
+
+    };
+
+
+    els.bonusGrid.innerHTML =
+
+      TEAM_ORDER
+      .map(
+        team=>`
+
+
+          <article class="bonus-card">
+
+
+            <div
+              class="
+                bonus-title
+                team-${team}
+              "
+            >
+
+              ${
+                TEAMS[
+                  team
+                ].label
+              }
+
+            </div>
+
+
+            <div class="bonus-options">
+
+
+              ${
+                Object
+                .entries(labels)
+                .map(
+                  (
+                    [
+                      key,
+                      [icon,label]
+                    ]
+                  )=>{
+
+
+                    const active =
+                      !!currentDraft
+                        .bonuses
+                        [team]
+                        [key];
+
+
+                    return`
+
+
+                      <button
+
+                        class="
+                          bonus-toggle
+                          ${
+                            active
+                            ?
+                            "active"
+                            :
+                            ""
+                          }
+                        "
+
+                        data-team="${team}"
+
+                        data-bonus="${key}"
+
+                        type="button"
+
+                      >
+
+
+                        <span>
+
+                          <span class="check">
+
+                            ${
+                              active
+                              ?
+                              "✓"
+                              :
+                              icon
+                            }
+
+                          </span>
+
+
+                          ${label}
+
+                        </span>
+
+
+                      </button>
+
+                    `;
+
+                  }
+                )
+                .join("")
+              }
+
+
+            </div>
+
+
+          </article>
+
+        `
+      )
+      .join("");
+
+
+    els.bonusGrid
+      .querySelectorAll(
+        ".bonus-toggle"
+      )
+      .forEach(btn=>{
+
+
+        btn.addEventListener(
+          "click",
+          ()=>{
+
+
+            rememberForUndo();
+
+
+            const{
+              team,
+              bonus
+            }=btn.dataset;
+
+
+            currentDraft
+              .bonuses
+              [team]
+              [bonus]
+            =
+              !currentDraft
+                .bonuses
+                [team]
+                [bonus];
+
+
+            renderBonuses();
+
+            renderDayPoints();
+
+          }
+        );
+
+      });
+
+  }
+
+
+  /*
+  ============================
+  CALCUL DES POINTS
+  ============================
+  */
+
+
+  function calculateRecordPoints(
+    record
+  ){
+
+
+    const stats =
+
+      Object.fromEntries(
+
+        TEAM_ORDER.map(
+
+          team=>[
+
+            team,
+
+            {
+
+              matches:0,
+
+              wins:0,
+
+              draws:0,
+
+              losses:0,
+
+              matchPoints:0,
+
+              bonusPoints:0,
+
+              total:0
+
+            }
+
+          ]
+
+        )
+
+      );
+
+
+    record.matches
+      .forEach(m=>{
+
+
+        if(!m.result){
+          return;
+        }
+
+
+        stats[m.a].matches+=1;
+
+        stats[m.b].matches+=1;
+
+
+        if(
+          m.result==="draw"
+        ){
+
+
+          stats[m.a].draws+=1;
+
+          stats[m.b].draws+=1;
+
+
+          stats[m.a].matchPoints+=1;
+
+          stats[m.b].matchPoints+=1;
+
+
+        }
+
+
+        else if(
+          m.result===m.a
+        ){
+
+
+          stats[m.a].wins+=1;
+
+          stats[m.b].losses+=1;
+
+
+          stats[m.a].matchPoints+=2;
+
+
+        }
+
+
+        else if(
+          m.result===m.b
+        ){
+
+
+          stats[m.b].wins+=1;
+
+          stats[m.a].losses+=1;
+
+
+          stats[m.b].matchPoints+=2;
+
+
+        }
+
+      });
+
+
+    TEAM_ORDER
+      .forEach(team=>{
+
+
+        const b =
+          record
+            .bonuses?.[team]
+          ||
+          {};
+
+
+        stats[team]
+          .bonusPoints =
+
+          [
+            "attendance",
+            "shirts",
+            "spirit"
+          ]
+          .filter(
+            k=>!!b[k]
+          )
+          .length;
+
+
+        stats[team].total =
+
+          stats[team].matchPoints
+          +
+          stats[team].bonusPoints;
+
+      });
+
+
+    return stats;
+
+  }
+
+
+  /*
+  ============================
+  POINTS DU JOUR
+  ============================
+  */
+
+
+  function renderDayPoints(){
+
+
+    if(!currentDraft){
+      return;
+    }
+
+
+    const pts =
+      calculateRecordPoints(
+        currentDraft
+      );
+
+
+    els.dayPoints.innerHTML =
+
+      TEAM_ORDER
+      .map(
+        team=>`
+
+
+          <div
+            class="
+              point-card
+              team-${team}
+            "
+          >
+
+
+            <small>
+
+              ${
+                TEAMS[
+                  team
+                ]
+                .label
+                .toUpperCase()
+              }
+
+            </small>
+
+
+            <strong>
+
+              ${
+                pts[team].total
+              }
+
+              pt${
+                pts[team].total===1
+                ?
+                ""
+                :
+                "s"
+              }
+
+            </strong>
+
+
+            <small>
+
+              ${
+                pts[team]
+                  .matchPoints
+              }
+              match
+
+              +
+
+              ${
+                pts[team]
+                  .bonusPoints
+              }
+              bonus
+
+            </small>
+
+
+          </div>
+
+        `
+      )
+      .join("");
+
+  }
+
+
+  /*
+  ============================
+  VALIDATION
+  ============================
+  */
+
+
+  function updateSaveHint(){
+
+
+    if(!currentDraft){
+      return;
+    }
+
+
+    const missing =
+
+      currentDraft
+        .matches
+        .filter(
+          m=>!m.result
+        )
+        .length;
+
+
+    if(missing===0){
+
+
+      els.saveHint.textContent =
+
+        "Les 3 résultats sont complétés. Les bonus non activés valent 0 point.";
+
+
+      els.saveDayBtn.disabled=false;
+
+
+      els.saveDayBtn.style.opacity="1";
+
+
+    }
+
+
+    else{
+
+
+      els.saveHint.textContent =
+
+        `Il reste ${missing} résultat${missing>1?"s":""} de match à choisir.`;
+
+
+      els.saveDayBtn.disabled=true;
+
+
+      els.saveDayBtn.style.opacity=".45";
+
+
+    }
+
+  }
+
+
+  /*
+  ============================
+  ENREGISTRER
+  ============================
+  */
+
+
+  function saveCurrentDay(){
+
+
+    if(!currentDraft){
+      return;
+    }
+
+
+    const missing =
+
+      currentDraft
+        .matches
+        .some(
+          m=>!m.result
+        );
+
+
+    if(missing){
+
+
+      showToast(
+        "Complète les 3 matchs avant d’enregistrer."
+      );
+
+
+      return;
+
+    }
+
+
+    const clean =
+      deepClone(
+        currentDraft
+      );
+
+
+    delete clean.key;
+
+
+    clean.savedAt =
+      new Date()
+        .toISOString();
+
+
+    db.records[
+      makeRecordKey(
+        clean.date,
+        clean.level
+      )
+    ] = clean;
+
+
+    persistDB();
+
+
+    undoStack=[];
+
+
+    showToast(
+      "Journée enregistrée ✓"
+    );
+
+
+    renderAll();
+
+  }
+
+
+  /*
+  ============================
+  ANNULER DERNIÈRE ACTION
+  ============================
+  */
+
+
+  function rememberForUndo(){
+
+
+    if(!currentDraft){
+      return;
+    }
+
+
+    undoStack.push(
+      deepClone(
+        currentDraft
+      )
+    );
+
+
+    if(
+      undoStack.length>20
+    ){
+
+      undoStack.shift();
+
+    }
+
+
+    updateUndoButton();
+
+  }
+
+
+  function undoLastChange(){
+
+
+    if(
+      !undoStack.length
+    ){
+
+      return;
+
+    }
+
+
+    currentDraft =
+      undoStack.pop();
+
+
+    renderMatches();
+
+    renderBonuses();
+
+    renderDayPoints();
+
+    updateUndoButton();
+
+    updateSaveHint();
+
+  }
+
+
+  function updateUndoButton(){
+
+
+    els.undoBtn.disabled =
+      undoStack.length===0;
+
+  }
+
+
+  /*
+  ============================
+  ENREGISTREMENTS
+  ============================
+  */
+
+
+  function makeRecordKey(
+    date,
+    level
+  ){
+
+
+    return`${date}|${level||"NONE"}`;
+
+  }
+
+
+  function findRecord(
+    date,
+    level
+  ){
+
+
+    if(!level){
+      return null;
+    }
+
+
+    return(
+      db.records?.[
+        makeRecordKey(
+          date,
+          level
+        )
+      ]
+      ||
+      null
+    );
+
+  }
+
+
+  /*
+  ============================
+  CLASSEMENT
+  ============================
+  */
+
+
+  function getAggregate(
+    filter="all"
+  ){
+
+
+    const aggregate =
+
+      Object.fromEntries(
+
+        TEAM_ORDER.map(
+
+          team=>[
+
+            team,
+
+            {
+
+              matches:0,
+
+              wins:0,
+
+              draws:0,
+
+              losses:0,
+
+              matchPoints:0,
+
+              bonusPoints:0,
+
+              total:0
+
+            }
+
+          ]
+
+        )
+
+      );
+
+
+    Object
+      .values(
+        db.records||{}
+      )
+      .forEach(record=>{
+
+
+        if(
+          filter!=="all"
+          &&
+          record.level!==filter
+        ){
+
+          return;
+
+        }
+
+
+        const s =
+          calculateRecordPoints(
+            record
+          );
+
+
+        TEAM_ORDER
+          .forEach(team=>{
+
+
+            Object
+              .keys(
+                aggregate[team]
+              )
+              .forEach(k=>{
+
+
+                aggregate[team][k]
+                +=
+                s[team][k];
+
+              });
+
+          });
+
+      });
+
+
+    return aggregate;
+
+  }
+
+
+  function renderRanking(){
+
+
+    const agg =
+      getAggregate(
+        rankingFilter
+      );
+
+
+    const ranked =
+
+      TEAM_ORDER
+      .map(
+        (team,fixedOrder)=>({
+
+          team,
+
+          fixedOrder,
+
+          ...agg[team]
+
+        })
+      )
+      .sort(
+        (x,y)=>
+
+          y.total-x.total
+
+          ||
+
+          y.matchPoints
+          -
+          x.matchPoints
+
+          ||
+
+          y.wins-x.wins
+
+          ||
+
+          x.fixedOrder
+          -
+          y.fixedOrder
+      );
+
+
+    els.rankingCards.innerHTML =
+
+      ranked
+      .map(
+        (r,i)=>`
+
+
+          <article class="rank-card">
+
+
+            <div class="rank-pos">
+
+              ${i+1}
+
+            </div>
+
+
+            <div class="rank-main">
+
+
+              <div class="rank-name">
+
+
+                <span
+                  class="
+                    color-dot
+                    team-${r.team}
+                  "
+                ></span>
+
+
+                ${
+                  TEAMS[
+                    r.team
+                  ].label
+                }
+
+
+              </div>
+
+
+              <div class="rank-stats">
+
+                ${r.matches} matchs
+
+                ·
+
+                ${r.wins} V
+
+                ·
+
+                ${r.draws} N
+
+                ·
+
+                ${r.losses} D
+
+
+                <br>
+
+
+                ${r.matchPoints}
+                pts matchs
+
+                +
+
+                ${r.bonusPoints}
+                pts bonus
+
+              </div>
+
+
+            </div>
+
+
+            <div class="rank-total">
+
+
+              <strong>
+
+                ${r.total}
+
+              </strong>
+
+
+              <span>
+                points
+              </span>
+
+
+            </div>
+
+
+          </article>
+
+        `
+      )
+      .join("");
+
+  }
+
+
+  /*
+  ============================
+  HISTORIQUE
+  ============================
+  */
+
+
+  function renderHistory(){
+
+
+    const records =
+
+      Object
+        .values(
+          db.records||{}
+        )
+        .sort(
+          (a,b)=>
+            b.date
+              .localeCompare(
+                a.date
+              )
+        );
+
+
+    if(
+      !records.length
+    ){
+
+
+      els.historyList.innerHTML=`
+
+        <div class="empty-state">
+
+          <strong>
+
+            Aucune journée enregistrée
+
+          </strong>
+
+          Les résultats apparaîtront ici
+          après le premier midi
+          de compétition.
+
+        </div>
+
+      `;
+
+
+      return;
+
+    }
+
+
+    els.historyList.innerHTML =
+
+      records
+      .map(r=>{
+
+
+        const pts =
+          calculateRecordPoints(r);
+
+
+        return`
+
+
+          <article class="history-card">
+
+
+            <div class="history-top">
+
+
+              <div>
+
+
+                <h3>
+
+                  ${
+                    escapeHTML(
+                      prettyDate(
+                        r.date
+                      )
+                    )
+                  }
+
+                </h3>
+
+
+                <p>
+
+                  Jour ${r.cycleDay}
+
+                  ·
+
+                  ${
+                    escapeHTML(
+                      LEVELS[
+                        r.level
+                      ]
+                    )
+                  }
+
+                </p>
+
+
+              </div>
+
+
+              <button
+
+                class="edit-link"
+
+                data-edit-date="${r.date}"
+
+                type="button"
+
+              >
+
+                Modifier
+
+              </button>
+
+
+            </div>
+
+
+            <div class="history-points">
+
+
+              ${
+                TEAM_ORDER
+                .map(
+                  team=>`
+
+                    <div
+                      class="
+                        history-team
+                        team-${team}
+                      "
+                    >
+
+                      ${
+                        TEAMS[
+                          team
+                        ].label
+                      }
+
+                      <br>
+
+                      ${
+                        pts[
+                          team
+                        ].total
+                      }
+                      pts
+
+                    </div>
+
+                  `
+                )
+                .join("")
+              }
+
+
+            </div>
+
+
+          </article>
+
+        `;
+
+      })
+      .join("");
+
+
+    els.historyList
+      .querySelectorAll(
+        "[data-edit-date]"
+      )
+      .forEach(btn=>{
+
+
+        btn.addEventListener(
+          "click",
+          ()=>{
+
+
+            setSelectedDate(
+              btn.dataset.editDate
+            );
+
+
+            showView(
+              "today"
+            );
+
+          }
+        );
+
+      });
+
+  }
+
+
+  /*
+  ============================
+  CORRECTION MANUELLE
+  ============================
+  */
+
+
+  function saveOverride(){
+
+
+    const date =
+      els.overrideDate.value;
+
+
+    const value =
+      els.overrideCycle.value;
+
+
+    if(!date){
+
+
+      showToast(
+        "Choisis une date."
+      );
+
+
+      return;
+
+    }
+
+
+    if(!value){
+
+
+      delete
+        db.overrides[date];
+
+
+      showToast(
+        "Correction retirée."
+      );
+
+
+    }
+
+
+    else{
+
+
+      db.overrides[date]=
+        value;
+
+
+      showToast(
+        "Correction enregistrée."
+      );
+
+    }
+
+
+    persistDB();
+
+
+    renderAll();
+
+  }
+
+
+  function renderOverrides(){
+
+
+    const entries =
+
+      Object
+        .entries(
+          db.overrides||{}
+        )
+        .sort(
+          ([a],[b])=>
+            a.localeCompare(b)
+        );
+
+
+    if(
+      !entries.length
+    ){
+
+
+      els.overrideList.innerHTML=`
+
+        <p class="helper">
+
+          Aucune correction manuelle.
+
+        </p>
+
+      `;
+
+
+      return;
+
+    }
+
+
+    els.overrideList.innerHTML =
+
+      entries
+      .map(
+        ([date,value])=>`
+
+
+          <div class="override-row">
+
+
+            <span>
+
+              ${
+                escapeHTML(
+                  prettyDate(date)
+                )
+              }
+
+              —
+
+              ${
+                value==="none"
+                ?
+                "Aucun cours"
+                :
+                `Jour ${value}`
+              }
+
+            </span>
+
+
+            <button
+
+              data-remove-override="${date}"
+
+              type="button"
+
+            >
+
+              Retirer
+
+            </button>
+
+
+          </div>
+
+        `
+      )
+      .join("");
+
+
+    els.overrideList
+      .querySelectorAll(
+        "[data-remove-override]"
+      )
+      .forEach(btn=>{
+
+
+        btn.addEventListener(
+          "click",
+          ()=>{
+
+
+            delete
+              db.overrides[
+                btn.dataset
+                  .removeOverride
+              ];
+
+
+            persistDB();
+
+
+            renderAll();
+
+
+            showToast(
+              "Correction retirée."
+            );
+
+          }
+        );
+
+      });
+
+  }
+
+
+  /*
+  ============================
+  EXPORT
+  ============================
+  */
+
+
+  function exportBackup(){
+
+
+    const payload={
+
+      app:
+        "Tournoi des couleurs",
+
+      version:1,
+
+      exportedAt:
+        new Date()
+          .toISOString(),
+
+      data:db
+
+    };
+
+
+    const blob =
+      new Blob(
+
+        [
+          JSON.stringify(
+            payload,
+            null,
+            2
+          )
+        ],
+
+        {
+          type:
+            "application/json"
+        }
+
+      );
+
+
+    const url =
+      URL.createObjectURL(
+        blob
+      );
+
+
+    const a =
+      document.createElement(
+        "a"
+      );
+
+
+    a.href=url;
+
+
+    a.download =
+
+      `tournoi-couleurs-sauvegarde-${formatISO(new Date())}.json`;
+
+
+    document
+      .body
+      .appendChild(a);
+
+
+    a.click();
+
+
+    a.remove();
+
+
+    URL.revokeObjectURL(
+      url
+    );
+
+
+    showToast(
+      "Sauvegarde exportée."
+    );
+
+  }
+
+
+  /*
+  ============================
+  IMPORT
+  ============================
+  */
+
+
+  function importBackup(
+    event
+  ){
+
+
+    const file =
+      event
+        .target
+        .files?.[0];
+
+
+    if(!file){
+      return;
+    }
+
+
+    const reader =
+      new FileReader();
+
+
+    reader.onload=()=>{
+
+
+      try{
+
+
+        const parsed =
+          JSON.parse(
+            reader.result
+          );
+
+
+        const incoming =
+          parsed.data
+          ||
+          parsed;
+
+
+        if(
+          !incoming.records
+          ||
+          typeof incoming.records
+          !==
+          "object"
+        ){
+
+
+          throw new Error(
+            "Format invalide"
+          );
+
+        }
+
+
+        if(
+          !confirm(
+            "Importer cette sauvegarde remplacera les données présentes sur cet appareil. Continuer?"
+          )
+        ){
+
+          return;
+
+        }
+
+
+        db={
+
+          records:
+            incoming.records
+            ||
+            {},
+
+          overrides:
+            incoming.overrides
+            ||
+            {}
+
+        };
+
+
+        persistDB();
+
+
+        undoStack=[];
+
+
+        renderAll();
+
+
+        showToast(
+          "Sauvegarde importée ✓"
+        );
+
+
+      }
+
+
+      catch{
+
+
+        alert(
+          "Le fichier ne semble pas être une sauvegarde valide du Tournoi des couleurs."
+        );
+
+      }
+
+
+      finally{
+
+
+        event.target.value="";
+
+      }
+
+    };
+
+
+    reader.readAsText(
+      file
+    );
+
+  }
+
+
+  /*
+  ============================
+  RESET
+  ============================
+  */
+
+
+  function resetAllData(){
+
+
+    const answer =
+      prompt(
+        "Pour confirmer, écris exactement : EFFACER"
+      );
+
+
+    if(
+      answer!=="EFFACER"
+    ){
+
+
+      showToast(
+        "Aucune donnée effacée."
+      );
+
+
+      return;
+
+    }
+
+
+    db={
+
+      records:{},
+
+      overrides:{}
+
+    };
+
+
+    persistDB();
+
+
+    undoStack=[];
+
+
+    renderAll();
+
+
+    showToast(
+      "Toutes les données ont été effacées."
+    );
+
+  }
+
+
+  /*
+  ============================
+  LOCAL STORAGE
+  ============================
+  */
+
+
+  function loadDB(){
+
+
+    try{
+
+
+      const parsed =
+        JSON.parse(
+          localStorage.getItem(
+            STORAGE_KEY
+          )
+        );
+
+
+      if(
+        parsed
+        &&
+        parsed.records
+      ){
+
+
+        return{
+
+          records:
+            parsed.records
+            ||
+            {},
+
+          overrides:
+            parsed.overrides
+            ||
+            {}
+
+        };
+
+      }
+
+
+    }
+
+    catch{}
+
+
+    return{
+
+      records:{},
+
+      overrides:{}
+
+    };
+
+  }
+
+
+  function persistDB(){
+
+
+    localStorage.setItem(
+
+      STORAGE_KEY,
+
+      JSON.stringify(db)
+
+    );
+
+  }
+
+
+  /*
+  ============================
+  OUTILS DATE
+  ============================
+  */
+
+
+  function parseLocalDate(
+    iso
+  ){
+
+
+    const[
+      y,
+      m,
+      d
+    ] =
+      iso
+        .split("-")
+        .map(Number);
+
+
+    return new Date(
+
+      y,
+
+      m-1,
+
+      d,
+
+      12,
+
+      0,
+
+      0,
+
+      0
+
+    );
+
+  }
+
+
+  function formatISO(
+    date
+  ){
+
+
+    const y =
+      date.getFullYear();
+
+
+    const m =
+      String(
+        date.getMonth()+1
+      )
+      .padStart(
+        2,
+        "0"
+      );
+
+
+    const d =
+      String(
+        date.getDate()
+      )
+      .padStart(
+        2,
+        "0"
+      );
+
+
+    return`${y}-${m}-${d}`;
+
+  }
+
+
+  function prettyDate(
+    iso
+  ){
+
+
+    return new Intl.DateTimeFormat(
+
+      "fr-CA",
+
+      {
+
+        weekday:"long",
+
+        day:"numeric",
+
+        month:"long",
+
+        year:"numeric"
+
+      }
+
+    )
+    .format(
+      parseLocalDate(
+        iso
+      )
+    );
+
+  }
+
+
+  function deepClone(x){
+
+
+    return JSON.parse(
+      JSON.stringify(x)
+    );
+
+  }
+
+
+  function escapeHTML(
+    value
+  ){
+
+
+    return String(
+      value??""
+    )
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+  }
+
+
+  function showToast(
+    message
+  ){
+
+
+    clearTimeout(
+      toastTimer
+    );
+
+
+    els.toast.textContent =
+      message;
+
+
+    els.toast
+      .classList
+      .add(
+        "show"
+      );
+
+
+    toastTimer =
+      setTimeout(
+        ()=>{
+
+          els.toast
+            .classList
+            .remove(
+              "show"
+            );
+
+        },
+
+        2200
+      );
+
+  }
+
+
+})();
+
+</script>
+
+</body>
+</html>
