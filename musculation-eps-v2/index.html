@@ -480,7 +480,7 @@ function renderTeamsEditor(){
   });
 }
 function validateSetup(){
-  const ok=state.mode && state.teams.every(t=>t.name.trim().length>0);
+  const ok=!!state.mode;
   $("#toWarmupBtn").disabled=!ok;
 }
 function showScreen(id){
