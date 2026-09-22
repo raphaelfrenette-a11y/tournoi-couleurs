@@ -66,7 +66,6 @@ button{cursor:pointer}
 .timeBlock{text-align:center}.rotationLabel{font-size:13px;color:var(--muted);font-weight:900;letter-spacing:.14em;text-transform:uppercase}.rotationTimer{font-size:clamp(40px,5.5vw,78px);font-weight:1000;font-variant-numeric:tabular-nums;letter-spacing:-.05em;line-height:1}.sessionTimer{font-size:13px;color:var(--muted);margin-top:3px}
 .teacherBtns{display:flex;justify-content:flex-end;gap:8px}.teacherBtn{border:1px solid var(--line);background:#0d192b;color:#fff;border-radius:14px;padding:11px 14px;font-weight:900}
 .circuitShell[data-phase="results"] .rotationLabel,.circuitShell[data-phase="results"] .rotationTimer{color:#fbbf24}
-.circuitShell[data-phase="transition"] .rotationLabel,.circuitShell[data-phase="transition"] .rotationTimer{color:#4ade80}
 .circuitShell[data-phase="results"] .stationCard{box-shadow:0 0 0 2px rgba(251,191,36,.18),0 14px 32px rgba(0,0,0,.23)}
 .rotateBtn{background:#f8fafc;color:#07101c;border-color:#f8fafc}
 .stationGrid{display:grid;gap:10px;flex:1;min-height:0;grid-auto-rows:minmax(0,1fr)}
@@ -178,11 +177,11 @@ button{cursor:pointer}
       <div class="timeBlock">
         <div class="rotationLabel" id="phaseLabel">EXERCICE</div>
         <div class="rotationTimer" id="rotationTimer">00:00</div>
-        <div class="sessionTimer">Séance <span id="sessionTimer">00:00</span></div>
+        <div class="sessionTimer"><span id="sessionTimerLabel">Séance</span> <span id="sessionTimer">00:00</span></div>
       </div>
       <div class="teacherBtns">
         <button class="teacherBtn" id="pauseBtn">⏸ Pause</button>
-        <button class="teacherBtn rotateBtn" id="rotateBtn">Passer →</button>
+        <button class="teacherBtn rotateBtn hidden" id="rotateBtn">Suivant →</button>
         <button class="teacherBtn" id="finishBtn">Terminer</button>
       </div>
     </header>
@@ -255,11 +254,11 @@ const WARMUP_BANK = {
 };
 
 const CIRCUIT_TIMING={
-  force:{work:270,results:90,transition:30},
-  hypertrophie:{work:240,results:90,transition:30},
-  endurance:{work:210,results:90,transition:30},
-  power:{work:210,results:90,transition:30},
-  cardio:{work:210,results:90,transition:30}
+  force:{work:270,results:90},
+  hypertrophie:{work:240,results:90},
+  endurance:{work:210,results:90},
+  power:{work:210,results:90},
+  cardio:{work:210,results:90}
 };
 
 const MODES = {
@@ -386,7 +385,7 @@ const PROFILE_LABEL={progression:"Progression",active:"Actif",performance:"Perfo
 const STORE_KEY="gymArenaEPS_v1";
 let state={
   teamCount:6,teams:[],mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,
-  rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,paused:false,pauseStartedAt:null,
+  rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,sessionBreakStartedAt:null,paused:false,pauseStartedAt:null,
   sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false
 };
 let warmupTick=null,circuitTick=null,modalContext=null;
@@ -499,6 +498,7 @@ function startCircuit(){
   state.screen="circuit";
   state.rotation=0;
   state.phase="work";
+  state.sessionBreakStartedAt=null;
   state.scores={};
   state.finished=false;
   state.paused=false;
@@ -517,57 +517,71 @@ function startCircuitTick(){
 }
 function phaseDuration(){
   const t=CIRCUIT_TIMING[state.mode]||CIRCUIT_TIMING.hypertrophie;
-  return t[state.phase]||t.work;
+  return state.phase==="results"?t.results:t.work;
 }
 function phaseLabel(){
-  if(state.phase==="results") return "ENTREZ VOS RÉSULTATS";
-  if(state.phase==="transition") return "CHANGEZ DE STATION";
-  return "EXERCICE";
+  return state.phase==="results" ? "ENTREZ VOS RÉSULTATS" : "EXERCICE";
+}
+function phaseRemainingSeconds(now=Date.now()){
+  const clockNow=state.paused?(state.pauseStartedAt||now):now;
+  const phaseMs=Math.max(0,clockNow-state.rotationStartedAt-state.rotationPauseTotal);
+  return Math.max(0,phaseDuration()-Math.floor(phaseMs/1000));
 }
 function updateTimers(){
   if(state.screen!=="circuit")return;
-  const now=state.paused?(state.pauseStartedAt||Date.now()):Date.now();
-  const sessionMs=Math.max(0,now-state.sessionStartedAt-state.sessionPauseTotal);
-  const phaseMs=Math.max(0,now-state.rotationStartedAt-state.rotationPauseTotal);
-  const remaining=Math.max(0,phaseDuration()-Math.floor(phaseMs/1000));
+  const realNow=Date.now();
+  const clockNow=state.paused?(state.pauseStartedAt||realNow):realNow;
+  const sessionClock=(state.phase==="results" && state.sessionBreakStartedAt)
+    ? state.sessionBreakStartedAt
+    : clockNow;
+  const sessionMs=Math.max(0,sessionClock-state.sessionStartedAt-state.sessionPauseTotal);
+  const remaining=phaseRemainingSeconds(realNow);
+
   $("#sessionTimer").textContent=formatTime(Math.floor(sessionMs/1000));
+  $("#sessionTimerLabel").textContent=state.phase==="results"?"Séance en pause":"Séance";
   $("#rotationTimer").textContent=formatTime(remaining);
   $("#phaseLabel").textContent=phaseLabel();
   $("#circuitScreen").dataset.phase=state.phase;
-  if(!state.paused && remaining<=0) advancePhase(false);
+
+  const nextBtn=$("#rotateBtn");
+  const ready=state.phase==="results" && remaining<=0;
+  nextBtn.classList.toggle("hidden",!ready);
+  if(ready) nextBtn.textContent=state.rotation>=state.teamCount-1?"Voir le classement →":"Suivant →";
+
+  if(!state.paused && state.phase==="work" && remaining<=0) startResultsPhase();
 }
-function startPhase(next){
-  state.phase=next;
+function startResultsPhase(){
+  if(state.phase==="results")return;
+  state.phase="results";
   state.rotationStartedAt=Date.now();
   state.rotationPauseTotal=0;
+  state.sessionBreakStartedAt=Date.now();
   beep();
   renderCircuit();
   save();
   updateTimers();
 }
-function advancePhase(manual=false){
-  if(state.screen!=="circuit")return;
-  if(state.phase==="work"){
-    startPhase("results");
+function finishScoreBreak(){
+  if(!state.sessionBreakStartedAt)return;
+  state.sessionPauseTotal+=Date.now()-state.sessionBreakStartedAt;
+  state.sessionBreakStartedAt=null;
+}
+function advanceToNextStation(){
+  if(state.phase!=="results" || phaseRemainingSeconds()>0)return;
+  finishScoreBreak();
+  if(state.rotation>=state.teamCount-1){
+    finishSession(true);
     return;
   }
-  if(state.phase==="results"){
-    if(state.rotation>=state.teamCount-1){
-      finishSession(true);
-      return;
-    }
-    state.rotation++;
-    state.phase="transition";
-    state.rotationStartedAt=Date.now();
-    state.rotationPauseTotal=0;
-    beep();
-    flashRotation();
-    renderCircuit();
-    save();
-    updateTimers();
-    return;
-  }
-  startPhase("work");
+  state.rotation++;
+  state.phase="work";
+  state.rotationStartedAt=Date.now();
+  state.rotationPauseTotal=0;
+  beep();
+  flashRotation();
+  renderCircuit();
+  save();
+  updateTimers();
 }
 function currentExerciseIndex(teamIndex){
   return (teamIndex+state.rotation)%state.teamCount;
@@ -588,7 +602,7 @@ function renderCircuit(){
       <div class="exerciseTimePill">⏱ Temps officiel : ${formatTime(CIRCUIT_TIMING[state.mode].work)}</div>
       <div class="cue">${exercise.prompt}</div>
       <div class="visualBox">${motionVisual(exercise.motion)}</div>
-      <div class="scoreFooter"><div><div class="scoreHint">${state.phase==="results"?"ENTREZ VOTRE RÉSULTAT MAINTENANT":state.phase==="transition"?"Changez de station":"Travail en cours"}</div><div class="scoreValue">${score?escapeHtml(score.raw+" "+exercise.unit):"Score non entré"}</div></div><button class="tapScore">${score?"Modifier":"Score"}</button></div>
+      <div class="scoreFooter"><div><div class="scoreHint">${state.phase==="results"?"ENTREZ VOTRE RÉSULTAT MAINTENANT":"Travail en cours"}</div><div class="scoreValue">${score?escapeHtml(score.raw+" "+exercise.unit):"Score non entré"}</div></div><button class="tapScore">${score?"Modifier":"Score"}</button></div>
     </article>`;
   }).join("");
   $$(".stationCard").forEach(c=>c.onclick=()=>openScore(+c.dataset.team));
@@ -652,10 +666,10 @@ function renderRanking(){
   $("#rankStrip").innerHTML=`<div class="rankTitle">Classement</div>`+ranked.map((r,idx)=>`<div class="rankItem" style="border:1px solid ${r.color}55">${idx+1}. ${escapeHtml(r.name)} <b>${r.total}</b></div>`).join("");
 }
 function rotate(){
-  advancePhase(true);
+  advanceToNextStation();
 }
 function flashRotation(){
-  $("#rotateFlashText").textContent=`CHANGEZ DE STATION · rotation ${state.rotation+1} / ${state.teamCount}`;
+  $("#rotateFlashText").textContent=`Nouvelle station · rotation ${state.rotation+1} / ${state.teamCount}`;
   $("#rotateFlash").classList.remove("hidden");
   setTimeout(()=>$("#rotateFlash").classList.add("hidden"),1800);
 }
@@ -663,7 +677,10 @@ function togglePause(){
   if(!state.paused){
     state.paused=true;state.pauseStartedAt=Date.now();$("#pauseBtn").textContent="▶ Reprendre";
   }else{
-    const d=Date.now()-state.pauseStartedAt;state.sessionPauseTotal+=d;state.rotationPauseTotal+=d;state.paused=false;state.pauseStartedAt=null;$("#pauseBtn").textContent="⏸ Pause";
+    const d=Date.now()-state.pauseStartedAt;
+    if(state.phase!=="results") state.sessionPauseTotal+=d;
+    state.rotationPauseTotal+=d;
+    state.paused=false;state.pauseStartedAt=null;$("#pauseBtn").textContent="⏸ Pause";
   }
   save();updateTimers();
 }
@@ -681,7 +698,12 @@ function readSaved(){try{return JSON.parse(localStorage.getItem(STORE_KEY)||"nul
 function resumeSaved(){
   const s=readSaved();if(!s)return;state=s;
   if(state.screen==="warmup"){renderWarmup();showScreen("warmupScreen");startWarmupTick();}
-  else if(state.screen==="circuit"){state.phase=state.phase||"work";if(state.paused&&state.pauseStartedAt){/* stay paused */}renderCircuit();showScreen("circuitScreen");startCircuitTick();}
+  else if(state.screen==="circuit"){
+    state.phase=state.phase==="results"?"results":"work";
+    state.sessionBreakStartedAt=state.sessionBreakStartedAt||((state.phase==="results")?Date.now():null);
+    if(state.paused&&state.pauseStartedAt){/* stay paused */}
+    renderCircuit();showScreen("circuitScreen");startCircuitTick();
+  }
   else if(state.screen==="finish"){renderFinish();showScreen("finishScreen");}
 }
 function resetAll(){
