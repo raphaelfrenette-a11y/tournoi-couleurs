@@ -64,11 +64,14 @@ button{cursor:pointer}
 .circuitTop{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:12px}
 .sessionInfo{display:flex;align-items:center;gap:12px}.modeBadge{padding:9px 12px;border-radius:999px;font-weight:950;background:rgba(255,255,255,.09);border:1px solid var(--line)}
 .timeBlock{text-align:center}.rotationLabel{font-size:13px;color:var(--muted);font-weight:900;letter-spacing:.14em;text-transform:uppercase}.rotationTimer{font-size:clamp(40px,5.5vw,78px);font-weight:1000;font-variant-numeric:tabular-nums;letter-spacing:-.05em;line-height:1}.sessionTimer{font-size:13px;color:var(--muted);margin-top:3px}
+.mainPhaseActions{display:flex;justify-content:center;margin-top:7px}
+.phaseAction{border:0;border-radius:14px;padding:10px 20px;font-size:15px;font-weight:1000;min-width:220px}
+.endExerciseBtn{background:#fee2e2;color:#7f1d1d;border:2px solid #fca5a5}
+.nextPhaseBtn{background:#f8fafc;color:#07101c;border:2px solid #f8fafc}
 .teacherBtns{display:flex;justify-content:flex-end;gap:8px}.teacherBtn{border:1px solid var(--line);background:#0d192b;color:#fff;border-radius:14px;padding:11px 14px;font-weight:900}
 .circuitShell[data-phase="results"] .rotationLabel,.circuitShell[data-phase="results"] .rotationTimer{color:#fbbf24}
 .circuitShell[data-phase="results"] .stationCard{box-shadow:0 0 0 2px rgba(251,191,36,.18),0 14px 32px rgba(0,0,0,.23)}
 .rotateBtn{background:#f8fafc;color:#07101c;border-color:#f8fafc}
-.endExerciseBtn{background:#3a1f25;border-color:#7f3542;color:#ffe4e6}
 .stationGrid{display:grid;gap:10px;flex:1;min-height:0;grid-auto-rows:minmax(0,1fr)}
 .stationGrid[data-count="4"]{grid-template-columns:repeat(2,1fr)}
 .stationGrid[data-count="5"],.stationGrid[data-count="6"]{grid-template-columns:repeat(3,1fr)}
@@ -179,11 +182,13 @@ button{cursor:pointer}
         <div class="rotationLabel" id="phaseLabel">EXERCICE</div>
         <div class="rotationTimer" id="rotationTimer">00:00</div>
         <div class="sessionTimer"><span id="sessionTimerLabel">Séance</span> <span id="sessionTimer">00:00</span></div>
+        <div class="mainPhaseActions">
+          <button class="phaseAction endExerciseBtn" id="endExerciseBtn">Terminer l’exercice</button>
+          <button class="phaseAction nextPhaseBtn hidden" id="rotateBtn">Suivant →</button>
+        </div>
       </div>
       <div class="teacherBtns">
         <button class="teacherBtn" id="pauseBtn">⏸ Pause</button>
-        <button class="teacherBtn endExerciseBtn" id="endExerciseBtn">Terminer l’exercice</button>
-        <button class="teacherBtn rotateBtn hidden" id="rotateBtn">Suivant →</button>
         <button class="teacherBtn" id="finishBtn">Terminer la séance</button>
       </div>
     </header>
@@ -551,6 +556,7 @@ function updateTimers(){
   nextBtn.classList.toggle("hidden",!ready);
   endBtn.classList.toggle("hidden",state.phase!=="work");
   if(ready) nextBtn.textContent=state.rotation>=state.teamCount-1?"Voir le classement →":"Suivant →";
+  endBtn.textContent="Terminer l’exercice";
 
   if(!state.paused && state.phase==="work" && remaining<=0) startResultsPhase();
 }
