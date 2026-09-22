@@ -584,7 +584,7 @@ function updateTimers(){
 
   const nextBtn=$("#rotateBtn");
   const endBtn=$("#endExerciseBtn");
-  const ready=state.phase==="results" && remaining<=0;
+  const ready=state.phase==="results";
   nextBtn.classList.toggle("hidden",!ready);
   endBtn.classList.toggle("hidden",state.phase!=="work");
   if(ready) nextBtn.textContent=state.rotation>=state.teamCount-1?"Voir le classement →":"Suivant →";
@@ -613,7 +613,7 @@ function finishScoreBreak(){
   state.sessionBreakStartedAt=null;
 }
 function advanceToNextStation(){
-  if(state.phase!=="results" || phaseRemainingSeconds()>0)return;
+  if(state.phase!=="results")return;
   finishScoreBreak();
   if(state.rotation>=state.teamCount-1){
     finishSession(true);
