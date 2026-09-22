@@ -79,16 +79,24 @@ button{cursor:pointer}
 .stationGrid[data-count="9"] .visualBox,.stationGrid[data-count="10"] .visualBox{min-height:76px;margin:5px 0}
 .stationGrid[data-count="7"] .visualBox svg,.stationGrid[data-count="8"] .visualBox svg{height:100px}
 .stationGrid[data-count="9"] .visualBox svg,.stationGrid[data-count="10"] .visualBox svg{height:84px}
+.stationGrid[data-count="9"] .teamNameBig,.stationGrid[data-count="10"] .teamNameBig{font-size:12px}
+.stationGrid[data-count="9"] .teamTag,.stationGrid[data-count="10"] .teamTag{padding:5px 7px}
 .stationGrid[data-count="9"] .scoreHint,.stationGrid[data-count="10"] .scoreHint{display:none}
 .stationGrid[data-count="9"] .tapScore,.stationGrid[data-count="10"] .tapScore{padding:6px 8px;font-size:11px}
 .stationCard{position:relative;min-height:0;overflow:hidden;border-radius:22px;background:linear-gradient(180deg,#12213a,#0c1729);border:2px solid var(--teamColor,#334155);box-shadow:0 14px 32px rgba(0,0,0,.23);padding:14px;display:flex;flex-direction:column}
 .stationCard.scored{box-shadow:0 0 0 3px rgba(74,222,128,.18),0 14px 32px rgba(0,0,0,.23)}
-.stationHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.stationNum{font-size:11px;color:var(--muted);font-weight:950;letter-spacing:.12em}.teamTag{max-width:78%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:6px 9px;border-radius:999px;background:var(--teamColor);color:#07101c;font-size:12px;font-weight:1000}.check{font-size:20px}
+.stationHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.stationNum{font-size:11px;color:var(--muted);font-weight:950;letter-spacing:.12em}
+.teamTag{width:100%;margin-top:5px;padding:7px 9px;border-radius:12px;background:var(--teamColor);color:#07101c;font-size:13px;font-weight:1000;line-height:1.05;white-space:normal;overflow:visible}
+.teamIndex{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;opacity:.72;margin-bottom:2px}
+.teamNameBig{display:block;font-size:14px}
+.check{font-size:20px;flex:0 0 auto}
 .exerciseName{font-size:clamp(17px,1.7vw,25px);font-weight:1000;margin:8px 0 3px;line-height:1.05}.exerciseDose{font-weight:900;color:#dce8f6;font-size:13px}.cue{font-size:12px;color:var(--muted);margin-top:3px}
 .visualBox{position:relative;flex:1;min-height:132px;margin:10px 0;border-radius:18px;background:radial-gradient(circle at 50% 44%,rgba(96,165,250,.10),transparent 52%),linear-gradient(180deg,#0a1626,#08111e);border:1px solid rgba(148,163,184,.14);display:grid;place-items:center;overflow:hidden}
 .visualBox svg{width:min(100%,250px);height:138px;filter:drop-shadow(0 8px 16px rgba(0,0,0,.16))}
 .scoreFooter{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}.scoreHint{font-size:11px;color:var(--muted)}.scoreValue{font-size:14px;font-weight:1000}.tapScore{border:0;background:rgba(255,255,255,.08);color:white;border-radius:11px;padding:8px 10px;font-weight:900;font-size:12px}
-.rankStrip{margin-top:12px;padding:10px 12px;border-radius:18px;border:1px solid var(--line);background:rgba(8,18,32,.8);display:flex;align-items:center;gap:10px;overflow-x:auto}.rankTitle{color:var(--muted);font-size:11px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}.rankItem{white-space:nowrap;padding:7px 10px;border-radius:999px;background:#13233a;font-size:12px;font-weight:900}.rankItem b{color:#86efac;margin-left:5px}
+.rankStrip{margin-top:8px;padding:9px 12px;border-radius:16px;border:1px solid var(--line);background:rgba(8,18,32,.92);display:flex;align-items:center;gap:8px;overflow-x:auto;flex:0 0 auto}
+.rankTitle{color:#f8fafc;font-size:12px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}.rankItem{white-space:nowrap;padding:7px 10px;border-radius:999px;background:#13233a;font-size:12px;font-weight:900}.rankItem b{color:#86efac;margin-left:5px}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(10px);display:grid;place-items:center;padding:18px;z-index:50}
 .modalCard{width:min(520px,96vw);background:#0e1a2d;border:1px solid #30435f;border-radius:26px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
 .modalTeam{font-size:13px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;color:var(--teamColor,#93c5fd)}.modalExercise{font-size:28px;font-weight:1000;margin:5px 0}.modalPrompt{color:var(--muted);font-size:13px;margin-bottom:13px}.scoreDisplay{display:flex;align-items:baseline;gap:8px;padding:14px 16px;background:#07111f;border:1px solid var(--line);border-radius:16px;margin-bottom:12px}.scoreInput{width:100%;background:transparent;border:0;color:#fff;font-size:46px;font-weight:1000;outline:0;text-align:right}.unit{font-size:16px;color:var(--muted);font-weight:900}
@@ -183,8 +191,8 @@ button{cursor:pointer}
   <main id="finishScreen" class="shell hidden">
     <div class="topbar"><div class="brand"><div class="brandMark">GA</div><div>GYM ARENA <span class="brandSub">Résultats</span></div></div></div>
     <section class="card finishCard">
-      <h1 class="stepTitle">Classement final</h1>
-      <p class="stepText">Les points tiennent compte du résultat moyen par élève et du profil de référence de l'équipe.</p>
+      <h1 class="stepTitle">🏆 Classement final</h1>
+      <p class="stepText">Fin de la séance : podium et classement complet calculés automatiquement.</p>
       <div class="podium" id="podium"></div>
       <div class="allRanks" id="allRanks"></div>
       <div class="actionRow"><button class="primary" id="newSessionBtn">Nouvelle séance</button></div>
@@ -196,7 +204,7 @@ button{cursor:pointer}
   <div class="modalCard" id="modalCard">
     <div class="modalTeam" id="modalTeam"></div>
     <div class="modalExercise" id="modalExercise"></div>
-    <div class="modalPrompt" id="modalPrompt"></div>
+    <div class="modalPrompt" id="modalPrompt"></div><div id="teamTotalHelp" style="margin:-4px 0 12px;padding:9px 11px;border-radius:12px;background:#14243b;color:#dbeafe;font-size:12px;font-weight:850"></div>
     <div class="scoreDisplay"><input id="scoreInput" class="scoreInput" inputmode="decimal" readonly value=""><span class="unit" id="modalUnit"></span></div>
     <div class="keypad" id="keypad"></div>
     <div class="modalMeta"><span id="modalProfile"></span><span id="modalTarget"></span></div>
@@ -517,7 +525,7 @@ function renderCircuit(){
     const exIndex=currentExerciseIndex(teamIndex), exercise=m.exercises[exIndex];
     const score=getScore(state.rotation,teamIndex);
     return `<article class="stationCard ${score?"scored":""}" data-team="${teamIndex}" style="--teamColor:${team.color}">
-      <div class="stationHeader"><div><div class="stationNum">STATION ${exIndex+1}</div><div class="teamTag">${escapeHtml(team.name)}</div></div><div class="check">${score?"✅":""}</div></div>
+      <div class="stationHeader"><div style="min-width:0;flex:1"><div class="stationNum">STATION ${exIndex+1}</div><div class="teamTag"><span class="teamIndex">Équipe ${teamIndex+1}</span><span class="teamNameBig">${escapeHtml(team.name)}</span></div></div><div class="check">${score?"✅":""}</div></div>
       <div class="exerciseName">${exercise.name}</div>
       <div class="exerciseDose">${exercise.dose}</div>
       <div class="cue">${exercise.prompt}</div>
@@ -536,6 +544,14 @@ function openScore(teamIndex){
   $("#modalTeam").textContent=team.name;
   $("#modalExercise").textContent=exercise.name;
   $("#modalPrompt").textContent=exercise.prompt;
+  const totalHelp=$("#teamTotalHelp");
+  if(exercise.type==="reps"){
+    totalHelp.textContent="Entrez le TOTAL de l’équipe. Exemple : "+team.size+" élèves × 10 reps = "+(team.size*10)+".";
+  }else if(exercise.type==="seconds"){
+    totalHelp.textContent="Entrez le total des secondes de tous les élèves de l’équipe.";
+  }else{
+    totalHelp.textContent="Entrez une seule valeur totale pour toute l’équipe.";
+  }
   $("#modalUnit").textContent=exercise.unit;
   $("#scoreInput").value=existing?existing.raw:"";
   $("#modalProfile").textContent=PROFILE_LABEL[team.profile]+" · "+team.size+" élèves";
