@@ -58,17 +58,28 @@ button{cursor:pointer}
 .warmupList{padding:22px}
 .warmupItem{display:grid;grid-template-columns:52px 1fr auto;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.08)}
 .warmupItem:last-child{border-bottom:0}.warmIcon{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:#0b1728;font-size:22px}.warmName{font-weight:900}.warmCue{color:var(--muted);font-size:12px}.warmDose{font-weight:950;color:#dbeafe}
-.circuitShell{width:min(1800px,98vw);margin:0 auto;padding:12px 14px 24px}
+.circuitShell{width:min(1900px,99vw);height:100vh;margin:0 auto;padding:10px 12px 10px;display:flex;flex-direction:column;overflow:hidden}
 .circuitTop{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:12px}
 .sessionInfo{display:flex;align-items:center;gap:12px}.modeBadge{padding:9px 12px;border-radius:999px;font-weight:950;background:rgba(255,255,255,.09);border:1px solid var(--line)}
 .timeBlock{text-align:center}.rotationLabel{font-size:13px;color:var(--muted);font-weight:900;letter-spacing:.14em;text-transform:uppercase}.rotationTimer{font-size:clamp(40px,5.5vw,78px);font-weight:1000;font-variant-numeric:tabular-nums;letter-spacing:-.05em;line-height:1}.sessionTimer{font-size:13px;color:var(--muted);margin-top:3px}
 .teacherBtns{display:flex;justify-content:flex-end;gap:8px}.teacherBtn{border:1px solid var(--line);background:#0d192b;color:#fff;border-radius:14px;padding:11px 14px;font-weight:900}
 .rotateBtn{background:#f8fafc;color:#07101c;border-color:#f8fafc}
-.stationGrid{display:grid;gap:12px}
+.stationGrid{display:grid;gap:10px;flex:1;min-height:0;grid-auto-rows:minmax(0,1fr)}
 .stationGrid[data-count="4"]{grid-template-columns:repeat(2,1fr)}
 .stationGrid[data-count="5"],.stationGrid[data-count="6"]{grid-template-columns:repeat(3,1fr)}
 .stationGrid[data-count="7"],.stationGrid[data-count="8"]{grid-template-columns:repeat(4,1fr)}
-.stationCard{position:relative;min-height:300px;overflow:hidden;border-radius:22px;background:linear-gradient(180deg,#12213a,#0c1729);border:2px solid var(--teamColor,#334155);box-shadow:0 14px 32px rgba(0,0,0,.23);padding:14px;display:flex;flex-direction:column}
+.stationGrid[data-count="9"],.stationGrid[data-count="10"]{grid-template-columns:repeat(5,1fr)}
+.stationGrid[data-count="7"] .stationCard,.stationGrid[data-count="8"] .stationCard,.stationGrid[data-count="9"] .stationCard,.stationGrid[data-count="10"] .stationCard{padding:11px;min-height:0}
+.stationGrid[data-count="9"] .exerciseName,.stationGrid[data-count="10"] .exerciseName{font-size:clamp(14px,1.25vw,20px)}
+.stationGrid[data-count="9"] .exerciseDose,.stationGrid[data-count="10"] .exerciseDose{font-size:11px}
+.stationGrid[data-count="9"] .cue,.stationGrid[data-count="10"] .cue{font-size:10px;line-height:1.15}
+.stationGrid[data-count="7"] .visualBox,.stationGrid[data-count="8"] .visualBox{min-height:90px;margin:6px 0}
+.stationGrid[data-count="9"] .visualBox,.stationGrid[data-count="10"] .visualBox{min-height:76px;margin:5px 0}
+.stationGrid[data-count="7"] .visualBox svg,.stationGrid[data-count="8"] .visualBox svg{height:100px}
+.stationGrid[data-count="9"] .visualBox svg,.stationGrid[data-count="10"] .visualBox svg{height:84px}
+.stationGrid[data-count="9"] .scoreHint,.stationGrid[data-count="10"] .scoreHint{display:none}
+.stationGrid[data-count="9"] .tapScore,.stationGrid[data-count="10"] .tapScore{padding:6px 8px;font-size:11px}
+.stationCard{position:relative;min-height:0;overflow:hidden;border-radius:22px;background:linear-gradient(180deg,#12213a,#0c1729);border:2px solid var(--teamColor,#334155);box-shadow:0 14px 32px rgba(0,0,0,.23);padding:14px;display:flex;flex-direction:column}
 .stationCard.scored{box-shadow:0 0 0 3px rgba(74,222,128,.18),0 14px 32px rgba(0,0,0,.23)}
 .stationHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.stationNum{font-size:11px;color:var(--muted);font-weight:950;letter-spacing:.12em}.teamTag{max-width:78%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:6px 9px;border-radius:999px;background:var(--teamColor);color:#07101c;font-size:12px;font-weight:1000}.check{font-size:20px}
 .exerciseName{font-size:clamp(17px,1.7vw,25px);font-weight:1000;margin:8px 0 3px;line-height:1.05}.exerciseDose{font-weight:900;color:#dce8f6;font-size:13px}.cue{font-size:12px;color:var(--muted);margin-top:3px}
@@ -86,9 +97,9 @@ button{cursor:pointer}
 .smallNote{font-size:12px;color:var(--muted)}
 @media(max-width:900px){
   .modeGrid{grid-template-columns:repeat(2,1fr)}.teamEditor{grid-template-columns:1fr}.profileSelect{width:100%}.warmupWrap{grid-template-columns:1fr}
-  .circuitTop{grid-template-columns:1fr;}.sessionInfo,.teacherBtns{justify-content:center}.stationGrid[data-count]{grid-template-columns:repeat(2,1fr)}
+  .circuitTop{grid-template-columns:1fr auto 1fr}.sessionInfo{justify-content:flex-start}.teacherBtns{justify-content:flex-end}
 }
-@media(max-width:600px){.stationGrid[data-count]{grid-template-columns:1fr}.podium{grid-template-columns:1fr}.shell{padding:12px}}
+@media(max-width:600px){.podium{grid-template-columns:1fr}.shell{padding:12px}.circuitShell{min-width:760px;overflow:hidden}}
 </style>
 </head>
 <body>
@@ -210,10 +221,12 @@ const MODES = {
       ex("Machine bench press","5–8 reps / élève","Omoplates stables, contrôle de la descente.","reps","rép.","press",{progression:5,active:6,performance:7},8),
       ex("Deadlift","5–8 reps / élève","Dos neutre, pousser le sol.","reps","rép.","hinge",{progression:5,active:6,performance:7},8),
       ex("Lat pulldown","5–8 reps / élève","Tirer vers le haut de la poitrine.","reps","rép.","pulldown",{progression:5,active:6,performance:7},8),
-      ex("Rowing barre","5–8 reps / élève","Tronc stable, tirer les coudes derrière.","reps","rép.","row",{progression:5,active:6,performance:7},8),
+      ex("Split squat avec haltères","5–8 reps / jambe","Buste stable, pousser avec la jambe avant.","reps","rép.","lunge",{progression:5,active:6,performance:7},8),
       ex("Développé épaules haltères","5–8 reps / élève","Gainé, trajectoire verticale.","reps","rép.","shoulder",{progression:5,active:6,performance:7},8),
       ex("Goblet squat lourd","5–8 reps / élève","Charge près du corps, talons au sol.","reps","rép.","squat",{progression:5,active:6,performance:7},8),
-      ex("Tirage poulie réglable","5–8 reps / élève","Épaules basses, mouvement contrôlé.","reps","rép.","row",{progression:5,active:6,performance:7},8)
+      ex("Tirage vertical prise neutre","5–8 reps / élève","Tirer du haut vers la poitrine, sans élan.","reps","rép.","pulldown",{progression:5,active:6,performance:7},8),
+      ex("Curl EZ lourd","5–8 reps / élève","Coudes fixes, mouvement contrôlé.","reps","rép.","curl",{progression:5,active:6,performance:7},8),
+      ex("Triceps corde lourd","5–8 reps / élève","Coudes près du corps, extension complète.","reps","rép.","triceps",{progression:5,active:6,performance:7},8)
     ]
   },
   hypertrophie:{
@@ -230,11 +243,13 @@ const MODES = {
       ex("Machine bench press","8–12 reps / élève","Choisir une charge qui rend les dernières reps difficiles.","reps","rép.","press",{progression:8,active:10,performance:11},12),
       ex("Squat assisté","8–12 reps / élève","Descente contrôlée, pousser fort.","reps","rép.","squat",{progression:8,active:10,performance:11},12),
       ex("Lat pulldown","8–12 reps / élève","Poitrine haute, tirer avec le dos.","reps","rép.","pulldown",{progression:8,active:10,performance:11},12),
-      ex("Rowing barre","8–12 reps / élève","Contrôler le retour de la barre.","reps","rép.","row",{progression:8,active:10,performance:11},12),
+      ex("Élévations latérales haltères","8–12 reps / élève","Bras contrôlés, épaules basses.","reps","rép.","shoulder",{progression:8,active:10,performance:11},12),
       ex("Chest fly double poulie","8–12 reps / élève","Bras légèrement fléchis, rapprocher devant soi.","reps","rép.","fly",{progression:8,active:10,performance:11},12),
       ex("Curl EZ bar","8–12 reps / élève","Coudes fixes, pas d'élan.","reps","rép.","curl",{progression:8,active:10,performance:11},12),
       ex("Triceps corde","8–12 reps / élève","Coudes près du corps.","reps","rép.","triceps",{progression:8,active:10,performance:11},12),
-      ex("Goblet squat kettlebell","8–12 reps / élève","Poitrine haute, amplitude confortable.","reps","rép.","squat",{progression:8,active:10,performance:11},12)
+      ex("Goblet squat kettlebell","8–12 reps / élève","Poitrine haute, amplitude confortable.","reps","rép.","squat",{progression:8,active:10,performance:11},12),
+      ex("Développé épaules haltères","8–12 reps / élève","Gainé, trajectoire verticale.","reps","rép.","shoulder",{progression:8,active:10,performance:11},12),
+      ex("Soulevé de terre roumain haltères","8–12 reps / élève","Hanches vers l'arrière, dos neutre.","reps","rép.","hinge",{progression:8,active:10,performance:11},12)
     ]
   },
   endurance:{
@@ -255,7 +270,9 @@ const MODES = {
       ex("Curl EZ léger","45 s / élève","Amplitude complète.","reps","rép.","curl",{progression:10,active:14,performance:18}),
       ex("Triceps corde","45 s / élève","Coudes immobiles.","reps","rép.","triceps",{progression:10,active:14,performance:18}),
       ex("Wall sit","Meilleur temps / élève","Additionnez les secondes de chaque élève.","seconds","s","wallsit",{progression:25,active:40,performance:55}),
-      ex("Rowing léger","45 s / élève","Tronc stable, reps propres.","reps","rép.","row",{progression:10,active:14,performance:18})
+      ex("Corde à sauter","45 s / élève","Additionnez les sauts réussis.","reps","sauts","rope",{progression:35,active:55,performance:75}),
+      ex("Élévations latérales légères","45 s / élève","Mouvement contrôlé, sans élan.","reps","rép.","shoulder",{progression:10,active:14,performance:18}),
+      ex("Kettlebell swing","45 s / élève","Rythme constant, hanches actives.","reps","rép.","swing",{progression:12,active:16,performance:20})
     ]
   },
   power:{
@@ -276,7 +293,9 @@ const MODES = {
       ex("Kettlebell swing explosif","20 s / élève","Additionnez les répétitions explosives propres.","reps","rép.","swing",{progression:8,active:11,performance:14}),
       ex("Squat jumps","20 s / élève","Additionnez les sauts avec atterrissage contrôlé.","reps","rép.","jump",{progression:7,active:10,performance:13}),
       ex("Push-ups explosifs","20 s / élève","Additionnez les répétitions réellement explosives.","reps","rép.","pushup",{progression:4,active:7,performance:10}),
-      ex("Med-ball slam","20 s / élève","Additionnez les répétitions puissantes.","reps","rép.","slam",{progression:7,active:10,performance:13})
+      ex("Med-ball slam","20 s / élève","Additionnez les répétitions puissantes.","reps","rép.","slam",{progression:7,active:10,performance:13}),
+      ex("Fentes sautées","20 s / élève","Sauts rapides, atterrissages contrôlés.","reps","rép.","jump",{progression:5,active:8,performance:11}),
+      ex("Sauts latéraux","20 s / élève","Bondir d'un côté à l'autre avec contrôle.","reps","rép.","jump",{progression:8,active:12,performance:16})
     ]
   },
   cardio:{
@@ -297,13 +316,15 @@ const MODES = {
       ex("Mountain climbers","45 s / élève","Chaque genou vers l'avant compte 1.","reps","rép.","climber",{progression:24,active:34,performance:44}),
       ex("Kettlebell swing","45 s / élève","Rythme continu avec technique propre.","reps","rép.","swing",{progression:12,active:16,performance:20}),
       ex("Burpees","45 s / élève","Additionnez les répétitions complètes.","reps","rép.","burpee",{progression:5,active:8,performance:11}),
-      ex("Med-ball slam","45 s / élève","Additionnez les répétitions complètes.","reps","rép.","slam",{progression:10,active:14,performance:18})
+      ex("Med-ball slam","45 s / élève","Additionnez les répétitions complètes.","reps","rép.","slam",{progression:10,active:14,performance:18}),
+      ex("Jumping jacks","45 s / élève","Additionnez les répétitions complètes.","reps","rép.","jump",{progression:20,active:30,performance:40}),
+      ex("Montées de genoux","45 s / élève","Chaque genou haut compte 1 répétition.","reps","rép.","run",{progression:30,active:45,performance:60})
     ]
   }
 };
 function ex(name,dose,prompt,type,unit,motion,target,maxPerPerson=null){return{name,dose,prompt,type,unit,motion,target,maxPerPerson};}
 
-const PALETTE=["#60a5fa","#fb7185","#facc15","#4ade80","#f8fafc","#fb923c","#c084fc","#22d3ee"];
+const PALETTE=["#60a5fa","#fb7185","#facc15","#4ade80","#f8fafc","#fb923c","#c084fc","#22d3ee","#f472b6","#a3e635"];
 const PROFILE_LABEL={progression:"Progression",active:"Actif",performance:"Performance"};
 const STORE_KEY="gymArenaEPS_v1";
 let state={
@@ -331,7 +352,7 @@ function init(){
   }
 }
 function renderSetup(){
-  $("#teamCountRow").innerHTML=[4,5,6,7,8].map(n=>`<button class="pillBtn ${state.teamCount===n?"active":""}" data-count="${n}">${n}</button>`).join("");
+  $("#teamCountRow").innerHTML=[4,5,6,7,8,9,10].map(n=>`<button class="pillBtn ${state.teamCount===n?"active":""}" data-count="${n}">${n}</button>`).join("");
   $$("#teamCountRow .pillBtn").forEach(b=>b.onclick=()=>setTeamCount(+b.dataset.count));
   renderTeamsEditor();
   $("#modeGrid").innerHTML=Object.entries(MODES).map(([k,m])=>`
@@ -353,7 +374,7 @@ function renderTeamsEditor(){
     <div class="teamEditor" data-i="${i}">
       <input class="teamName" maxlength="22" value="${escapeHtml(t.name)}" aria-label="Nom équipe ${i+1}">
       <select class="numberInput teamSize" aria-label="Nombre d'élèves">
-        ${[2,3,4,5].map(n=>`<option value="${n}" ${t.size===n?"selected":""}>${n} élèves</option>`).join("")}
+        ${[2,3,4,5,6,7,8].map(n=>`<option value="${n}" ${t.size===n?"selected":""}>${n} élèves</option>`).join("")}
       </select>
       <div class="profileSelect">
         ${["progression","active","performance"].map(p=>`<button class="profileBtn ${t.profile===p?"active":""}" data-p="${p}">${PROFILE_LABEL[p]}</button>`).join("")}
