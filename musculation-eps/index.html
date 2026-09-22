@@ -151,7 +151,7 @@ button{cursor:pointer}
 <div class="app">
   <main id="setupScreen" class="shell">
     <div class="topbar">
-      <div class="brand"><div class="brandMark">GA</div><div>GYM ARENA <span class="brandSub">Éducation physique</span></div></div>
+      <div class="brand"><div class="brandMark">GA</div><div>GYM ARENA <span class="brandSub">Éducation physique · VERSION 17</span></div></div>
     </div>
     <div id="resumeBox" class="card resumeBox hidden">
       <div class="resumeText"><strong>Séance en cours trouvée</strong><span id="resumeMeta"></span></div>
@@ -435,7 +435,7 @@ const $$=s=>[...document.querySelectorAll(s)];
 const screens=["setupScreen","warmupScreen","circuitScreen","finishScreen"];
 
 function defaultTeams(n){
-  return Array.from({length:n},(_,i)=>({name:"Équipe "+(i+1),size:4,color:PALETTE[i]}));
+  return Array.from({length:n},(_,i)=>({name:"",size:4,color:PALETTE[i]}));
 }
 function init(){
   state.teams=defaultTeams(state.teamCount);
@@ -461,14 +461,14 @@ function renderSetup(){
 function setTeamCount(n){
   const old=state.teams;
   state.teamCount=n;
-  state.teams=Array.from({length:n},(_,i)=>old[i]||{name:"Équipe "+(i+1),size:4,color:PALETTE[i]});
+  state.teams=Array.from({length:n},(_,i)=>old[i]||{name:"",size:4,color:PALETTE[i]});
   state.teams.forEach((t,i)=>t.color=PALETTE[i]);
   renderSetup();
 }
 function renderTeamsEditor(){
   $("#teamsEditor").innerHTML=state.teams.map((t,i)=>`
     <div class="teamEditor" data-i="${i}">
-      <input class="teamName" maxlength="22" value="${escapeHtml(t.name)}" aria-label="Nom équipe ${i+1}">
+      <input class="teamName" maxlength="22" value="${escapeHtml(t.name)}" placeholder="Équipe ${i+1} — facultatif" aria-label="Nom équipe ${i+1}">
       <select class="numberInput teamSize" aria-label="Nombre d'élèves">
         ${[2,3,4,5,6,7,8].map(n=>`<option value="${n}" ${t.size===n?"selected":""}>${n} élèves</option>`).join("")}
       </select>
