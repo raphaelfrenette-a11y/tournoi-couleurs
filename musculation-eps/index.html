@@ -81,10 +81,17 @@ button{cursor:pointer}
 .stationGrid[data-count="9"] .exerciseName,.stationGrid[data-count="10"] .exerciseName{font-size:clamp(14px,1.25vw,20px)}
 .stationGrid[data-count="9"] .exerciseDose,.stationGrid[data-count="10"] .exerciseDose{font-size:11px}
 .stationGrid[data-count="9"] .cue,.stationGrid[data-count="10"] .cue{font-size:10px;line-height:1.15}
-.stationGrid[data-count="7"] .visualBox,.stationGrid[data-count="8"] .visualBox{min-height:90px;margin:6px 0}
-.stationGrid[data-count="9"] .visualBox,.stationGrid[data-count="10"] .visualBox{min-height:76px;margin:5px 0}
-.stationGrid[data-count="7"] .visualBox svg,.stationGrid[data-count="8"] .visualBox svg{height:100px}
-.stationGrid[data-count="9"] .visualBox svg,.stationGrid[data-count="10"] .visualBox svg{height:84px}
+.stationGrid[data-count="5"] .stationCard,.stationGrid[data-count="6"] .stationCard{padding:11px}
+.stationGrid[data-count="5"] .exerciseName,.stationGrid[data-count="6"] .exerciseName{font-size:clamp(16px,1.45vw,22px);margin-top:6px}
+.stationGrid[data-count="5"] .exerciseDose,.stationGrid[data-count="6"] .exerciseDose{font-size:12px}
+.stationGrid[data-count="5"] .cue,.stationGrid[data-count="6"] .cue{font-size:11px;line-height:1.15}
+.stationGrid[data-count="5"] .exerciseTimePill,.stationGrid[data-count="6"] .exerciseTimePill{margin-top:4px;padding:3px 6px;font-size:10px}
+.stationGrid[data-count="5"] .visualBox,.stationGrid[data-count="6"] .visualBox{height:90px;margin:5px 0}
+.stationGrid[data-count="5"] .visualBox svg,.stationGrid[data-count="6"] .visualBox svg{height:84px;width:min(94%,210px)}
+.stationGrid[data-count="7"] .visualBox,.stationGrid[data-count="8"] .visualBox{height:82px;min-height:0;margin:5px 0}
+.stationGrid[data-count="9"] .visualBox,.stationGrid[data-count="10"] .visualBox{height:70px;min-height:0;margin:4px 0}
+.stationGrid[data-count="7"] .visualBox svg,.stationGrid[data-count="8"] .visualBox svg{height:76px;width:min(94%,190px)}
+.stationGrid[data-count="9"] .visualBox svg,.stationGrid[data-count="10"] .visualBox svg{height:64px;width:min(92%,165px)}
 .stationGrid[data-count="9"] .teamNameBig,.stationGrid[data-count="10"] .teamNameBig{font-size:13px}
 .stationGrid[data-count="9"] .teamTag,.stationGrid[data-count="10"] .teamTag{min-height:38px;padding:6px 7px}
 .stationGrid[data-count="9"] .scoreHint,.stationGrid[data-count="10"] .scoreHint{display:none}
@@ -97,9 +104,11 @@ button{cursor:pointer}
 .teamNameBig{display:block;width:100%;font-size:15px;text-align:left}
 .check{font-size:20px;flex:0 0 auto}
 .exerciseName{font-size:clamp(17px,1.7vw,25px);font-weight:1000;margin:8px 0 3px;line-height:1.05}.exerciseDose{font-weight:900;color:#dce8f6;font-size:13px}.exerciseTimePill{display:inline-block;margin-top:5px;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.08);font-size:11px;font-weight:950;color:#dbeafe}.cue{font-size:12px;color:var(--muted);margin-top:3px}
-.visualBox{position:relative;flex:1;min-height:132px;margin:10px 0;border-radius:18px;background:radial-gradient(circle at 50% 44%,rgba(96,165,250,.10),transparent 52%),linear-gradient(180deg,#0a1626,#08111e);border:1px solid rgba(148,163,184,.14);display:grid;place-items:center;overflow:hidden}
-.visualBox svg{width:min(100%,250px);height:138px;filter:drop-shadow(0 8px 16px rgba(0,0,0,.16))}
-.scoreFooter{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}.scoreHint{font-size:11px;color:var(--muted)}.scoreValue{font-size:14px;font-weight:1000}.tapScore{border:0;background:rgba(255,255,255,.08);color:white;border-radius:11px;padding:8px 10px;font-weight:900;font-size:12px}
+.visualBox{position:relative;flex:0 0 auto;height:112px;margin:7px 0;border-radius:16px;background:radial-gradient(circle at 50% 44%,rgba(96,165,250,.10),transparent 52%),linear-gradient(180deg,#0a1626,#08111e);border:1px solid rgba(148,163,184,.14);display:grid;place-items:center;overflow:hidden}
+.visualBox svg{width:min(96%,230px);height:104px;transform:translateY(-1px);filter:drop-shadow(0 8px 16px rgba(0,0,0,.16))}
+.scoreFooter{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;min-height:32px}.scoreHint{font-size:11px;color:var(--muted);line-height:1.1}.scoreValue{font-size:13px;font-weight:1000}
+.stationGrid[data-count="5"] .scoreFooter,.stationGrid[data-count="6"] .scoreFooter,.stationGrid[data-count="7"] .scoreFooter,.stationGrid[data-count="8"] .scoreFooter{min-height:28px}
+.stationGrid[data-count="5"] .scoreHint,.stationGrid[data-count="6"] .scoreHint,.stationGrid[data-count="7"] .scoreHint,.stationGrid[data-count="8"] .scoreHint{font-size:10px}.tapScore{border:0;background:rgba(255,255,255,.08);color:white;border-radius:11px;padding:8px 10px;font-weight:900;font-size:12px}
 .rankStrip{margin-top:8px;padding:9px 12px;border-radius:16px;border:1px solid var(--line);background:rgba(8,18,32,.92);display:flex;align-items:center;gap:8px;overflow-x:auto;flex:0 0 auto}
 .rankTitle{color:#f8fafc;font-size:12px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}.rankItem{white-space:nowrap;padding:7px 10px;border-radius:999px;background:#13233a;font-size:12px;font-weight:900}.rankItem b{color:#86efac;margin-left:5px}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(10px);display:grid;place-items:center;padding:18px;z-index:50}
