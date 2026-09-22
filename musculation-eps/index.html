@@ -133,7 +133,7 @@ button{cursor:pointer}
       </div>
 
       <div class="actionRow">
-        <button class="primary" id="toWarmupBtn" disabled>Afficher l'échauffement →</button>
+        <button class="primary" id="toWarmupBtn" disabled>Démarrer la séance →</button>
       </div>
     </section>
   </main>
@@ -147,11 +147,10 @@ button{cursor:pointer}
       <section class="card warmupMain">
         <div class="bigMode" id="warmupMode"></div>
         <h1 class="warmupTitle">Échauffement simple</h1>
-        <p class="stepText" id="warmupIntro"></p><div class="smallNote" style="margin-top:-12px;margin-bottom:12px">3 mouvements · toute la classe ensemble</div>
-        <div class="timerHuge" id="warmupTimer">06:00</div>
+        <p class="stepText" id="warmupIntro"></p><div class="smallNote" style="margin-top:-12px;margin-bottom:12px">3 mouvements · toute la classe ensemble · 4 min suggérées</div>
+        <div class="timerHuge" id="warmupTimer">04:00</div><div class="sessionTimer" style="font-size:15px">Temps total de séance <span id="warmupSessionTimer">00:00</span></div>
         <div class="actionRow" style="justify-content:flex-start">
-          <button class="secondary" id="warmupStartBtn">▶ Démarrer</button>
-          <button class="primary" id="startCircuitBtn">Commencer le circuit →</button>
+          <button class="primary" id="startCircuitBtn">Commencer les stations →</button>
         </div>
       </section>
       <section class="card warmupList" id="warmupList"></section>
@@ -366,7 +365,7 @@ const PALETTE=["#60a5fa","#fb7185","#facc15","#4ade80","#f8fafc","#fb923c","#c08
 const PROFILE_LABEL={progression:"Progression",active:"Actif",performance:"Performance"};
 const STORE_KEY="gymArenaEPS_v1";
 let state={
-  teamCount:6,teams:[],mode:null,screen:"setup",warmupPlan:[],warmupRemaining:300,warmupRunning:false,
+  teamCount:6,teams:[],mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,
   rotation:0,sessionStartedAt:null,rotationStartedAt:null,paused:false,pauseStartedAt:null,
   sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false
 };
@@ -435,8 +434,16 @@ function showScreen(id){
 function prepareWarmup(){
   state.teams=state.teams.map((t,i)=>({...t,name:t.name.trim()||("Équipe "+(i+1)),color:PALETTE[i]}));
   state.warmupPlan=pickWarmup(state.mode);
-  state.warmupRemaining=300;state.warmupRunning=false;state.screen="warmup";
-  renderWarmup();showScreen("warmupScreen");save();
+  state.warmupRemaining=240;
+  state.warmupRunning=true;
+  state.screen="warmup";
+  state.sessionStartedAt=Date.now();
+  state.sessionPauseTotal=0;
+  state.paused=false;
+  renderWarmup();
+  showScreen("warmupScreen");
+  startWarmupTick();
+  save();
 }
 function renderWarmup(){
   const m=MODES[state.mode];
@@ -447,24 +454,36 @@ function renderWarmup(){
   const plan=state.warmupPlan?.length?state.warmupPlan:pickWarmup(state.mode); state.warmupPlan=plan;
   $("#warmupList").innerHTML=plan.map(x=>`
     <div class="warmupItem"><div class="warmIcon">${x[0]}</div><div><div class="warmName">${x[1]}</div><div class="warmCue">${x[2]}</div></div><div class="warmDose">${x[3]}</div></div>`).join("");
-  $("#warmupStartBtn").textContent=state.warmupRunning?"⏸ Pause":"▶ Démarrer";
 }
-function toggleWarmup(){
-  state.warmupRunning=!state.warmupRunning;renderWarmup();
+function startWarmupTick(){
   clearInterval(warmupTick);
-  if(state.warmupRunning){
-    warmupTick=setInterval(()=>{
+  warmupTick=setInterval(()=>{
+    if(state.screen!=="warmup") return;
+    if(state.warmupRunning && state.warmupRemaining>0){
       state.warmupRemaining=Math.max(0,state.warmupRemaining-1);
-      $("#warmupTimer").textContent=formatTime(state.warmupRemaining);
-      if(state.warmupRemaining<=0){state.warmupRunning=false;clearInterval(warmupTick);beep();renderWarmup();}
-    },1000);
-  }
+      if(state.warmupRemaining===0){state.warmupRunning=false;beep();}
+    }
+    $("#warmupTimer").textContent=formatTime(state.warmupRemaining);
+    const elapsed=Math.max(0,Date.now()-state.sessionStartedAt-state.sessionPauseTotal);
+    const totalEl=$("#warmupSessionTimer");
+    if(totalEl) totalEl.textContent=formatTime(Math.floor(elapsed/1000));
+    save();
+  },1000);
 }
 function startCircuit(){
   clearInterval(warmupTick);
-  state.screen="circuit";state.rotation=0;state.scores={};state.finished=false;state.paused=false;
-  state.sessionStartedAt=Date.now();state.rotationStartedAt=Date.now();state.sessionPauseTotal=0;state.rotationPauseTotal=0;
-  showScreen("circuitScreen");renderCircuit();startCircuitTick();save();
+  state.screen="circuit";
+  state.rotation=0;
+  state.scores={};
+  state.finished=false;
+  state.paused=false;
+  if(!state.sessionStartedAt) state.sessionStartedAt=Date.now();
+  state.rotationStartedAt=Date.now();
+  state.rotationPauseTotal=0;
+  showScreen("circuitScreen");
+  renderCircuit();
+  startCircuitTick();
+  save();
 }
 function startCircuitTick(){
   clearInterval(circuitTick);
@@ -586,14 +605,14 @@ function save(){localStorage.setItem(STORE_KEY,JSON.stringify(state));}
 function readSaved(){try{return JSON.parse(localStorage.getItem(STORE_KEY)||"null")}catch{return null}}
 function resumeSaved(){
   const s=readSaved();if(!s)return;state=s;
-  if(state.screen==="warmup"){renderWarmup();showScreen("warmupScreen");}
+  if(state.screen==="warmup"){renderWarmup();showScreen("warmupScreen");startWarmupTick();}
   else if(state.screen==="circuit"){if(state.paused&&state.pauseStartedAt){/* stay paused */}renderCircuit();showScreen("circuitScreen");startCircuitTick();}
   else if(state.screen==="finish"){renderFinish();showScreen("finishScreen");}
 }
 function resetAll(){
   localStorage.removeItem(STORE_KEY);
   clearInterval(warmupTick);clearInterval(circuitTick);
-  state={teamCount:6,teams:defaultTeams(6),mode:null,screen:"setup",warmupPlan:[],warmupRemaining:300,warmupRunning:false,rotation:0,sessionStartedAt:null,rotationStartedAt:null,paused:false,pauseStartedAt:null,sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false};
+  state={teamCount:6,teams:defaultTeams(6),mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,rotation:0,sessionStartedAt:null,rotationStartedAt:null,paused:false,pauseStartedAt:null,sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false};
   $("#resumeBox").classList.add("hidden");renderSetup();showScreen("setupScreen");
 }
 function beep(){try{const A=new(window.AudioContext||window.webkitAudioContext)();const o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=740;g.gain.value=.08;o.start();setTimeout(()=>{o.stop();A.close()},180)}catch{}}
@@ -628,8 +647,7 @@ function motionVisual(type){
 }
 
 $("#toWarmupBtn").onclick=prepareWarmup;
-$("#backSetupBtn").onclick=()=>{state.screen="setup";showScreen("setupScreen");renderSetup();save();};
-$("#warmupStartBtn").onclick=toggleWarmup;
+$("#backSetupBtn").onclick=()=>{clearInterval(warmupTick);state.screen="setup";state.warmupRunning=false;state.sessionStartedAt=null;showScreen("setupScreen");renderSetup();save();};
 $("#startCircuitBtn").onclick=startCircuit;
 $("#pauseBtn").onclick=togglePause;
 $("#rotateBtn").onclick=rotate;
