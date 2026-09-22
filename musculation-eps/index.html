@@ -709,7 +709,7 @@ function resumeSaved(){
 function resetAll(){
   localStorage.removeItem(STORE_KEY);
   clearInterval(warmupTick);clearInterval(circuitTick);
-  state={teamCount:6,teams:defaultTeams(6),mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,paused:false,pauseStartedAt:null,sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false};
+  state={teamCount:6,teams:defaultTeams(6),mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,sessionBreakStartedAt:null,paused:false,pauseStartedAt:null,sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false};
   $("#resumeBox").classList.add("hidden");renderSetup();showScreen("setupScreen");
 }
 function beep(){try{const A=new(window.AudioContext||window.webkitAudioContext)();const o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=740;g.gain.value=.08;o.start();setTimeout(()=>{o.stop();A.close()},180)}catch{}}
