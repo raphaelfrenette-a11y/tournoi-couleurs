@@ -50,14 +50,16 @@ button{cursor:pointer}
 .actionRow{display:flex;justify-content:flex-end;gap:10px;margin-top:26px}
 .resumeBox{padding:18px 20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .resumeText strong{display:block;font-size:17px}.resumeText span{color:var(--muted);font-size:13px}
-.warmupWrap{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+.warmupWrap{display:grid;grid-template-columns:.72fr 1.28fr;gap:18px}
 .warmupMain{padding:28px}
 .bigMode{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:8px 12px;font-weight:900;background:rgba(255,255,255,.08);border:1px solid var(--line)}
-.warmupTitle{font-size:clamp(34px,5vw,70px);font-weight:1000;margin:14px 0 8px}
+.warmupTitle{font-size:clamp(32px,4vw,58px);font-weight:1000;margin:14px 0 8px}
 .timerHuge{font-size:clamp(62px,10vw,150px);font-variant-numeric:tabular-nums;font-weight:1000;letter-spacing:-.06em;line-height:.9;margin:20px 0}
-.warmupList{padding:22px}
-.warmupItem{display:grid;grid-template-columns:52px 1fr auto;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.08)}
-.warmupItem:last-child{border-bottom:0}.warmIcon{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:#0b1728;font-size:22px}.warmName{font-weight:900}.warmCue{color:var(--muted);font-size:12px}.warmDose{font-weight:950;color:#dbeafe}
+.warmupList{padding:18px;display:grid;grid-template-columns:1fr;gap:10px}
+.warmupItem{display:grid;grid-template-columns:135px 1fr auto;align-items:center;gap:16px;padding:12px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:#0b1728}
+.warmupVisual{width:135px;height:96px;border-radius:14px;background:#08111e;border:1px solid rgba(148,163,184,.12);display:grid;place-items:center;overflow:hidden}
+.warmupVisual svg{width:125px;height:90px}
+.warmName{font-size:21px;font-weight:1000;line-height:1.05}.warmCue{color:var(--muted);font-size:13px;margin-top:4px}.warmDose{font-weight:1000;color:#dbeafe;font-size:18px;white-space:nowrap}
 .circuitShell{width:min(1900px,99vw);height:100vh;margin:0 auto;padding:10px 12px 10px;display:flex;flex-direction:column;overflow:hidden}
 .circuitTop{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:12px}
 .sessionInfo{display:flex;align-items:center;gap:12px}.modeBadge{padding:9px 12px;border-radius:999px;font-weight:950;background:rgba(255,255,255,.09);border:1px solid var(--line)}
@@ -133,7 +135,7 @@ button{cursor:pointer}
       </div>
 
       <div class="actionRow">
-        <button class="primary" id="toWarmupBtn" disabled>Démarrer la séance →</button>
+        <button class="primary" id="toWarmupBtn" disabled>Démarrer le circuit →</button>
       </div>
     </section>
   </main>
@@ -141,16 +143,16 @@ button{cursor:pointer}
   <main id="warmupScreen" class="shell hidden">
     <div class="topbar">
       <div class="brand"><div class="brandMark">GA</div><div>GYM ARENA <span class="brandSub">Échauffement</span></div></div>
-      <button class="secondary" id="backSetupBtn">← Modifier</button>
+      
     </div>
     <div class="warmupWrap">
       <section class="card warmupMain">
         <div class="bigMode" id="warmupMode"></div>
-        <h1 class="warmupTitle">Échauffement simple</h1>
-        <p class="stepText" id="warmupIntro"></p><div class="smallNote" style="margin-top:-12px;margin-bottom:12px">3 mouvements · toute la classe ensemble · 4 min suggérées</div>
+        <h1 class="warmupTitle">Échauffement</h1>
+        <p class="stepText" id="warmupIntro"></p><div style="font-size:18px;font-weight:900;margin:-10px 0 10px">Faites les 3 mouvements ci-contre ensemble.</div><div class="smallNote" style="margin-top:-12px;margin-bottom:12px">Tout le monde ensemble · 4 minutes</div>
         <div class="timerHuge" id="warmupTimer">04:00</div><div class="sessionTimer" style="font-size:15px">Temps total de séance <span id="warmupSessionTimer">00:00</span></div>
         <div class="actionRow" style="justify-content:flex-start">
-          <button class="primary" id="startCircuitBtn">Commencer les stations →</button>
+          <button class="primary" id="startCircuitBtn">Suivant →</button>
         </div>
       </section>
       <section class="card warmupList" id="warmupList"></section>
@@ -453,7 +455,11 @@ function renderWarmup(){
   $("#warmupTimer").textContent=formatTime(state.warmupRemaining);
   const plan=state.warmupPlan?.length?state.warmupPlan:pickWarmup(state.mode); state.warmupPlan=plan;
   $("#warmupList").innerHTML=plan.map(x=>`
-    <div class="warmupItem"><div class="warmIcon">${x[0]}</div><div><div class="warmName">${x[1]}</div><div class="warmCue">${x[2]}</div></div><div class="warmDose">${x[3]}</div></div>`).join("");
+    <div class="warmupItem">
+      <div class="warmupVisual">${motionVisual(warmupMotion(x[1]))}</div>
+      <div><div class="warmName">${x[1]}</div><div class="warmCue">${x[2]}</div></div>
+      <div class="warmDose">${x[3]}</div>
+    </div>`).join("");
 }
 function startWarmupTick(){
   clearInterval(warmupTick);
@@ -616,6 +622,18 @@ function resetAll(){
   $("#resumeBox").classList.add("hidden");renderSetup();showScreen("setupScreen");
 }
 function beep(){try{const A=new(window.AudioContext||window.webkitAudioContext)();const o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=740;g.gain.value=.08;o.start();setTimeout(()=>{o.stop();A.close()},180)}catch{}}
+function warmupMotion(name){
+  const n=name.toLowerCase();
+  if(n.includes("vélo")) return "bike";
+  if(n.includes("corde")) return "rope";
+  if(n.includes("squat")) return "squat";
+  if(n.includes("fente")) return "lunge";
+  if(n.includes("push")) return "pushup";
+  if(n.includes("saut")||n.includes("pogo")||n.includes("jumping")) return "jump";
+  if(n.includes("genou")||n.includes("jog")||n.includes("course")||n.includes("marche")) return "run";
+  if(n.includes("bras")) return "shoulder";
+  return "run";
+}
 function pickWarmup(mode){
   const bank=[...(WARMUP_BANK[mode]||WARMUP_BANK.cardio)];
   for(let i=bank.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[bank[i],bank[j]]=[bank[j],bank[i]];}
@@ -647,7 +665,6 @@ function motionVisual(type){
 }
 
 $("#toWarmupBtn").onclick=prepareWarmup;
-$("#backSetupBtn").onclick=()=>{clearInterval(warmupTick);state.screen="setup";state.warmupRunning=false;state.sessionStartedAt=null;showScreen("setupScreen");renderSetup();save();};
 $("#startCircuitBtn").onclick=startCircuit;
 $("#pauseBtn").onclick=togglePause;
 $("#rotateBtn").onclick=rotate;
