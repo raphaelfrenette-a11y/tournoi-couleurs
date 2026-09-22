@@ -79,17 +79,16 @@ button{cursor:pointer}
 .stationGrid[data-count="9"] .visualBox,.stationGrid[data-count="10"] .visualBox{min-height:76px;margin:5px 0}
 .stationGrid[data-count="7"] .visualBox svg,.stationGrid[data-count="8"] .visualBox svg{height:100px}
 .stationGrid[data-count="9"] .visualBox svg,.stationGrid[data-count="10"] .visualBox svg{height:84px}
-.stationGrid[data-count="9"] .teamNameBig,.stationGrid[data-count="10"] .teamNameBig{font-size:12px}
-.stationGrid[data-count="9"] .teamTag,.stationGrid[data-count="10"] .teamTag{padding:5px 7px}
+.stationGrid[data-count="9"] .teamNameBig,.stationGrid[data-count="10"] .teamNameBig{font-size:13px}
+.stationGrid[data-count="9"] .teamTag,.stationGrid[data-count="10"] .teamTag{min-height:38px;padding:6px 7px}
 .stationGrid[data-count="9"] .scoreHint,.stationGrid[data-count="10"] .scoreHint{display:none}
 .stationGrid[data-count="9"] .tapScore,.stationGrid[data-count="10"] .tapScore{padding:6px 8px;font-size:11px}
 .stationCard{position:relative;min-height:0;overflow:hidden;border-radius:22px;background:linear-gradient(180deg,#12213a,#0c1729);border:2px solid var(--teamColor,#334155);box-shadow:0 14px 32px rgba(0,0,0,.23);padding:14px;display:flex;flex-direction:column}
 .stationCard.scored{box-shadow:0 0 0 3px rgba(74,222,128,.18),0 14px 32px rgba(0,0,0,.23)}
 .stationHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .stationNum{font-size:11px;color:var(--muted);font-weight:950;letter-spacing:.12em}
-.teamTag{width:100%;margin-top:5px;padding:7px 9px;border-radius:12px;background:var(--teamColor);color:#07101c;font-size:13px;font-weight:1000;line-height:1.05;white-space:normal;overflow:visible}
-.teamIndex{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;opacity:.72;margin-bottom:2px}
-.teamNameBig{display:block;font-size:14px}
+.teamTag{width:100%;min-height:42px;margin-top:5px;padding:8px 10px;border-radius:12px;background:var(--teamColor);color:#07101c;font-weight:1000;line-height:1.08;white-space:normal;overflow:visible;word-break:break-word;display:flex;align-items:center}
+.teamNameBig{display:block;width:100%;font-size:15px;text-align:left}
 .check{font-size:20px;flex:0 0 auto}
 .exerciseName{font-size:clamp(17px,1.7vw,25px);font-weight:1000;margin:8px 0 3px;line-height:1.05}.exerciseDose{font-weight:900;color:#dce8f6;font-size:13px}.cue{font-size:12px;color:var(--muted);margin-top:3px}
 .visualBox{position:relative;flex:1;min-height:132px;margin:10px 0;border-radius:18px;background:radial-gradient(circle at 50% 44%,rgba(96,165,250,.10),transparent 52%),linear-gradient(180deg,#0a1626,#08111e);border:1px solid rgba(148,163,184,.14);display:grid;place-items:center;overflow:hidden}
@@ -525,7 +524,7 @@ function renderCircuit(){
     const exIndex=currentExerciseIndex(teamIndex), exercise=m.exercises[exIndex];
     const score=getScore(state.rotation,teamIndex);
     return `<article class="stationCard ${score?"scored":""}" data-team="${teamIndex}" style="--teamColor:${team.color}">
-      <div class="stationHeader"><div style="min-width:0;flex:1"><div class="stationNum">STATION ${exIndex+1}</div><div class="teamTag"><span class="teamIndex">Équipe ${teamIndex+1}</span><span class="teamNameBig">${escapeHtml(team.name)}</span></div></div><div class="check">${score?"✅":""}</div></div>
+      <div class="stationHeader"><div style="min-width:0;flex:1"><div class="stationNum">STATION ${exIndex+1}</div><div class="teamTag"><span class="teamNameBig">${escapeHtml(team.name)}</span></div></div><div class="check">${score?"✅":""}</div></div>
       <div class="exerciseName">${exercise.name}</div>
       <div class="exerciseDose">${exercise.dose}</div>
       <div class="cue">${exercise.prompt}</div>
