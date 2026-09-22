@@ -294,7 +294,7 @@ const WARMUP_BANK = {
 
 const CIRCUIT_TIMING={
   force:{work:270,results:90},
-  hypertrophie:{work:240,results:90},
+  hypertrophie:{work:390,results:90},
   endurance:{work:210,results:90},
   power:{work:210,results:90},
   cardio:{work:210,results:90}
@@ -325,7 +325,7 @@ const MODES = {
     ]
   },
   hypertrophie:{
-    label:"Hypertrophie",icon:"💪",color:"#c084fc",desc:"8–12 reps contrôlées, tension musculaire.",
+    label:"Hypertrophie",icon:"💪",color:"#c084fc",desc:"Volume adapté à la station : 1 à 3 séries, charge contrôlée.",
     warmupIntro:"3 mouvements simples pour préparer tout le groupe.",
     warmup:[
       ["🚲","Vélo léger","Rythme continu","2 min"],
@@ -335,16 +335,16 @@ const MODES = {
       ["↔️","Fentes alternées","Contrôle","8 / côté"]
     ],
     exercises:[
-      ex("Machine bench press","8–12 reps / élève","Choisir une charge qui rend les dernières reps difficiles.","reps","rép.","press",{progression:8,active:10,performance:11},12),
-      ex("Squat assisté","8–12 reps / élève","Descente contrôlée, pousser fort.","reps","rép.","squat",{progression:8,active:10,performance:11},12),
-      ex("Lat pulldown","8–12 reps / élève","Poitrine haute, tirer avec le dos.","reps","rép.","pulldown",{progression:8,active:10,performance:11},12),
-      ex("Élévations latérales haltères","8–12 reps / élève","Bras contrôlés, épaules basses.","reps","rép.","shoulder",{progression:8,active:10,performance:11},12),
-      ex("Chest fly double poulie","8–12 reps / élève","Bras légèrement fléchis, rapprocher devant soi.","reps","rép.","fly",{progression:8,active:10,performance:11},12),
-      ex("Curl EZ bar","8–12 reps / élève","Coudes fixes, pas d'élan.","reps","rép.","curl",{progression:8,active:10,performance:11},12),
-      ex("Triceps corde","8–12 reps / élève","Coudes près du corps.","reps","rép.","triceps",{progression:8,active:10,performance:11},12),
-      ex("Goblet squat kettlebell","8–12 reps / élève","Poitrine haute, amplitude confortable.","reps","rép.","squat",{progression:8,active:10,performance:11},12),
-      ex("Développé épaules haltères","8–12 reps / élève","Gainé, trajectoire verticale.","reps","rép.","shoulder",{progression:8,active:10,performance:11},12),
-      ex("Soulevé de terre roumain haltères","8–12 reps / élève","Hanches vers l'arrière, dos neutre.","reps","rép.","hinge",{progression:8,active:10,performance:11},12)
+      ex("Machine bench press","1 série × 8–10 reps / élève","Défi lourd : charge exigeante, aucune rep forcée.","reps","rép.","press",{progression:8,active:9,performance:10},10,1),
+      ex("Squat assisté","2 séries × 10–12 reps / élève","Contrôle à la descente, charge adaptée.","reps","rép.","squat",{progression:20,active:22,performance:24},24,2),
+      ex("Lat pulldown","2 séries × 8–12 reps / élève","Poitrine haute, tirer avec le dos.","reps","rép.","pulldown",{progression:16,active:20,performance:22},24,2),
+      ex("Élévations latérales haltères","3 séries × 12–15 reps / élève","Charge légère, mouvement strict, peu d'élan.","reps","rép.","shoulder",{progression:36,active:40,performance:44},45,3),
+      ex("Chest fly double poulie","2 séries × 10–12 reps / élève","Bras légèrement fléchis, tension continue.","reps","rép.","fly",{progression:20,active:22,performance:24},24,2),
+      ex("Curl EZ bar","3 séries × 10–12 reps / élève","Coudes fixes, contrôle complet.","reps","rép.","curl",{progression:30,active:33,performance:36},36,3),
+      ex("Triceps corde","1 série × 12–15 reps / élève","Défi lourd propre : finir près de la limite technique.","reps","rép.","triceps",{progression:12,active:14,performance:15},15,1),
+      ex("Goblet squat kettlebell","3 séries × 10–15 reps / élève","Rythme contrôlé, amplitude confortable.","reps","rép.","squat",{progression:30,active:36,performance:42},45,3),
+      ex("Développé épaules haltères","2 séries × 8–12 reps / élève","Gainé, trajectoire verticale.","reps","rép.","shoulder",{progression:16,active:20,performance:22},24,2),
+      ex("Soulevé de terre roumain haltères","3 séries × 8–12 reps / élève","Hanches vers l'arrière, dos neutre.","reps","rép.","hinge",{progression:24,active:30,performance:33},36,3)
     ]
   },
   endurance:{
@@ -417,7 +417,7 @@ const MODES = {
     ]
   }
 };
-function ex(name,dose,prompt,type,unit,motion,target,maxPerPerson=null){return{name,dose,prompt,type,unit,motion,target,maxPerPerson};}
+function ex(name,dose,prompt,type,unit,motion,target,maxPerPerson=null,sets=1){return{name,dose,prompt,type,unit,motion,target,maxPerPerson,sets};}
 
 const PALETTE=["#60a5fa","#fb7185","#facc15","#4ade80","#f8fafc","#fb923c","#c084fc","#22d3ee","#f472b6","#a3e635"];
 const PROFILE_LABEL={progression:"Progression",active:"Actif",performance:"Performance"};
@@ -664,7 +664,11 @@ function openScore(teamIndex){
   $("#modalPrompt").textContent=exercise.prompt;
   const totalHelp=$("#teamTotalHelp");
   if(exercise.type==="reps"){
-    totalHelp.textContent="Entrez le TOTAL de l’équipe. Exemple : "+team.size+" élèves × 10 reps = "+(team.size*10)+".";
+    if((exercise.sets||1)>1){
+      totalHelp.textContent="Entrez le TOTAL de toutes les séries de toute l’équipe. Exemple : "+team.size+" élèves × "+exercise.sets+" séries × 10 reps = "+(team.size*exercise.sets*10)+".";
+    }else{
+      totalHelp.textContent="Entrez le TOTAL de l’équipe. Exemple : "+team.size+" élèves × 10 reps = "+(team.size*10)+".";
+    }
   }else if(exercise.type==="seconds"){
     totalHelp.textContent="Entrez le total des secondes de tous les élèves de l’équipe.";
   }else{
