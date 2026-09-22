@@ -146,8 +146,8 @@ button{cursor:pointer}
     <div class="warmupWrap">
       <section class="card warmupMain">
         <div class="bigMode" id="warmupMode"></div>
-        <h1 class="warmupTitle">Échauffement</h1>
-        <p class="stepText" id="warmupIntro"></p>
+        <h1 class="warmupTitle">Échauffement simple</h1>
+        <p class="stepText" id="warmupIntro"></p><div class="smallNote" style="margin-top:-12px;margin-bottom:12px">3 mouvements · toute la classe ensemble</div>
         <div class="timerHuge" id="warmupTimer">06:00</div>
         <div class="actionRow" style="justify-content:flex-start">
           <button class="secondary" id="warmupStartBtn">▶ Démarrer</button>
@@ -205,10 +205,48 @@ button{cursor:pointer}
 <div id="rotateFlash" class="rotateFlash hidden"><div><h1>ROTATION</h1><p id="rotateFlashText"></p></div></div>
 
 <script>
+const WARMUP_BANK = {
+  force:[
+    ["🚶","Course légère sur place","Rythme facile","60 s"],
+    ["🦵","Squats au poids du corps","Amplitude contrôlée","10 reps"],
+    ["↔️","Fentes alternées","Contrôle des appuis","8 / côté"],
+    ["💪","Push-ups faciles","Technique propre","8 reps"],
+    ["🔄","Cercles de bras","Progressifs","30 s"]
+  ],
+  hypertrophie:[
+    ["🚶","Course légère sur place","Rythme facile","60 s"],
+    ["🦵","Squats contrôlés","Descente lente","12 reps"],
+    ["↔️","Fentes alternées","Sans charge","8 / côté"],
+    ["💪","Push-ups faciles","Amplitude confortable","8 reps"],
+    ["🔄","Cercles de bras","Petits puis grands","30 s"]
+  ],
+  endurance:[
+    ["🏃","Jogging sur place","Rythme continu","60 s"],
+    ["⭐","Jumping jacks","Rythme facile","30 s"],
+    ["🦵","Squats","Rythme fluide","12 reps"],
+    ["↔️","Fentes alternées","Sans charge","8 / côté"],
+    ["⬆️","Montées de genoux","Progressif","30 s"]
+  ],
+  power:[
+    ["🏃","Jogging sur place","Progressif","60 s"],
+    ["🦵","Squats dynamiques","Accélérer à la montée","10 reps"],
+    ["⬆️","Petits sauts verticaux","Atterrissage silencieux","6 reps"],
+    ["↔️","Fentes dynamiques","Contrôle","6 / côté"],
+    ["⚡","Pogos légers","Petits rebonds rapides","20 s"]
+  ],
+  cardio:[
+    ["🚶","Marche rapide sur place","Bras actifs","60 s"],
+    ["⭐","Jumping jacks","Rythme confortable","30 s"],
+    ["⬆️","Montées de genoux","Progressif","30 s"],
+    ["🦵","Squats","Rythme fluide","12 reps"],
+    ["🏃","Jogging sur place","Progressif","45 s"]
+  ]
+};
+
 const MODES = {
   force:{
     label:"Force",icon:"🏋️",color:"#60a5fa",desc:"5–8 reps propres, charge exigeante et contrôlée.",
-    warmupIntro:"Préparer les articulations et monter graduellement l'intensité sans fatigue inutile.",
+    warmupIntro:"3 mouvements simples pour préparer tout le groupe.",
     warmup:[
       ["🚲","Vélo léger","Rythme facile","2 min"],
       ["🦵","Squats au poids du corps","Amplitude contrôlée","10 reps"],
@@ -231,7 +269,7 @@ const MODES = {
   },
   hypertrophie:{
     label:"Hypertrophie",icon:"💪",color:"#c084fc",desc:"8–12 reps contrôlées, tension musculaire.",
-    warmupIntro:"Augmenter la température corporelle et activer les principaux groupes musculaires.",
+    warmupIntro:"3 mouvements simples pour préparer tout le groupe.",
     warmup:[
       ["🚲","Vélo léger","Rythme continu","2 min"],
       ["🦵","Squats contrôlés","Descente lente","12 reps"],
@@ -254,7 +292,7 @@ const MODES = {
   },
   endurance:{
     label:"Endurance",icon:"🔥",color:"#fb923c",desc:"Efforts prolongés et répétitions propres.",
-    warmupIntro:"Monter progressivement le rythme et préparer les muscles à travailler longtemps.",
+    warmupIntro:"3 mouvements simples pour préparer tout le groupe.",
     warmup:[
       ["🏃","Marche/course légère sur place","Rythme progressif","90 s"],
       ["🪢","Corde à sauter facile","Petits bonds","45 s"],
@@ -277,7 +315,7 @@ const MODES = {
   },
   power:{
     label:"Puissance",icon:"⚡",color:"#facc15",desc:"Efforts courts, explosifs et récupérés.",
-    warmupIntro:"Préparer les appuis et augmenter graduellement la vitesse avant les efforts explosifs.",
+    warmupIntro:"3 mouvements simples pour préparer tout le groupe.",
     warmup:[
       ["🚲","Vélo progressif","Finir à rythme moyen","2 min"],
       ["🦵","Squats dynamiques","Accélérer à la montée","10 reps"],
@@ -300,7 +338,7 @@ const MODES = {
   },
   cardio:{
     label:"Cardio",icon:"❤️",color:"#fb7185",desc:"Défis courts pour faire monter le rythme cardiaque.",
-    warmupIntro:"Faire monter graduellement le rythme cardiaque avant les défis plus intenses.",
+    warmupIntro:"3 mouvements simples pour préparer tout le groupe.",
     warmup:[
       ["🚶","Marche rapide sur place","Bras actifs","1 min"],
       ["🪢","Corde à sauter facile","Rythme confortable","1 min"],
@@ -328,7 +366,7 @@ const PALETTE=["#60a5fa","#fb7185","#facc15","#4ade80","#f8fafc","#fb923c","#c08
 const PROFILE_LABEL={progression:"Progression",active:"Actif",performance:"Performance"};
 const STORE_KEY="gymArenaEPS_v1";
 let state={
-  teamCount:6,teams:[],mode:null,screen:"setup",warmupRemaining:360,warmupRunning:false,
+  teamCount:6,teams:[],mode:null,screen:"setup",warmupPlan:[],warmupRemaining:300,warmupRunning:false,
   rotation:0,sessionStartedAt:null,rotationStartedAt:null,paused:false,pauseStartedAt:null,
   sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false
 };
@@ -396,7 +434,8 @@ function showScreen(id){
 }
 function prepareWarmup(){
   state.teams=state.teams.map((t,i)=>({...t,name:t.name.trim()||("Équipe "+(i+1)),color:PALETTE[i]}));
-  state.warmupRemaining=360;state.warmupRunning=false;state.screen="warmup";
+  state.warmupPlan=pickWarmup(state.mode);
+  state.warmupRemaining=300;state.warmupRunning=false;state.screen="warmup";
   renderWarmup();showScreen("warmupScreen");save();
 }
 function renderWarmup(){
@@ -405,7 +444,8 @@ function renderWarmup(){
   $("#warmupMode").style.borderColor=m.color;
   $("#warmupIntro").textContent=m.warmupIntro;
   $("#warmupTimer").textContent=formatTime(state.warmupRemaining);
-  $("#warmupList").innerHTML=m.warmup.map(x=>`
+  const plan=state.warmupPlan?.length?state.warmupPlan:pickWarmup(state.mode); state.warmupPlan=plan;
+  $("#warmupList").innerHTML=plan.map(x=>`
     <div class="warmupItem"><div class="warmIcon">${x[0]}</div><div><div class="warmName">${x[1]}</div><div class="warmCue">${x[2]}</div></div><div class="warmDose">${x[3]}</div></div>`).join("");
   $("#warmupStartBtn").textContent=state.warmupRunning?"⏸ Pause":"▶ Démarrer";
 }
@@ -553,10 +593,15 @@ function resumeSaved(){
 function resetAll(){
   localStorage.removeItem(STORE_KEY);
   clearInterval(warmupTick);clearInterval(circuitTick);
-  state={teamCount:6,teams:defaultTeams(6),mode:null,screen:"setup",warmupRemaining:360,warmupRunning:false,rotation:0,sessionStartedAt:null,rotationStartedAt:null,paused:false,pauseStartedAt:null,sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false};
+  state={teamCount:6,teams:defaultTeams(6),mode:null,screen:"setup",warmupPlan:[],warmupRemaining:300,warmupRunning:false,rotation:0,sessionStartedAt:null,rotationStartedAt:null,paused:false,pauseStartedAt:null,sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false};
   $("#resumeBox").classList.add("hidden");renderSetup();showScreen("setupScreen");
 }
 function beep(){try{const A=new(window.AudioContext||window.webkitAudioContext)();const o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=740;g.gain.value=.08;o.start();setTimeout(()=>{o.stop();A.close()},180)}catch{}}
+function pickWarmup(mode){
+  const bank=[...(WARMUP_BANK[mode]||WARMUP_BANK.cardio)];
+  for(let i=bank.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[bank[i],bank[j]]=[bank[j],bank[i]];}
+  return bank.slice(0,3);
+}
 function formatTime(s){s=Math.max(0,s|0);return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 
