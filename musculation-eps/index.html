@@ -31,13 +31,10 @@ button{cursor:pointer}
 .countRow{display:flex;flex-wrap:wrap;gap:10px}
 .pillBtn{min-width:66px;border:1px solid var(--line);background:#0c1728;color:var(--text);padding:14px 18px;border-radius:16px;font-weight:900}
 .pillBtn.active{background:var(--text);color:#08101d;border-color:var(--text)}
-.teamEditor{display:grid;grid-template-columns:1.2fr .5fr 1fr;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.teamEditor{display:grid;grid-template-columns:1.5fr .5fr;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)}
 .teamEditor:last-child{border-bottom:0}
 .teamName,.numberInput{width:100%;border:1px solid var(--line);background:#081322;color:var(--text);border-radius:14px;padding:13px 14px;outline:none}
 .teamName:focus,.numberInput:focus{border-color:#60a5fa;box-shadow:0 0 0 3px rgba(96,165,250,.14)}
-.profileSelect{display:flex;gap:6px}
-.profileBtn{flex:1;border:1px solid var(--line);background:#0b1728;color:#c9d6e5;padding:11px 8px;border-radius:12px;font-size:12px;font-weight:900}
-.profileBtn.active{background:#263a59;color:#fff;border-color:#6b8fc2}
 .modeGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
 .modeBtn{border:1px solid var(--line);background:#0d192b;color:#fff;border-radius:20px;padding:18px 12px;text-align:left;min-height:120px;transition:.18s transform,.18s border-color}
 .modeBtn:hover{transform:translateY(-2px)}
@@ -143,7 +140,7 @@ button{cursor:pointer}
 .rotateFlash{position:fixed;inset:0;z-index:60;background:#07111f;display:grid;place-items:center;text-align:center;padding:20px}.rotateFlash h1{font-size:clamp(50px,10vw,130px);margin:0;font-weight:1000}.rotateFlash p{font-size:clamp(20px,4vw,46px);color:#cbd5e1;margin:8px 0 0}
 .smallNote{font-size:12px;color:var(--muted)}
 @media(max-width:900px){
-  .modeGrid{grid-template-columns:repeat(2,1fr)}.teamEditor{grid-template-columns:1fr}.profileSelect{width:100%}.warmupWrap{grid-template-columns:1fr}
+  .modeGrid{grid-template-columns:repeat(2,1fr)}.teamEditor{grid-template-columns:1fr}.warmupWrap{grid-template-columns:1fr}
   .circuitTop{grid-template-columns:1fr auto 1fr}.sessionInfo{justify-content:flex-start}.teacherBtns{justify-content:flex-end}
 }
 @media(max-width:600px){.podium{grid-template-columns:1fr}.shell{padding:12px}.circuitShell{min-width:760px;overflow:hidden}}
@@ -170,7 +167,7 @@ button{cursor:pointer}
 
       <div class="section">
         <h2>2. Équipes</h2>
-        <div id="teamsEditor"></div>
+        <div id="teamsEditor"></div><div class="card" style="margin-top:14px;padding:14px 16px;border-left:4px solid #4ade80"><strong>PRINCIPE DE CHARGE</strong><div class="smallNote" style="margin-top:5px">Choisissez une charge adaptée pour terminer chaque série avec environ <b>1 à 3 reps en réserve (RIR)</b>. La compétition porte sur le respect du volume prescrit et la constance.</div></div>
         <div class="smallNote">Profil = niveau de référence utilisé uniquement pour équilibrer les objectifs. Il n'est pas affiché pendant le circuit.</div>
       </div>
 
@@ -420,7 +417,6 @@ const MODES = {
 function ex(name,dose,prompt,type,unit,motion,target,maxPerPerson=null,sets=1){return{name,dose,prompt,type,unit,motion,target,maxPerPerson,sets};}
 
 const PALETTE=["#60a5fa","#fb7185","#facc15","#4ade80","#f8fafc","#fb923c","#c084fc","#22d3ee","#f472b6","#a3e635"];
-const PROFILE_LABEL={progression:"Progression",active:"Actif",performance:"Performance"};
 const STORE_KEY="gymArenaEPS_v1";
 let state={
   teamCount:6,teams:[],mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,
@@ -434,7 +430,7 @@ const $$=s=>[...document.querySelectorAll(s)];
 const screens=["setupScreen","warmupScreen","circuitScreen","finishScreen"];
 
 function defaultTeams(n){
-  return Array.from({length:n},(_,i)=>({name:"Équipe "+(i+1),size:4,profile:"active",color:PALETTE[i]}));
+  return Array.from({length:n},(_,i)=>({name:"Équipe "+(i+1),size:4,color:PALETTE[i]}));
 }
 function init(){
   state.teams=defaultTeams(state.teamCount);
@@ -460,7 +456,7 @@ function renderSetup(){
 function setTeamCount(n){
   const old=state.teams;
   state.teamCount=n;
-  state.teams=Array.from({length:n},(_,i)=>old[i]||{name:"Équipe "+(i+1),size:4,profile:"active",color:PALETTE[i]});
+  state.teams=Array.from({length:n},(_,i)=>old[i]||{name:"Équipe "+(i+1),size:4,color:PALETTE[i]});
   state.teams.forEach((t,i)=>t.color=PALETTE[i]);
   renderSetup();
 }
@@ -471,15 +467,11 @@ function renderTeamsEditor(){
       <select class="numberInput teamSize" aria-label="Nombre d'élèves">
         ${[2,3,4,5,6,7,8].map(n=>`<option value="${n}" ${t.size===n?"selected":""}>${n} élèves</option>`).join("")}
       </select>
-      <div class="profileSelect">
-        ${["progression","active","performance"].map(p=>`<button class="profileBtn ${t.profile===p?"active":""}" data-p="${p}">${PROFILE_LABEL[p]}</button>`).join("")}
-      </div>
     </div>`).join("");
-  $$(".teamEditor").forEach(row=>{
+  $(".teamEditor").forEach(row=>{
     const i=+row.dataset.i;
     row.querySelector(".teamName").oninput=e=>{state.teams[i].name=e.target.value;validateSetup();};
     row.querySelector(".teamSize").onchange=e=>state.teams[i].size=+e.target.value;
-    row.querySelectorAll(".profileBtn").forEach(b=>b.onclick=()=>{state.teams[i].profile=b.dataset.p;renderTeamsEditor();});
   });
 }
 function validateSetup(){
@@ -490,7 +482,7 @@ function showScreen(id){
   screens.forEach(s=>$("#"+s).classList.toggle("hidden",s!==id));
 }
 function prepareWarmup(){
-  state.teams=state.teams.map((t,i)=>({...t,name:t.name.trim()||("Équipe "+(i+1)),color:PALETTE[i]}));
+  state.teams=state.teams.map((t,i)=>({name:t.name.trim()||("Équipe "+(i+1)),size:t.size,color:PALETTE[i]}));
   state.warmupPlan=pickWarmup(state.mode);
   state.warmupRemaining=240;
   state.warmupRunning=true;
@@ -676,8 +668,8 @@ function openScore(teamIndex){
   }
   $("#modalUnit").textContent=exercise.unit;
   $("#scoreInput").value=existing?existing.raw:"";
-  $("#modalProfile").textContent=PROFILE_LABEL[team.profile]+" · "+team.size+" élèves";
-  $("#modalTarget").textContent="Référence : "+exercise.target[team.profile]+" "+exercise.unit+" / élève";
+  $("#modalProfile").textContent=team.size+" élèves · cible : 1–3 RIR";
+  $("#modalTarget").textContent="Standard : "+standardTarget(exercise)+" "+exercise.unit+" / élève"+((exercise.sets||1)>1?" au total":"");
   $("#scoreModal").classList.remove("hidden");
 }
 function closeScore(){$("#scoreModal").classList.add("hidden");modalContext=null;}
@@ -694,6 +686,18 @@ function keyPress(k){
   else if(k!==".")v+=(k);
   if(v.length<=7)input.value=v;
 }
+function standardTarget(exercise){
+  if(typeof exercise.target==="number") return exercise.target;
+  return exercise.target?.active ?? exercise.target?.progression ?? Object.values(exercise.target||{})[0] ?? 1;
+}
+function teamStreak(teamIndex){
+  let streak=0,best=0;
+  for(let r=0;r<state.teamCount;r++){
+    const s=getScore(r,teamIndex);
+    if(s && s.standardMet){streak++;best=Math.max(best,streak);}else if(s){streak=0;}else break;
+  }
+  return {current:streak,best};
+}
 function saveScore(){
   if(!modalContext)return;
   const raw=parseFloat($("#scoreInput").value);
@@ -701,10 +705,16 @@ function saveScore(){
   const {teamIndex,exIndex,exercise,team,rotation}=modalContext;
   const avg=raw/team.size;
   const validAvg=exercise.maxPerPerson?Math.min(avg,exercise.maxPerPerson):avg;
-  const target=exercise.target[team.profile];
-  const points=Math.round(Math.min(130,(validAvg/target)*100));
+  const target=standardTarget(exercise);
+  const basePoints=Math.round(Math.min(110,(validAvg/target)*100));
+  const standardMet=validAvg>=target;
   state.scores[rotation] ||= {};
-  state.scores[rotation][teamIndex]={raw,avg:validAvg,target,points,exIndex};
+  state.scores[rotation][teamIndex]={raw,avg:validAvg,target,basePoints,standardMet,points:basePoints,exIndex};
+  const streak=standardMet?teamStreak(teamIndex).current:0;
+  const streakBonus=standardMet?Math.min(15,Math.max(0,streak-1)*5):0;
+  state.scores[rotation][teamIndex].streak=streak;
+  state.scores[rotation][teamIndex].streakBonus=streakBonus;
+  state.scores[rotation][teamIndex].points=basePoints+streakBonus;
   save();closeScore();renderCircuit();
 }
 function getScore(rotation,teamIndex){return state.scores?.[rotation]?.[teamIndex]||null;}
@@ -713,7 +723,7 @@ function teamTotal(teamIndex){
 }
 function renderRanking(){
   const ranked=state.teams.map((t,i)=>({i,name:t.name,color:t.color,total:teamTotal(i)})).sort((a,b)=>b.total-a.total);
-  $("#rankStrip").innerHTML=`<div class="rankTitle">Classement</div>`+ranked.map((r,idx)=>`<div class="rankItem" style="border:1px solid ${r.color}55">${idx+1}. ${escapeHtml(r.name)} <b>${r.total}</b></div>`).join("");
+  $("#rankStrip").innerHTML=`<div class="rankTitle">Classement</div>`+ranked.map((r,idx)=>{const st=teamStreak(r.i).current;return `<div class="rankItem" style="border:1px solid ${r.color}55">${idx+1}. ${escapeHtml(r.name)} <b>${r.total}</b>${st>=2?` <span title="Série de standards réussis">🔥×${st}</span>`:""}</div>`;}).join("");
 }
 function rotate(){
   advanceToNextStation();
@@ -739,9 +749,9 @@ function finishSession(auto=false){
   clearInterval(circuitTick);state.finished=true;state.screen="finish";save();renderFinish();showScreen("finishScreen");
 }
 function renderFinish(){
-  const ranked=state.teams.map((t,i)=>({name:t.name,total:teamTotal(i),color:t.color})).sort((a,b)=>b.total-a.total);
-  $("#podium").innerHTML=ranked.slice(0,3).map((r,i)=>`<div class="podiumItem"><div class="podiumPos">${["🥇","🥈","🥉"][i]}</div><div class="podiumTeam">${escapeHtml(r.name)}</div><div class="podiumPts">${r.total} pts</div></div>`).join("");
-  $("#allRanks").innerHTML=ranked.map((r,i)=>`<div class="allRank"><strong>${i+1}. ${escapeHtml(r.name)}</strong><span>${r.total} pts</span></div>`).join("");
+  const ranked=state.teams.map((t,i)=>({name:t.name,total:teamTotal(i),color:t.color,bestStreak:teamStreak(i).best})).sort((a,b)=>b.total-a.total);
+  $("#podium").innerHTML=ranked.slice(0,3).map((r,i)=>`<div class="podiumItem"><div class="podiumPos">${["🥇","🥈","🥉"][i]}</div><div class="podiumTeam">${escapeHtml(r.name)}</div><div class="podiumPts">${r.total} pts${r.bestStreak>=2?` · 🔥×${r.bestStreak}`:""}</div></div>`).join("");
+  $("#allRanks").innerHTML=ranked.map((r,i)=>`<div class="allRank"><strong>${i+1}. ${escapeHtml(r.name)}</strong><span>${r.total} pts${r.bestStreak>=2?` · 🔥×${r.bestStreak}`:""}</span></div>`).join("");
 }
 function save(){localStorage.setItem(STORE_KEY,JSON.stringify(state));}
 function readSaved(){try{return JSON.parse(localStorage.getItem(STORE_KEY)||"null")}catch{return null}}
