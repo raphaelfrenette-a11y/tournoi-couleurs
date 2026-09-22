@@ -132,9 +132,10 @@ button{cursor:pointer}
 .rankStrip{margin-top:8px;padding:9px 12px;border-radius:16px;border:1px solid var(--line);background:rgba(8,18,32,.92);display:flex;align-items:center;gap:8px;overflow-x:auto;flex:0 0 auto}
 .rankTitle{color:#f8fafc;font-size:12px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}.rankItem{white-space:nowrap;padding:7px 10px;border-radius:999px;background:#13233a;font-size:12px;font-weight:900}.rankItem b{color:#86efac;margin-left:5px}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(10px);display:grid;place-items:center;padding:18px;z-index:50}
-.modalCard{width:min(520px,96vw);background:#0e1a2d;border:1px solid #30435f;border-radius:26px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.modalCard{width:min(700px,96vw);max-height:94vh;overflow:auto;background:#0e1a2d;border:1px solid #30435f;border-radius:26px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
 .modalTeam{font-size:13px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;color:var(--teamColor,#93c5fd)}.modalExercise{font-size:28px;font-weight:1000;margin:5px 0}.modalPrompt{color:var(--muted);font-size:13px;margin-bottom:13px}.scoreDisplay{display:flex;align-items:baseline;gap:8px;padding:14px 16px;background:#07111f;border:1px solid var(--line);border-radius:16px;margin-bottom:12px}.scoreInput{width:100%;background:transparent;border:0;color:#fff;font-size:46px;font-weight:1000;outline:0;text-align:right}.unit{font-size:16px;color:var(--muted);font-weight:900}
-.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.key{border:1px solid var(--line);background:#15253d;color:#fff;border-radius:14px;padding:14px;font-size:22px;font-weight:950}.key.action{font-size:14px}.saveScore{grid-column:1/-1;border:0;background:#4ade80;color:#06120a;border-radius:14px;padding:15px;font-size:18px;font-weight:1000}.modalMeta{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:10px}.closeModal{position:absolute;top:18px;right:18px}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.key{border:1px solid var(--line);background:#15253d;color:#fff;border-radius:14px;padding:14px;font-size:22px;font-weight:950}.key.action{font-size:14px}.saveScore{width:100%;border:0;background:#4ade80;color:#06120a;border-radius:14px;padding:15px;font-size:18px;font-weight:1000;margin-top:10px}.modalMeta{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:10px}
+.repCalculator{display:grid;gap:9px;margin:8px 0 12px}.repSet{padding:9px 10px;border:1px solid var(--line);border-radius:14px;background:#0a1626}.repSetHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.repSetTitle{font-size:12px;font-weight:1000;letter-spacing:.08em;text-transform:uppercase}.repSetTotal{font-size:12px;color:#86efac;font-weight:950}.repStudents{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.repCell{border:1px solid #334155;background:#13233a;color:#fff;border-radius:10px;padding:7px 5px;font-size:12px;font-weight:900;min-height:39px}.repCell.active{border-color:#60a5fa;box-shadow:0 0 0 2px rgba(96,165,250,.22);background:#193354}.repCell.empty{color:#94a3b8}.repQuick{padding:10px;border-radius:14px;background:#07111f;border:1px solid var(--line)}.repQuickTitle{font-size:11px;color:#cbd5e1;font-weight:850;margin-bottom:7px}.repChoices{display:flex;flex-wrap:wrap;gap:6px}.repChoice{flex:1 1 46px;min-width:46px;border:1px solid #3b526f;background:#162a44;color:#fff;border-radius:10px;padding:9px 7px;font-size:16px;font-weight:1000}.repChoice.zero{color:#fda4af}.repTotalBox{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;border-radius:14px;background:#10273b;border:1px solid #28506f}.repTotalLabel{font-size:12px;color:#cbd5e1;font-weight:900}.repTotalValue{font-size:28px;font-weight:1000;color:#86efac}.repHint{font-size:11px;color:#94a3b8;margin-top:5px}.numericEntry.hidden{display:none!important}.closeModal{position:absolute;top:18px;right:18px}
 .finishCard{padding:28px}.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}.podiumItem{padding:20px;border-radius:20px;background:#0f1d31;border:1px solid var(--line);text-align:center}.podiumPos{font-size:30px}.podiumTeam{font-size:21px;font-weight:1000}.podiumPts{color:#86efac;font-weight:950}
 .allRanks{display:grid;gap:8px}.allRank{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px;background:#0c1728}.allRank strong{font-size:15px}.allRank span{color:#86efac;font-weight:950}
 .rotateFlash{position:fixed;inset:0;z-index:60;background:#07111f;display:grid;place-items:center;text-align:center;padding:20px}.rotateFlash h1{font-size:clamp(50px,10vw,130px);margin:0;font-weight:1000}.rotateFlash p{font-size:clamp(20px,4vw,46px);color:#cbd5e1;margin:8px 0 0}
@@ -168,7 +169,7 @@ button{cursor:pointer}
       <div class="section">
         <h2>2. Équipes</h2>
         <div id="teamsEditor"></div><div class="card" style="margin-top:14px;padding:14px 16px;border-left:4px solid #4ade80"><strong>PRINCIPE DE CHARGE</strong><div class="smallNote" style="margin-top:5px">Choisissez une charge adaptée pour terminer chaque série avec environ <b>1 à 3 reps en réserve (RIR)</b>. La compétition porte sur le respect du volume prescrit et la constance.</div></div>
-        <div class="smallNote">Profil = niveau de référence utilisé uniquement pour équilibrer les objectifs. Il n'est pas affiché pendant le circuit.</div>
+        
       </div>
 
       <div class="section">
@@ -242,8 +243,12 @@ button{cursor:pointer}
     <div class="modalTeam" id="modalTeam"></div>
     <div class="modalExercise" id="modalExercise"></div>
     <div class="modalPrompt" id="modalPrompt"></div><div id="teamTotalHelp" style="margin:-4px 0 12px;padding:9px 11px;border-radius:12px;background:#14243b;color:#dbeafe;font-size:12px;font-weight:850"></div>
-    <div class="scoreDisplay"><input id="scoreInput" class="scoreInput" inputmode="decimal" readonly value=""><span class="unit" id="modalUnit"></span></div>
-    <div class="keypad" id="keypad"></div>
+    <div id="repCalculator" class="repCalculator hidden"></div>
+    <div id="numericEntry" class="numericEntry">
+      <div class="scoreDisplay"><input id="scoreInput" class="scoreInput" inputmode="decimal" readonly value=""><span class="unit" id="modalUnit"></span></div>
+      <div class="keypad" id="keypad"></div>
+    </div>
+    <button class="saveScore" id="saveScoreBtn">✓ Enregistrer le résultat</button>
     <div class="modalMeta"><span id="modalProfile"></span><span id="modalTarget"></span></div>
   </div>
 </div>
@@ -423,7 +428,7 @@ let state={
   rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,sessionBreakStartedAt:null,paused:false,pauseStartedAt:null,
   sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false
 };
-let warmupTick=null,circuitTick=null,modalContext=null;
+let warmupTick=null,circuitTick=null,modalContext=null,modalRepData=null,activeRepCell=null;
 
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
@@ -646,6 +651,59 @@ function renderCircuit(){
   $$(".stationCard").forEach(c=>c.onclick=()=>openScore(+c.dataset.team));
   renderRanking();
 }
+function parseRepRange(exercise){
+  if(exercise.type!=="reps")return null;
+  const m=exercise.dose.match(/(\d+)\s*[–-]\s*(\d+)\s*reps/i);
+  return m?{min:+m[1],max:+m[2]}:null;
+}
+function usesRepCalculator(exercise){return !!parseRepRange(exercise);}
+function makeRepData(exercise,team,existing){
+  const sets=Math.max(1,exercise.sets||1);
+  if(existing?.breakdown && existing.breakdown.length===sets && existing.breakdown.every(r=>Array.isArray(r)&&r.length===team.size)){
+    return existing.breakdown.map(r=>r.map(v=>Number.isFinite(v)?v:null));
+  }
+  return Array.from({length:sets},()=>Array(team.size).fill(null));
+}
+function repTotal(){
+  return (modalRepData||[]).flat().reduce((s,v)=>s+(Number.isFinite(v)?v:0),0);
+}
+function findNextRepCell(fromSet=0,fromStudent=-1){
+  if(!modalRepData)return null;
+  const cols=modalRepData[0]?.length||0,total=modalRepData.length*cols;
+  const start=fromSet*cols+fromStudent+1;
+  for(let step=0;step<total;step++){
+    const idx=(start+step)%total,s=Math.floor(idx/cols),p=idx%cols;
+    if(modalRepData[s][p]===null)return {set:s,student:p};
+  }
+  return {set:fromSet,student:Math.max(0,fromStudent)};
+}
+function setActiveRepCell(set,student){
+  activeRepCell={set,student};renderRepCalculator();
+}
+function chooseRepValue(value){
+  if(!modalRepData||!activeRepCell)return;
+  const {set,student}=activeRepCell;
+  modalRepData[set][student]=value;
+  activeRepCell=findNextRepCell(set,student);
+  renderRepCalculator();
+}
+function renderRepCalculator(){
+  if(!modalContext||!modalRepData)return;
+  const {exercise,team}=modalContext,range=parseRepRange(exercise);
+  const box=$("#repCalculator");
+  if(!range)return;
+  if(!activeRepCell)activeRepCell=findNextRepCell(0,-1);
+  const choices=[0,...Array.from({length:range.max-Math.max(1,range.min-3)+1},(_,i)=>Math.max(1,range.min-3)+i)];
+  box.innerHTML=`
+    <div class="repTotalBox"><div><div class="repTotalLabel">TOTAL ÉQUIPE</div><div class="repHint">Touchez une case, puis le nombre de reps. Les cases vides comptent 0.</div></div><div class="repTotalValue">${repTotal()} <span style="font-size:13px;color:#cbd5e1">rép.</span></div></div>
+    ${modalRepData.map((row,s)=>`<div class="repSet">
+      <div class="repSetHead"><div class="repSetTitle">Série ${s+1}</div><div class="repSetTotal">${row.reduce((a,v)=>a+(Number.isFinite(v)?v:0),0)} reps</div></div>
+      <div class="repStudents">${row.map((v,p)=>`<button type="button" class="repCell ${activeRepCell?.set===s&&activeRepCell?.student===p?"active":""} ${v===null?"empty":""}" data-set="${s}" data-student="${p}">É${p+1} · ${v===null?"—":v}</button>`).join("")}</div>
+    </div>`).join("")}
+    <div class="repQuick"><div class="repQuickTitle">Reps de la case sélectionnée</div><div class="repChoices">${choices.map(v=>`<button type="button" class="repChoice ${v===0?"zero":""}" data-rep="${v}">${v}</button>`).join("")}</div></div>`;
+  box.querySelectorAll(".repCell").forEach(b=>b.onclick=()=>setActiveRepCell(+b.dataset.set,+b.dataset.student));
+  box.querySelectorAll(".repChoice").forEach(b=>b.onclick=()=>chooseRepValue(+b.dataset.rep));
+}
 function openScore(teamIndex){
   const exIndex=currentExerciseIndex(teamIndex), exercise=MODES[state.mode].exercises[exIndex], team=state.teams[teamIndex];
   modalContext={teamIndex,exIndex,exercise,team,rotation:state.rotation};
@@ -654,28 +712,32 @@ function openScore(teamIndex){
   $("#modalTeam").textContent=team.name;
   $("#modalExercise").textContent=exercise.name;
   $("#modalPrompt").textContent=exercise.prompt;
+  const calc=usesRepCalculator(exercise);
+  $("#repCalculator").classList.toggle("hidden",!calc);
+  $("#numericEntry").classList.toggle("hidden",calc);
   const totalHelp=$("#teamTotalHelp");
-  if(exercise.type==="reps"){
-    if((exercise.sets||1)>1){
-      totalHelp.textContent="Entrez le TOTAL de toutes les séries de toute l’équipe. Exemple : "+team.size+" élèves × "+exercise.sets+" séries × 10 reps = "+(team.size*exercise.sets*10)+".";
-    }else{
-      totalHelp.textContent="Entrez le TOTAL de l’équipe. Exemple : "+team.size+" élèves × 10 reps = "+(team.size*10)+".";
-    }
-  }else if(exercise.type==="seconds"){
-    totalHelp.textContent="Entrez le total des secondes de tous les élèves de l’équipe.";
+  if(calc){
+    totalHelp.textContent=(exercise.sets||1)>1
+      ? "Entrez simplement les reps de chaque élève, série par série. L’application fait l’addition."
+      : "Entrez les reps de chaque élève. L’application fait l’addition.";
+    modalRepData=makeRepData(exercise,team,existing);
+    activeRepCell=findNextRepCell(0,-1);
+    renderRepCalculator();
   }else{
-    totalHelp.textContent="Entrez une seule valeur totale pour toute l’équipe.";
+    modalRepData=null;activeRepCell=null;
+    if(exercise.type==="seconds") totalHelp.textContent="Entrez le total des secondes de tous les élèves de l’équipe.";
+    else totalHelp.textContent="Entrez une seule valeur totale pour toute l’équipe.";
+    $("#scoreInput").value=existing?existing.raw:"";
   }
   $("#modalUnit").textContent=exercise.unit;
-  $("#scoreInput").value=existing?existing.raw:"";
   $("#modalProfile").textContent=team.size+" élèves · cible : 1–3 RIR";
   $("#modalTarget").textContent="Standard : "+standardTarget(exercise)+" "+exercise.unit+" / élève"+((exercise.sets||1)>1?" au total":"");
   $("#scoreModal").classList.remove("hidden");
 }
-function closeScore(){$("#scoreModal").classList.add("hidden");modalContext=null;}
+function closeScore(){$("#scoreModal").classList.add("hidden");modalContext=null;modalRepData=null;activeRepCell=null;}
 function buildKeypad(){
   const keys=["1","2","3","4","5","6","7","8","9",".","0","⌫"];
-  $("#keypad").innerHTML=keys.map(k=>`<button class="key ${k==="⌫"?"action":""}" data-k="${k}">${k}</button>`).join("")+`<button class="saveScore" id="saveScoreBtn">✓ Enregistrer</button>`;
+  $("#keypad").innerHTML=keys.map(k=>`<button class="key ${k==="⌫"?"action":""}" data-k="${k}">${k}</button>`).join("");
   $$("#keypad .key").forEach(b=>b.onclick=()=>keyPress(b.dataset.k));
   $("#saveScoreBtn").onclick=saveScore;
 }
@@ -711,16 +773,17 @@ function recomputeStreakBonuses(teamIndex){
 }
 function saveScore(){
   if(!modalContext)return;
-  const raw=parseFloat($("#scoreInput").value);
-  if(!Number.isFinite(raw)||raw<0)return;
   const {teamIndex,exIndex,exercise,team,rotation}=modalContext;
+  const calc=usesRepCalculator(exercise);
+  const raw=calc?repTotal():parseFloat($("#scoreInput").value);
+  if(!Number.isFinite(raw)||raw<0)return;
   const avg=raw/team.size;
   const validAvg=exercise.maxPerPerson?Math.min(avg,exercise.maxPerPerson):avg;
   const target=standardTarget(exercise);
   const basePoints=Math.round(Math.min(110,(validAvg/target)*100));
   const standardMet=validAvg>=target;
   state.scores[rotation] ||= {};
-  state.scores[rotation][teamIndex]={raw,avg:validAvg,target,basePoints,standardMet,points:basePoints,exIndex};
+  state.scores[rotation][teamIndex]={raw,avg:validAvg,target,basePoints,standardMet,points:basePoints,exIndex,...(calc?{breakdown:modalRepData.map(r=>r.map(v=>Number.isFinite(v)?v:0))}:{})};
   recomputeStreakBonuses(teamIndex);
   save();closeScore();renderCircuit();
 }
@@ -832,7 +895,7 @@ $("#newSessionBtn").onclick=resetAll;
 $("#resumeBtn").onclick=resumeSaved;
 $("#discardBtn").onclick=()=>{if(confirm("Supprimer la séance enregistrée et repartir à zéro?"))resetAll();};
 $("#scoreModal").onclick=e=>{if(e.target.id==="scoreModal")closeScore();};
-document.addEventListener("keydown",e=>{if(!$("#scoreModal").classList.contains("hidden")){if(/[0-9]/.test(e.key))keyPress(e.key);else if(e.key==="Backspace")keyPress("⌫");else if(e.key==="Enter")saveScore();else if(e.key==="Escape")closeScore();}});
+document.addEventListener("keydown",e=>{if(!$("#scoreModal").classList.contains("hidden")){if(e.key==="Enter")saveScore();else if(e.key==="Escape")closeScore();else if(!$("#numericEntry").classList.contains("hidden")){if(/[0-9]/.test(e.key))keyPress(e.key);else if(e.key==="Backspace")keyPress("⌫");}}});
 
 init();
 </script>
