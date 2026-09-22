@@ -68,6 +68,7 @@ button{cursor:pointer}
 .circuitShell[data-phase="results"] .rotationLabel,.circuitShell[data-phase="results"] .rotationTimer{color:#fbbf24}
 .circuitShell[data-phase="results"] .stationCard{box-shadow:0 0 0 2px rgba(251,191,36,.18),0 14px 32px rgba(0,0,0,.23)}
 .rotateBtn{background:#f8fafc;color:#07101c;border-color:#f8fafc}
+.endExerciseBtn{background:#3a1f25;border-color:#7f3542;color:#ffe4e6}
 .stationGrid{display:grid;gap:10px;flex:1;min-height:0;grid-auto-rows:minmax(0,1fr)}
 .stationGrid[data-count="4"]{grid-template-columns:repeat(2,1fr)}
 .stationGrid[data-count="5"],.stationGrid[data-count="6"]{grid-template-columns:repeat(3,1fr)}
@@ -181,8 +182,9 @@ button{cursor:pointer}
       </div>
       <div class="teacherBtns">
         <button class="teacherBtn" id="pauseBtn">⏸ Pause</button>
+        <button class="teacherBtn endExerciseBtn" id="endExerciseBtn">Terminer l’exercice</button>
         <button class="teacherBtn rotateBtn hidden" id="rotateBtn">Suivant →</button>
-        <button class="teacherBtn" id="finishBtn">Terminer</button>
+        <button class="teacherBtn" id="finishBtn">Terminer la séance</button>
       </div>
     </header>
     <section class="stationGrid" id="stationGrid"></section>
@@ -544,11 +546,17 @@ function updateTimers(){
   $("#circuitScreen").dataset.phase=state.phase;
 
   const nextBtn=$("#rotateBtn");
+  const endBtn=$("#endExerciseBtn");
   const ready=state.phase==="results" && remaining<=0;
   nextBtn.classList.toggle("hidden",!ready);
+  endBtn.classList.toggle("hidden",state.phase!=="work");
   if(ready) nextBtn.textContent=state.rotation>=state.teamCount-1?"Voir le classement →":"Suivant →";
 
   if(!state.paused && state.phase==="work" && remaining<=0) startResultsPhase();
+}
+function endExerciseEarly(){
+  if(state.screen!=="circuit" || state.phase!=="work")return;
+  startResultsPhase();
 }
 function startResultsPhase(){
   if(state.phase==="results")return;
@@ -758,6 +766,7 @@ function motionVisual(type){
 $("#toWarmupBtn").onclick=prepareWarmup;
 $("#startCircuitBtn").onclick=startCircuit;
 $("#pauseBtn").onclick=togglePause;
+$("#endExerciseBtn").onclick=endExerciseEarly;
 $("#rotateBtn").onclick=rotate;
 $("#finishBtn").onclick=finishSession;
 $("#newSessionBtn").onclick=resetAll;
