@@ -65,6 +65,9 @@ button{cursor:pointer}
 .sessionInfo{display:flex;align-items:center;gap:12px}.modeBadge{padding:9px 12px;border-radius:999px;font-weight:950;background:rgba(255,255,255,.09);border:1px solid var(--line)}
 .timeBlock{text-align:center}.rotationLabel{font-size:13px;color:var(--muted);font-weight:900;letter-spacing:.14em;text-transform:uppercase}.rotationTimer{font-size:clamp(40px,5.5vw,78px);font-weight:1000;font-variant-numeric:tabular-nums;letter-spacing:-.05em;line-height:1}.sessionTimer{font-size:13px;color:var(--muted);margin-top:3px}
 .teacherBtns{display:flex;justify-content:flex-end;gap:8px}.teacherBtn{border:1px solid var(--line);background:#0d192b;color:#fff;border-radius:14px;padding:11px 14px;font-weight:900}
+.circuitShell[data-phase="results"] .rotationLabel,.circuitShell[data-phase="results"] .rotationTimer{color:#fbbf24}
+.circuitShell[data-phase="transition"] .rotationLabel,.circuitShell[data-phase="transition"] .rotationTimer{color:#4ade80}
+.circuitShell[data-phase="results"] .stationCard{box-shadow:0 0 0 2px rgba(251,191,36,.18),0 14px 32px rgba(0,0,0,.23)}
 .rotateBtn{background:#f8fafc;color:#07101c;border-color:#f8fafc}
 .stationGrid{display:grid;gap:10px;flex:1;min-height:0;grid-auto-rows:minmax(0,1fr)}
 .stationGrid[data-count="4"]{grid-template-columns:repeat(2,1fr)}
@@ -90,7 +93,7 @@ button{cursor:pointer}
 .teamTag{width:100%;min-height:42px;margin-top:5px;padding:8px 10px;border-radius:12px;background:var(--teamColor);color:#07101c;font-weight:1000;line-height:1.08;white-space:normal;overflow:visible;word-break:break-word;display:flex;align-items:center}
 .teamNameBig{display:block;width:100%;font-size:15px;text-align:left}
 .check{font-size:20px;flex:0 0 auto}
-.exerciseName{font-size:clamp(17px,1.7vw,25px);font-weight:1000;margin:8px 0 3px;line-height:1.05}.exerciseDose{font-weight:900;color:#dce8f6;font-size:13px}.cue{font-size:12px;color:var(--muted);margin-top:3px}
+.exerciseName{font-size:clamp(17px,1.7vw,25px);font-weight:1000;margin:8px 0 3px;line-height:1.05}.exerciseDose{font-weight:900;color:#dce8f6;font-size:13px}.exerciseTimePill{display:inline-block;margin-top:5px;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.08);font-size:11px;font-weight:950;color:#dbeafe}.cue{font-size:12px;color:var(--muted);margin-top:3px}
 .visualBox{position:relative;flex:1;min-height:132px;margin:10px 0;border-radius:18px;background:radial-gradient(circle at 50% 44%,rgba(96,165,250,.10),transparent 52%),linear-gradient(180deg,#0a1626,#08111e);border:1px solid rgba(148,163,184,.14);display:grid;place-items:center;overflow:hidden}
 .visualBox svg{width:min(100%,250px);height:138px;filter:drop-shadow(0 8px 16px rgba(0,0,0,.16))}
 .scoreFooter{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}.scoreHint{font-size:11px;color:var(--muted)}.scoreValue{font-size:14px;font-weight:1000}.tapScore{border:0;background:rgba(255,255,255,.08);color:white;border-radius:11px;padding:8px 10px;font-weight:900;font-size:12px}
@@ -173,13 +176,13 @@ button{cursor:pointer}
         <div><div class="modeBadge" id="circuitMode"></div><div class="smallNote" id="rotationProgress"></div></div>
       </div>
       <div class="timeBlock">
-        <div class="rotationLabel">Temps de rotation</div>
+        <div class="rotationLabel" id="phaseLabel">EXERCICE</div>
         <div class="rotationTimer" id="rotationTimer">00:00</div>
         <div class="sessionTimer">Séance <span id="sessionTimer">00:00</span></div>
       </div>
       <div class="teacherBtns">
         <button class="teacherBtn" id="pauseBtn">⏸ Pause</button>
-        <button class="teacherBtn rotateBtn" id="rotateBtn">Rotation →</button>
+        <button class="teacherBtn rotateBtn" id="rotateBtn">Passer →</button>
         <button class="teacherBtn" id="finishBtn">Terminer</button>
       </div>
     </header>
@@ -249,6 +252,14 @@ const WARMUP_BANK = {
     ["🦵","Squats","Rythme fluide","12 reps"],
     ["🏃","Jogging sur place","Progressif","45 s"]
   ]
+};
+
+const CIRCUIT_TIMING={
+  force:{work:270,results:90,transition:30},
+  hypertrophie:{work:240,results:90,transition:30},
+  endurance:{work:210,results:90,transition:30},
+  power:{work:210,results:90,transition:30},
+  cardio:{work:210,results:90,transition:30}
 };
 
 const MODES = {
@@ -375,7 +386,7 @@ const PROFILE_LABEL={progression:"Progression",active:"Actif",performance:"Perfo
 const STORE_KEY="gymArenaEPS_v1";
 let state={
   teamCount:6,teams:[],mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,
-  rotation:0,sessionStartedAt:null,rotationStartedAt:null,paused:false,pauseStartedAt:null,
+  rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,paused:false,pauseStartedAt:null,
   sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false
 };
 let warmupTick=null,circuitTick=null,modalContext=null;
@@ -487,6 +498,7 @@ function startCircuit(){
   clearInterval(warmupTick);
   state.screen="circuit";
   state.rotation=0;
+  state.phase="work";
   state.scores={};
   state.finished=false;
   state.paused=false;
@@ -500,16 +512,62 @@ function startCircuit(){
 }
 function startCircuitTick(){
   clearInterval(circuitTick);
-  circuitTick=setInterval(updateTimers,500);
+  circuitTick=setInterval(updateTimers,250);
   updateTimers();
+}
+function phaseDuration(){
+  const t=CIRCUIT_TIMING[state.mode]||CIRCUIT_TIMING.hypertrophie;
+  return t[state.phase]||t.work;
+}
+function phaseLabel(){
+  if(state.phase==="results") return "ENTREZ VOS RÉSULTATS";
+  if(state.phase==="transition") return "CHANGEZ DE STATION";
+  return "EXERCICE";
 }
 function updateTimers(){
   if(state.screen!=="circuit")return;
   const now=state.paused?(state.pauseStartedAt||Date.now()):Date.now();
   const sessionMs=Math.max(0,now-state.sessionStartedAt-state.sessionPauseTotal);
-  const rotationMs=Math.max(0,now-state.rotationStartedAt-state.rotationPauseTotal);
+  const phaseMs=Math.max(0,now-state.rotationStartedAt-state.rotationPauseTotal);
+  const remaining=Math.max(0,phaseDuration()-Math.floor(phaseMs/1000));
   $("#sessionTimer").textContent=formatTime(Math.floor(sessionMs/1000));
-  $("#rotationTimer").textContent=formatTime(Math.floor(rotationMs/1000));
+  $("#rotationTimer").textContent=formatTime(remaining);
+  $("#phaseLabel").textContent=phaseLabel();
+  $("#circuitScreen").dataset.phase=state.phase;
+  if(!state.paused && remaining<=0) advancePhase(false);
+}
+function startPhase(next){
+  state.phase=next;
+  state.rotationStartedAt=Date.now();
+  state.rotationPauseTotal=0;
+  beep();
+  renderCircuit();
+  save();
+  updateTimers();
+}
+function advancePhase(manual=false){
+  if(state.screen!=="circuit")return;
+  if(state.phase==="work"){
+    startPhase("results");
+    return;
+  }
+  if(state.phase==="results"){
+    if(state.rotation>=state.teamCount-1){
+      finishSession(true);
+      return;
+    }
+    state.rotation++;
+    state.phase="transition";
+    state.rotationStartedAt=Date.now();
+    state.rotationPauseTotal=0;
+    beep();
+    flashRotation();
+    renderCircuit();
+    save();
+    updateTimers();
+    return;
+  }
+  startPhase("work");
 }
 function currentExerciseIndex(teamIndex){
   return (teamIndex+state.rotation)%state.teamCount;
@@ -527,9 +585,10 @@ function renderCircuit(){
       <div class="stationHeader"><div style="min-width:0;flex:1"><div class="stationNum">STATION ${exIndex+1}</div><div class="teamTag"><span class="teamNameBig">${escapeHtml(team.name)}</span></div></div><div class="check">${score?"✅":""}</div></div>
       <div class="exerciseName">${exercise.name}</div>
       <div class="exerciseDose">${exercise.dose}</div>
+      <div class="exerciseTimePill">⏱ Temps officiel : ${formatTime(CIRCUIT_TIMING[state.mode].work)}</div>
       <div class="cue">${exercise.prompt}</div>
       <div class="visualBox">${motionVisual(exercise.motion)}</div>
-      <div class="scoreFooter"><div><div class="scoreHint">Touchez votre équipe → entrez 1 résultat</div><div class="scoreValue">${score?escapeHtml(score.raw+" "+exercise.unit):"Score non entré"}</div></div><button class="tapScore">${score?"Modifier":"Score"}</button></div>
+      <div class="scoreFooter"><div><div class="scoreHint">${state.phase==="results"?"ENTREZ VOTRE RÉSULTAT MAINTENANT":state.phase==="transition"?"Changez de station":"Travail en cours"}</div><div class="scoreValue">${score?escapeHtml(score.raw+" "+exercise.unit):"Score non entré"}</div></div><button class="tapScore">${score?"Modifier":"Score"}</button></div>
     </article>`;
   }).join("");
   $$(".stationCard").forEach(c=>c.onclick=()=>openScore(+c.dataset.team));
@@ -537,7 +596,7 @@ function renderCircuit(){
 }
 function openScore(teamIndex){
   const exIndex=currentExerciseIndex(teamIndex), exercise=MODES[state.mode].exercises[exIndex], team=state.teams[teamIndex];
-  modalContext={teamIndex,exIndex,exercise,team};
+  modalContext={teamIndex,exIndex,exercise,team,rotation:state.rotation};
   const existing=getScore(state.rotation,teamIndex);
   $("#modalCard").style.setProperty("--teamColor",team.color);
   $("#modalTeam").textContent=team.name;
@@ -575,13 +634,13 @@ function saveScore(){
   if(!modalContext)return;
   const raw=parseFloat($("#scoreInput").value);
   if(!Number.isFinite(raw)||raw<0)return;
-  const {teamIndex,exIndex,exercise,team}=modalContext;
+  const {teamIndex,exIndex,exercise,team,rotation}=modalContext;
   const avg=raw/team.size;
   const validAvg=exercise.maxPerPerson?Math.min(avg,exercise.maxPerPerson):avg;
   const target=exercise.target[team.profile];
   const points=Math.round(Math.min(130,(validAvg/target)*100));
-  state.scores[state.rotation] ||= {};
-  state.scores[state.rotation][teamIndex]={raw,avg:validAvg,target,points,exIndex};
+  state.scores[rotation] ||= {};
+  state.scores[rotation][teamIndex]={raw,avg:validAvg,target,points,exIndex};
   save();closeScore();renderCircuit();
 }
 function getScore(rotation,teamIndex){return state.scores?.[rotation]?.[teamIndex]||null;}
@@ -593,15 +652,10 @@ function renderRanking(){
   $("#rankStrip").innerHTML=`<div class="rankTitle">Classement</div>`+ranked.map((r,idx)=>`<div class="rankItem" style="border:1px solid ${r.color}55">${idx+1}. ${escapeHtml(r.name)} <b>${r.total}</b></div>`).join("");
 }
 function rotate(){
-  const missing=state.teams.filter((_,i)=>!getScore(state.rotation,i)).length;
-  if(missing && !confirm(`Il manque ${missing} score${missing>1?"s":""} pour cette rotation. Continuer quand même?`))return;
-  if(state.rotation>=state.teamCount-1){finishSession();return;}
-  state.rotation++;
-  state.rotationStartedAt=Date.now();state.rotationPauseTotal=0;
-  flashRotation();renderCircuit();save();
+  advancePhase(true);
 }
 function flashRotation(){
-  $("#rotateFlashText").textContent=`Rotation ${state.rotation+1} · chaque équipe avance d'une station`;
+  $("#rotateFlashText").textContent=`CHANGEZ DE STATION · rotation ${state.rotation+1} / ${state.teamCount}`;
   $("#rotateFlash").classList.remove("hidden");
   setTimeout(()=>$("#rotateFlash").classList.add("hidden"),1800);
 }
@@ -613,8 +667,8 @@ function togglePause(){
   }
   save();updateTimers();
 }
-function finishSession(){
-  if(!confirm("Terminer la séance et afficher le classement final?"))return;
+function finishSession(auto=false){
+  if(!auto && !confirm("Terminer la séance et afficher le classement final?"))return;
   clearInterval(circuitTick);state.finished=true;state.screen="finish";save();renderFinish();showScreen("finishScreen");
 }
 function renderFinish(){
@@ -627,13 +681,13 @@ function readSaved(){try{return JSON.parse(localStorage.getItem(STORE_KEY)||"nul
 function resumeSaved(){
   const s=readSaved();if(!s)return;state=s;
   if(state.screen==="warmup"){renderWarmup();showScreen("warmupScreen");startWarmupTick();}
-  else if(state.screen==="circuit"){if(state.paused&&state.pauseStartedAt){/* stay paused */}renderCircuit();showScreen("circuitScreen");startCircuitTick();}
+  else if(state.screen==="circuit"){state.phase=state.phase||"work";if(state.paused&&state.pauseStartedAt){/* stay paused */}renderCircuit();showScreen("circuitScreen");startCircuitTick();}
   else if(state.screen==="finish"){renderFinish();showScreen("finishScreen");}
 }
 function resetAll(){
   localStorage.removeItem(STORE_KEY);
   clearInterval(warmupTick);clearInterval(circuitTick);
-  state={teamCount:6,teams:defaultTeams(6),mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,rotation:0,sessionStartedAt:null,rotationStartedAt:null,paused:false,pauseStartedAt:null,sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false};
+  state={teamCount:6,teams:defaultTeams(6),mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,paused:false,pauseStartedAt:null,sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false};
   $("#resumeBox").classList.add("hidden");renderSetup();showScreen("setupScreen");
 }
 function beep(){try{const A=new(window.AudioContext||window.webkitAudioContext)();const o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=740;g.gain.value=.08;o.start();setTimeout(()=>{o.stop();A.close()},180)}catch{}}
