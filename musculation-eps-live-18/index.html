@@ -136,7 +136,7 @@ button{cursor:pointer}
 .modalTeam{font-size:13px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;color:var(--teamColor,#93c5fd)}.modalExercise{font-size:28px;font-weight:1000;margin:5px 0}.modalPrompt{color:var(--muted);font-size:13px;margin-bottom:13px}.scoreDisplay{display:flex;align-items:baseline;gap:8px;padding:14px 16px;background:#07111f;border:1px solid var(--line);border-radius:16px;margin-bottom:12px}.scoreInput{width:100%;background:transparent;border:0;color:#fff;font-size:46px;font-weight:1000;outline:0;text-align:right}.unit{font-size:16px;color:var(--muted);font-weight:900}
 .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.key{border:1px solid var(--line);background:#15253d;color:#fff;border-radius:14px;padding:14px;font-size:22px;font-weight:950}.key.action{font-size:14px}.saveScore{width:100%;border:0;background:#4ade80;color:#06120a;border-radius:14px;padding:15px;font-size:18px;font-weight:1000;margin-top:10px}.modalMeta{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:10px}
 .repCalculator{display:grid;gap:9px;margin:8px 0 12px}.repSet{padding:9px 10px;border:1px solid var(--line);border-radius:14px;background:#0a1626}.repSetHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.repSetTitle{font-size:12px;font-weight:1000;letter-spacing:.08em;text-transform:uppercase}.repSetTotal{font-size:12px;color:#86efac;font-weight:950}.repStudents{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.repCell{border:1px solid #334155;background:#13233a;color:#fff;border-radius:10px;padding:7px 5px;font-size:12px;font-weight:900;min-height:39px}.repCell.active{border-color:#60a5fa;box-shadow:0 0 0 2px rgba(96,165,250,.22);background:#193354}.repCell.empty{color:#94a3b8}.repQuick{padding:10px;border-radius:14px;background:#07111f;border:1px solid var(--line)}.repQuickTitle{font-size:11px;color:#cbd5e1;font-weight:850;margin-bottom:7px}.repChoices{display:flex;flex-wrap:wrap;gap:6px}.repChoice{flex:1 1 46px;min-width:46px;border:1px solid #3b526f;background:#162a44;color:#fff;border-radius:10px;padding:9px 7px;font-size:16px;font-weight:1000}.repChoice.zero{color:#fda4af}.repTotalBox{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;border-radius:14px;background:#10273b;border:1px solid #28506f}.repTotalLabel{font-size:12px;color:#cbd5e1;font-weight:900}.repTotalValue{font-size:28px;font-weight:1000;color:#86efac}.repHint{font-size:11px;color:#94a3b8;margin-top:5px}.numericEntry.hidden{display:none!important}.closeModal{position:absolute;top:18px;right:18px}
-.repExtraControls{display:flex;gap:8px;flex-wrap:wrap}.repExtraControls button,.repAdjust button{border:1px solid #3b526f;background:#162a44;color:#fff;border-radius:10px;padding:9px 12px;font-size:14px;font-weight:850}.repAdjust{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.repBonusHelp{color:#86efac;font-size:13px;line-height:1.4}.repRemove{border:0;background:transparent;color:#fda4af;font-size:13px;font-weight:800}
+.repExtraControls{display:flex;gap:8px;flex-wrap:wrap}.repExtraControls button,.repNext{border:1px solid #3b526f;background:#162a44;color:#fff;border-radius:10px;padding:9px 12px;font-size:14px;font-weight:850}.repDigits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:10px}.repDigits button{min-height:48px;border:1px solid #3b526f;background:#162a44;color:#fff;border-radius:10px;font-size:20px;font-weight:950}.repDigits .repNext{font-size:14px;background:#20517a}.repCurrent{font-size:16px;color:#dbeafe;font-weight:900;margin-top:8px}.repBonusHelp{color:#86efac;font-size:13px;line-height:1.4}.repRemove{border:0;background:transparent;color:#fda4af;font-size:13px;font-weight:800}
 .finishCard{padding:28px}.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}.podiumItem{padding:20px;border-radius:20px;background:#0f1d31;border:1px solid var(--line);text-align:center}.podiumPos{font-size:30px}.podiumTeam{font-size:21px;font-weight:1000}.podiumPts{color:#86efac;font-weight:950}
 .allRanks{display:grid;gap:8px}.allRank{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px;background:#0c1728}.allRank strong{font-size:15px}.allRank span{color:#86efac;font-weight:950}
 .rotateFlash{position:fixed;inset:0;z-index:60;background:#07111f;display:grid;place-items:center;text-align:center;padding:20px}.rotateFlash h1{font-size:clamp(50px,10vw,130px);margin:0;font-weight:1000}.rotateFlash p{font-size:clamp(20px,4vw,46px);color:#cbd5e1;margin:8px 0 0}
@@ -429,7 +429,7 @@ let state={
   rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,sessionBreakStartedAt:null,paused:false,pauseStartedAt:null,
   sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false
 };
-let warmupTick=null,circuitTick=null,modalContext=null,modalRepData=null,activeRepCell=null;
+let warmupTick=null,circuitTick=null,modalContext=null,modalRepData=null,activeRepCell=null,repDigitDraft="";
 
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
@@ -679,30 +679,32 @@ function findNextRepCell(fromSet=0,fromStudent=-1){
   return {set:fromSet,student:Math.max(0,fromStudent)};
 }
 function setActiveRepCell(set,student){
-  activeRepCell={set,student};renderRepCalculator();
+  activeRepCell={set,student};repDigitDraft="";renderRepCalculator();
 }
-function chooseRepValue(value){
+function enterRepDigit(key){
   if(!modalRepData||!activeRepCell)return;
   const {set,student}=activeRepCell;
-  modalRepData[set][student]=value;
-  activeRepCell=findNextRepCell(set,student);
+  if(key==="clear")repDigitDraft="";
+  else if(key==="back")repDigitDraft=(repDigitDraft||String(modalRepData[set][student]??"")).slice(0,-1);
+  else repDigitDraft=(repDigitDraft+key).slice(0,3);
+  modalRepData[set][student]=repDigitDraft===""?null:Number(repDigitDraft);
   renderRepCalculator();
 }
-function adjustRepValue(amount){
+function nextRepCell(){
   if(!modalRepData||!activeRepCell)return;
-  const {set,student}=activeRepCell;
-  modalRepData[set][student]=Math.max(0,Math.min(999,(modalRepData[set][student]||0)+amount));
-  renderRepCalculator();
+  const cols=modalRepData[0].length;
+  const next=(activeRepCell.set*cols+activeRepCell.student+1)%(modalRepData.length*cols);
+  setActiveRepCell(Math.floor(next/cols),next%cols);
 }
 function addRepSet(){
   if(!modalRepData||!modalContext||modalRepData.length>=10)return;
   modalRepData.push(Array(modalContext.team.size).fill(null));
-  activeRepCell={set:modalRepData.length-1,student:0};
+  activeRepCell={set:modalRepData.length-1,student:0};repDigitDraft="";
   renderRepCalculator();
 }
 function removeRepSet(){
   if(!modalRepData||!modalContext||modalRepData.length<=(modalContext.exercise.sets||1))return;
-  modalRepData.pop();activeRepCell=null;renderRepCalculator();
+  modalRepData.pop();activeRepCell=null;repDigitDraft="";renderRepCalculator();
 }
 function renderRepCalculator(){
   if(!modalContext||!modalRepData)return;
@@ -710,7 +712,7 @@ function renderRepCalculator(){
   const box=$("#repCalculator");
   if(!range)return;
   if(!activeRepCell)activeRepCell=findNextRepCell(0,-1);
-  const choices=[0,...Array.from({length:range.max-Math.max(1,range.min-3)+1},(_,i)=>Math.max(1,range.min-3)+i)];
+  const current=modalRepData[activeRepCell.set][activeRepCell.student];
   box.innerHTML=`
     <div class="repTotalBox"><div><div class="repTotalLabel">TOTAL ÉQUIPE</div><div class="repHint">Touchez une case, puis le nombre de reps. Les cases vides comptent 0.</div></div><div class="repTotalValue">${repTotal()} <span style="font-size:13px;color:#cbd5e1">rép.</span></div></div>
     ${modalRepData.map((row,s)=>`<div class="repSet">
@@ -718,11 +720,11 @@ function renderRepCalculator(){
       <div class="repStudents">${row.map((v,p)=>`<button type="button" class="repCell ${activeRepCell?.set===s&&activeRepCell?.student===p?"active":""} ${v===null?"empty":""}" data-set="${s}" data-student="${p}">É${p+1} · ${v===null?"—":v}</button>`).join("")}</div>
     </div>`).join("")}
     <div class="repExtraControls"><button type="button" id="addRepSet">+ Ajouter une série</button>${modalRepData.length>(exercise.sets||1)?'<button type="button" class="repRemove" id="removeRepSet">Retirer la dernière série</button>':""}</div>
-    <div class="repQuick"><div class="repQuickTitle">Reps de la case sélectionnée</div><div class="repChoices">${choices.map(v=>`<button type="button" class="repChoice ${v===0?"zero":""}" data-rep="${v}">${v}</button>`).join("")}</div><div class="repAdjust"><button type="button" data-adjust="-1">−1</button><button type="button" data-adjust="1">+1 rep</button><button type="button" data-adjust="5">+5 reps</button></div></div>
+    <div class="repQuick"><div class="repQuickTitle">Série ${activeRepCell.set+1} · élève ${activeRepCell.student+1}</div><div class="repCurrent">${current===null?"—":current} répétition${current===1?"":"s"} · tapez 1 puis 5 pour 15</div><div class="repDigits">${[1,2,3,4,5,6,7,8,9,"Effacer",0,"⌫"].map(v=>`<button type="button" data-digit="${v=== "Effacer"?"clear":v==="⌫"?"back":v}">${v}</button>`).join("")}</div><button type="button" class="repNext" id="nextRepCell" style="width:100%;margin-top:8px">Élève suivant →</button></div>
     <div class="repBonusHelp">Bonus après le standard : +1 point par 2 reps supplémentaires par élève (max. 10), +5 points par série supplémentaire complétée par l’équipe (max. 10). Reps propres seulement.</div>`;
   box.querySelectorAll(".repCell").forEach(b=>b.onclick=()=>setActiveRepCell(+b.dataset.set,+b.dataset.student));
-  box.querySelectorAll(".repChoice").forEach(b=>b.onclick=()=>chooseRepValue(+b.dataset.rep));
-  box.querySelectorAll("[data-adjust]").forEach(b=>b.onclick=()=>adjustRepValue(+b.dataset.adjust));
+  box.querySelectorAll("[data-digit]").forEach(b=>b.onclick=()=>enterRepDigit(b.dataset.digit));
+  box.querySelector("#nextRepCell").onclick=nextRepCell;
   box.querySelector("#addRepSet").onclick=addRepSet;
   if(box.querySelector("#removeRepSet"))box.querySelector("#removeRepSet").onclick=removeRepSet;
 }
@@ -743,7 +745,7 @@ function openScore(teamIndex){
       ? "Entrez simplement les reps de chaque élève, série par série. L’application fait l’addition."
       : "Entrez les reps de chaque élève. L’application fait l’addition.";
     modalRepData=makeRepData(exercise,team,existing);
-    activeRepCell=findNextRepCell(0,-1);
+    activeRepCell=findNextRepCell(0,-1);repDigitDraft="";
     renderRepCalculator();
   }else{
     modalRepData=null;activeRepCell=null;
@@ -756,7 +758,7 @@ function openScore(teamIndex){
   $("#modalTarget").textContent="Standard : "+standardTarget(exercise)+" "+exercise.unit+" / élève"+((exercise.sets||1)>1?" au total":"");
   $("#scoreModal").classList.remove("hidden");
 }
-function closeScore(){$("#scoreModal").classList.add("hidden");modalContext=null;modalRepData=null;activeRepCell=null;}
+function closeScore(){$("#scoreModal").classList.add("hidden");modalContext=null;modalRepData=null;activeRepCell=null;repDigitDraft="";}
 function buildKeypad(){
   const keys=["1","2","3","4","5","6","7","8","9",".","0","⌫"];
   $("#keypad").innerHTML=keys.map(k=>`<button class="key ${k==="⌫"?"action":""}" data-k="${k}">${k}</button>`).join("");
@@ -922,7 +924,7 @@ $("#newSessionBtn").onclick=resetAll;
 $("#resumeBtn").onclick=resumeSaved;
 $("#discardBtn").onclick=()=>{if(confirm("Supprimer la séance enregistrée et repartir à zéro?"))resetAll();};
 $("#scoreModal").onclick=e=>{if(e.target.id==="scoreModal")closeScore();};
-document.addEventListener("keydown",e=>{if(!$("#scoreModal").classList.contains("hidden")){if(e.key==="Enter")saveScore();else if(e.key==="Escape")closeScore();else if(!$("#numericEntry").classList.contains("hidden")){if(/[0-9]/.test(e.key))keyPress(e.key);else if(e.key==="Backspace")keyPress("⌫");}}});
+document.addEventListener("keydown",e=>{if(!$("#scoreModal").classList.contains("hidden")){if(e.key==="Enter")saveScore();else if(e.key==="Escape")closeScore();else if(!$("#repCalculator").classList.contains("hidden")){if(/^[0-9]$/.test(e.key))enterRepDigit(e.key);else if(e.key==="Backspace")enterRepDigit("back");}else if(!$("#numericEntry").classList.contains("hidden")){if(/^[0-9]$/.test(e.key))keyPress(e.key);else if(e.key==="Backspace")keyPress("⌫");}}});
 
 init();
 </script>
