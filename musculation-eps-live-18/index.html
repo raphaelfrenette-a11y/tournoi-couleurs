@@ -136,6 +136,7 @@ button{cursor:pointer}
 .modalTeam{font-size:13px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;color:var(--teamColor,#93c5fd)}.modalExercise{font-size:28px;font-weight:1000;margin:5px 0}.modalPrompt{color:var(--muted);font-size:13px;margin-bottom:13px}.scoreDisplay{display:flex;align-items:baseline;gap:8px;padding:14px 16px;background:#07111f;border:1px solid var(--line);border-radius:16px;margin-bottom:12px}.scoreInput{width:100%;background:transparent;border:0;color:#fff;font-size:46px;font-weight:1000;outline:0;text-align:right}.unit{font-size:16px;color:var(--muted);font-weight:900}
 .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.key{border:1px solid var(--line);background:#15253d;color:#fff;border-radius:14px;padding:14px;font-size:22px;font-weight:950}.key.action{font-size:14px}.saveScore{width:100%;border:0;background:#4ade80;color:#06120a;border-radius:14px;padding:15px;font-size:18px;font-weight:1000;margin-top:10px}.modalMeta{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:10px}
 .repCalculator{display:grid;gap:9px;margin:8px 0 12px}.repSet{padding:9px 10px;border:1px solid var(--line);border-radius:14px;background:#0a1626}.repSetHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.repSetTitle{font-size:12px;font-weight:1000;letter-spacing:.08em;text-transform:uppercase}.repSetTotal{font-size:12px;color:#86efac;font-weight:950}.repStudents{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.repCell{border:1px solid #334155;background:#13233a;color:#fff;border-radius:10px;padding:7px 5px;font-size:12px;font-weight:900;min-height:39px}.repCell.active{border-color:#60a5fa;box-shadow:0 0 0 2px rgba(96,165,250,.22);background:#193354}.repCell.empty{color:#94a3b8}.repQuick{padding:10px;border-radius:14px;background:#07111f;border:1px solid var(--line)}.repQuickTitle{font-size:11px;color:#cbd5e1;font-weight:850;margin-bottom:7px}.repChoices{display:flex;flex-wrap:wrap;gap:6px}.repChoice{flex:1 1 46px;min-width:46px;border:1px solid #3b526f;background:#162a44;color:#fff;border-radius:10px;padding:9px 7px;font-size:16px;font-weight:1000}.repChoice.zero{color:#fda4af}.repTotalBox{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;border-radius:14px;background:#10273b;border:1px solid #28506f}.repTotalLabel{font-size:12px;color:#cbd5e1;font-weight:900}.repTotalValue{font-size:28px;font-weight:1000;color:#86efac}.repHint{font-size:11px;color:#94a3b8;margin-top:5px}.numericEntry.hidden{display:none!important}.closeModal{position:absolute;top:18px;right:18px}
+.repExtraControls{display:flex;gap:8px;flex-wrap:wrap}.repExtraControls button,.repAdjust button{border:1px solid #3b526f;background:#162a44;color:#fff;border-radius:10px;padding:9px 12px;font-size:14px;font-weight:850}.repAdjust{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.repBonusHelp{color:#86efac;font-size:13px;line-height:1.4}.repRemove{border:0;background:transparent;color:#fda4af;font-size:13px;font-weight:800}
 .finishCard{padding:28px}.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}.podiumItem{padding:20px;border-radius:20px;background:#0f1d31;border:1px solid var(--line);text-align:center}.podiumPos{font-size:30px}.podiumTeam{font-size:21px;font-weight:1000}.podiumPts{color:#86efac;font-weight:950}
 .allRanks{display:grid;gap:8px}.allRank{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px;background:#0c1728}.allRank strong{font-size:15px}.allRank span{color:#86efac;font-weight:950}
 .rotateFlash{position:fixed;inset:0;z-index:60;background:#07111f;display:grid;place-items:center;text-align:center;padding:20px}.rotateFlash h1{font-size:clamp(50px,10vw,130px);margin:0;font-weight:1000}.rotateFlash p{font-size:clamp(20px,4vw,46px);color:#cbd5e1;margin:8px 0 0}
@@ -659,7 +660,7 @@ function parseRepRange(exercise){
 function usesRepCalculator(exercise){return !!parseRepRange(exercise);}
 function makeRepData(exercise,team,existing){
   const sets=Math.max(1,exercise.sets||1);
-  if(existing?.breakdown && existing.breakdown.length===sets && existing.breakdown.every(r=>Array.isArray(r)&&r.length===team.size)){
+  if(existing?.breakdown && existing.breakdown.length>=sets && existing.breakdown.every(r=>Array.isArray(r)&&r.length===team.size)){
     return existing.breakdown.map(r=>r.map(v=>Number.isFinite(v)?v:null));
   }
   return Array.from({length:sets},()=>Array(team.size).fill(null));
@@ -687,6 +688,22 @@ function chooseRepValue(value){
   activeRepCell=findNextRepCell(set,student);
   renderRepCalculator();
 }
+function adjustRepValue(amount){
+  if(!modalRepData||!activeRepCell)return;
+  const {set,student}=activeRepCell;
+  modalRepData[set][student]=Math.max(0,Math.min(999,(modalRepData[set][student]||0)+amount));
+  renderRepCalculator();
+}
+function addRepSet(){
+  if(!modalRepData||!modalContext||modalRepData.length>=10)return;
+  modalRepData.push(Array(modalContext.team.size).fill(null));
+  activeRepCell={set:modalRepData.length-1,student:0};
+  renderRepCalculator();
+}
+function removeRepSet(){
+  if(!modalRepData||!modalContext||modalRepData.length<=(modalContext.exercise.sets||1))return;
+  modalRepData.pop();activeRepCell=null;renderRepCalculator();
+}
 function renderRepCalculator(){
   if(!modalContext||!modalRepData)return;
   const {exercise,team}=modalContext,range=parseRepRange(exercise);
@@ -697,12 +714,17 @@ function renderRepCalculator(){
   box.innerHTML=`
     <div class="repTotalBox"><div><div class="repTotalLabel">TOTAL ÉQUIPE</div><div class="repHint">Touchez une case, puis le nombre de reps. Les cases vides comptent 0.</div></div><div class="repTotalValue">${repTotal()} <span style="font-size:13px;color:#cbd5e1">rép.</span></div></div>
     ${modalRepData.map((row,s)=>`<div class="repSet">
-      <div class="repSetHead"><div class="repSetTitle">Série ${s+1}</div><div class="repSetTotal">${row.reduce((a,v)=>a+(Number.isFinite(v)?v:0),0)} reps</div></div>
+      <div class="repSetHead"><div class="repSetTitle">Série ${s+1}${s>=(exercise.sets||1)?" · bonus":""}</div><div class="repSetTotal">${row.reduce((a,v)=>a+(Number.isFinite(v)?v:0),0)} reps</div></div>
       <div class="repStudents">${row.map((v,p)=>`<button type="button" class="repCell ${activeRepCell?.set===s&&activeRepCell?.student===p?"active":""} ${v===null?"empty":""}" data-set="${s}" data-student="${p}">É${p+1} · ${v===null?"—":v}</button>`).join("")}</div>
     </div>`).join("")}
-    <div class="repQuick"><div class="repQuickTitle">Reps de la case sélectionnée</div><div class="repChoices">${choices.map(v=>`<button type="button" class="repChoice ${v===0?"zero":""}" data-rep="${v}">${v}</button>`).join("")}</div></div>`;
+    <div class="repExtraControls"><button type="button" id="addRepSet">+ Ajouter une série</button>${modalRepData.length>(exercise.sets||1)?'<button type="button" class="repRemove" id="removeRepSet">Retirer la dernière série</button>':""}</div>
+    <div class="repQuick"><div class="repQuickTitle">Reps de la case sélectionnée</div><div class="repChoices">${choices.map(v=>`<button type="button" class="repChoice ${v===0?"zero":""}" data-rep="${v}">${v}</button>`).join("")}</div><div class="repAdjust"><button type="button" data-adjust="-1">−1</button><button type="button" data-adjust="1">+1 rep</button><button type="button" data-adjust="5">+5 reps</button></div></div>
+    <div class="repBonusHelp">Bonus après le standard : +1 point par 2 reps supplémentaires par élève (max. 10), +5 points par série supplémentaire complétée par l’équipe (max. 10). Reps propres seulement.</div>`;
   box.querySelectorAll(".repCell").forEach(b=>b.onclick=()=>setActiveRepCell(+b.dataset.set,+b.dataset.student));
   box.querySelectorAll(".repChoice").forEach(b=>b.onclick=()=>chooseRepValue(+b.dataset.rep));
+  box.querySelectorAll("[data-adjust]").forEach(b=>b.onclick=()=>adjustRepValue(+b.dataset.adjust));
+  box.querySelector("#addRepSet").onclick=addRepSet;
+  if(box.querySelector("#removeRepSet"))box.querySelector("#removeRepSet").onclick=removeRepSet;
 }
 function openScore(teamIndex){
   const exIndex=currentExerciseIndex(teamIndex), exercise=MODES[state.mode].exercises[exIndex], team=state.teams[teamIndex];
@@ -768,7 +790,7 @@ function recomputeStreakBonuses(teamIndex){
     if(s.standardMet) streak++; else streak=0;
     s.streak=streak;
     s.streakBonus=s.standardMet?Math.min(15,Math.max(0,streak-1)*5):0;
-    s.points=(s.basePoints??s.points??0)+s.streakBonus;
+    s.points=(s.basePoints??s.points??0)+(s.extraBonus||0)+s.streakBonus;
   }
 }
 function saveScore(){
@@ -777,13 +799,18 @@ function saveScore(){
   const calc=usesRepCalculator(exercise);
   const raw=calc?repTotal():parseFloat($("#scoreInput").value);
   if(!Number.isFinite(raw)||raw<0)return;
-  const avg=raw/team.size;
-  const validAvg=exercise.maxPerPerson?Math.min(avg,exercise.maxPerPerson):avg;
+  const requiredSets=exercise.sets||1;
+  const requiredTotal=calc?modalRepData.slice(0,requiredSets).flat().reduce((sum,v)=>sum+(Number.isFinite(v)?v:0),0):raw;
+  const avg=requiredTotal/team.size;
+  const validAvg=calc?avg:(exercise.maxPerPerson?Math.min(avg,exercise.maxPerPerson):avg);
   const target=standardTarget(exercise);
-  const basePoints=Math.round(Math.min(110,(validAvg/target)*100));
+  const basePoints=Math.round(Math.min(calc?100:110,(validAvg/target)*100));
   const standardMet=validAvg>=target;
+  const extraReps=calc&&standardMet?Math.min(10,Math.floor(Math.max(0,validAvg-target)/2)):0;
+  const extraSets=calc&&standardMet?Math.min(2,modalRepData.slice(requiredSets).filter(row=>row.every(v=>Number.isFinite(v)&&v>0)).length):0;
+  const extraBonus=extraReps+extraSets*5;
   state.scores[rotation] ||= {};
-  state.scores[rotation][teamIndex]={raw,avg:validAvg,target,basePoints,standardMet,points:basePoints,exIndex,...(calc?{breakdown:modalRepData.map(r=>r.map(v=>Number.isFinite(v)?v:0))}:{})};
+  state.scores[rotation][teamIndex]={raw,avg:validAvg,target,basePoints,extraBonus,standardMet,points:basePoints+extraBonus,exIndex,...(calc?{breakdown:modalRepData.map(r=>r.map(v=>Number.isFinite(v)?v:0))}:{})};
   recomputeStreakBonuses(teamIndex);
   save();closeScore();renderCircuit();
 }
