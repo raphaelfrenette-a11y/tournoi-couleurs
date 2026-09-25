@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F7F7F5">
+<title>Henri — Aperçu actuel</title>
+<style>
+:root{
+  --bg:#F7F7F5;
+  --surface:#FFFFFF;
+  --ink:#1D1D1F;
+  --muted:#6E7478;
+  --line:#E5E7E8;
+  --accent:#314A5B;
+  --accent-dark:#243946;
+  --accent-soft:#E9EFF2;
+  --accent-faint:#F2F5F6;
+  --shadow:0 14px 38px rgba(49,74,91,.07);
+  --radius:24px;
+}
+*{box-sizing:border-box}
+html{-webkit-tap-highlight-color:transparent}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit}
+button:focus-visible{outline:3px solid rgba(49,74,91,.2);outline-offset:3px}
+.app{min-height:100vh;padding-bottom:94px}
+.top{
+  position:sticky;top:0;z-index:20;
+  background:rgba(247,247,245,.86);
+  backdrop-filter:saturate(180%) blur(22px);
+  -webkit-backdrop-filter:saturate(180%) blur(22px);
+  border-bottom:1px solid rgba(29,29,31,.06)
+}
+.topin{
+  max-width:980px;margin:auto;padding:16px 22px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px
+}
+.brand{display:flex;align-items:center;gap:10px;color:var(--accent-dark)}
+.brandMark{width:34px;height:34px;display:block;flex:0 0 34px}
+.brandName{font-size:22px;font-weight:600;letter-spacing:-.045em;line-height:1}
+.topActions{display:flex;align-items:center;gap:8px}
+.mode{
+  font-size:11px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;
+  padding:7px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)
+}
+.configBtn{
+  min-height:36px;border:1px solid var(--line);background:#fff;color:var(--accent-dark);
+  border-radius:999px;padding:0 13px;font-size:13px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;gap:7px;box-shadow:0 4px 14px rgba(49,74,91,.04)
+}
+.configIcon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+main{max-width:980px;margin:auto;padding:30px 22px 44px}
+.screen{display:none}.screen.active{display:block}
+.eyebrow{
+  font-size:12px;font-weight:750;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)
+}
+.hero{padding:12px 0 8px}
+.hero h1{
+  font-size:clamp(40px,7vw,68px);line-height:.98;margin:10px 0 0;
+  letter-spacing:-.055em;font-weight:760
+}
+.feature{
+  margin-top:28px;background:var(--accent);color:#fff;border-radius:28px;padding:26px;
+  display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;
+  box-shadow:0 18px 48px rgba(49,74,91,.16)
+}
+.homeFeature{margin-top:6px}
+.feature small{display:block;color:#CFD9DE;font-size:11px;font-weight:750;letter-spacing:.09em;text-transform:uppercase}
+.feature h2{margin:6px 0 5px;font-size:28px;letter-spacing:-.035em}
+.feature p{margin:0;color:#DCE4E8;line-height:1.4}
+.btn{
+  min-height:50px;border-radius:15px;padding:0 18px;border:0;font-weight:700;cursor:pointer;
+  transition:transform .15s ease,opacity .15s ease,background .15s ease
+}
+.btn:active,.card:active{transform:scale(.985)}
+.btn-light{background:#fff;color:var(--accent-dark)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-soft{background:var(--accent-soft);color:var(--accent)}
+.btn-outline{background:#fff;color:var(--accent);border:1px solid var(--line)}
+.sectionHead{
+  display:flex;align-items:end;justify-content:space-between;gap:16px;margin:36px 0 14px
+}
+.sectionHead h2{margin:0;font-size:25px;letter-spacing:-.03em}
+.sectionHead span{font-size:13px;color:var(--muted)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.card{
+  appearance:none;width:100%;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);padding:22px;text-align:left;color:inherit;cursor:pointer;
+  box-shadow:var(--shadow);transition:transform .15s ease,border-color .15s ease
+}
+.card:hover{border-color:#CDD3D6}
+.cardKicker{
+  color:var(--accent);font-size:11px;font-weight:750;letter-spacing:.09em;text-transform:uppercase;
+  margin-bottom:24px
+}
+.card h3{margin:0 0 7px;font-size:23px;letter-spacing:-.025em}
+.card p{margin:0;color:var(--muted);font-size:15px;line-height:1.45}
+.cardAction{margin-top:22px;color:var(--accent);font-size:14px;font-weight:700}
+.groups{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:22px;display:grid;grid-template-columns:1fr auto;
+  gap:18px;align-items:center
+}
+.groups h3{margin:0 0 5px;font-size:21px;letter-spacing:-.02em}
+.groups p{margin:0;color:var(--muted);font-size:14px;line-height:1.4}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.chip{
+  background:var(--accent-faint);color:var(--accent);border-radius:999px;padding:7px 10px;
+  font-size:12px;font-weight:700
+}
+.back{
+  border:0;background:transparent;padding:9px 0;color:var(--accent);font-weight:700;
+  cursor:pointer;font-size:15px
+}
+.pageHead{margin:8px 0 26px}
+.pageHead h1{
+  font-size:clamp(36px,5vw,52px);line-height:1.02;letter-spacing:-.05em;
+  margin:8px 0 10px
+}
+.pageHead p{margin:0;max-width:700px;color:var(--muted);font-size:17px;line-height:1.5}
+.prototypeNote{
+  margin:0 0 18px;background:var(--accent-soft);border-radius:18px;padding:15px 17px;
+  color:var(--accent-dark);font-size:14px;line-height:1.45
+}
+.prototypeNote strong{font-weight:750}
+.list{display:grid;gap:10px}
+.listCard{
+  width:100%;background:#fff;border:1px solid var(--line);border-radius:18px;
+  padding:17px 18px;text-align:left;display:grid;grid-template-columns:1fr auto;
+  gap:15px;align-items:center;color:inherit;cursor:pointer
+}
+.listCard h3{margin:0 0 4px;font-size:18px;letter-spacing:-.015em}
+.listCard p{margin:0;color:var(--muted);font-size:14px;line-height:1.35}
+.chev{font-size:22px;color:#9AA2A6;font-weight:400}
+.toolGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.toolCard{min-height:178px;display:flex;flex-direction:column}
+.toolCard .cardKicker{margin-bottom:auto}
+.toolCard .cardAction{margin-top:18px}
+.setupGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.setup{
+  background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;
+  box-shadow:var(--shadow)
+}
+.step{
+  width:28px;height:28px;border-radius:999px;background:var(--accent-soft);color:var(--accent);
+  display:grid;place-items:center;font-size:13px;font-weight:750;margin-bottom:18px
+}
+.setup h3{margin:0 0 7px;font-size:18px}
+.setup p{margin:0 0 17px;color:var(--muted);font-size:14px;line-height:1.4}
+.course{
+  background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;
+  display:grid;grid-template-columns:110px 1fr auto;gap:16px;align-items:center
+}
+.course + .course{margin-top:10px}
+.courseTime{font-size:13px;font-weight:750;color:var(--accent)}
+.course h3{margin:0 0 4px;font-size:18px}
+.course p{margin:0;color:var(--muted);font-size:13px}
+.state{
+  background:var(--accent-faint);color:var(--accent);border-radius:999px;
+  padding:7px 9px;font-size:11px;font-weight:750
+}
+.placeholder{
+  background:#fff;border:1px solid var(--line);border-radius:28px;padding:30px;
+  box-shadow:var(--shadow)
+}
+.placeholderLabel{
+  display:inline-flex;background:var(--accent-soft);color:var(--accent);border-radius:999px;
+  padding:7px 10px;font-size:11px;font-weight:750;letter-spacing:.07em;text-transform:uppercase
+}
+.placeholder h2{margin:18px 0 8px;font-size:28px;letter-spacing:-.035em}
+.placeholder p{margin:0;color:var(--muted);font-size:16px;line-height:1.5;max-width:650px}
+.bottom{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;
+  background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(22px);
+  -webkit-backdrop-filter:saturate(180%) blur(22px);
+  border-top:1px solid rgba(29,29,31,.08);
+  padding:9px max(12px,env(safe-area-inset-left)) calc(9px + env(safe-area-inset-bottom))
+}
+.bottomin{
+  max-width:720px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:5px
+}
+.navBtn{
+  position:relative;border:0;background:transparent;color:#8B9296;min-height:54px;
+  border-radius:14px;font-size:11px;font-weight:700;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px
+}
+.navBtn.active{color:var(--accent);background:var(--accent-faint)}
+.navIcon{
+  width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;
+  stroke-linecap:round;stroke-linejoin:round
+}
+.quickGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.quick{
+  min-height:104px;border:1px solid var(--line);background:#fff;color:var(--accent-dark);
+  border-radius:20px;padding:16px 12px;cursor:pointer;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;
+  text-align:left;font-weight:720;font-size:14px;line-height:1.2;transition:transform .15s ease,border-color .15s ease
+}
+.quick:active{transform:scale(.985)}
+.quickIcon{
+  width:24px;height:24px;fill:none;stroke:var(--accent);stroke-width:1.65;
+  stroke-linecap:round;stroke-linejoin:round
+}
+.compactHead{margin-top:30px}
+.ready{
+  margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:20px;
+  padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  box-shadow:var(--shadow)
+}
+.readyTop{display:flex;align-items:center;gap:11px;min-width:0}
+.readyTop strong{display:block;font-size:15px;letter-spacing:-.01em}
+.readyDot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--accent-soft);flex:0 0 9px}
+.readyMeta{margin-top:3px;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.readyAction{
+  border:0;background:var(--accent-faint);color:var(--accent);border-radius:999px;
+  min-height:38px;padding:0 14px;font-weight:750;cursor:pointer
+}
+.priorityCard{background:linear-gradient(180deg,#fff,var(--accent-faint));border-color:#D9E1E5}
+.firstSection{margin-top:4px}
+.courseLink{grid-template-columns:76px 1fr auto}
+.courseClock{font-size:13px;font-weight:780;color:var(--accent)}
+.configStatus{
+  margin:-2px 0 16px;background:var(--accent);color:#fff;border-radius:20px;padding:17px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:14px
+}
+.configStatus strong{display:block;font-size:16px}
+.configStatus span:not(.statusPill){display:block;margin-top:3px;color:#DCE4E8;font-size:13px}
+.statusPill{background:#fff;color:var(--accent);border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800}
+.step.done{background:var(--accent);color:#fff}
+.configHint{
+  margin-top:14px;border:1px solid var(--line);background:var(--accent-faint);color:var(--muted);
+  border-radius:18px;padding:15px 17px;font-size:14px;line-height:1.45
+}
+.configHint strong{color:var(--accent-dark)}
+
+.calendarHead{align-items:center}
+.calendarHead>div:first-child{display:flex;flex-direction:column;gap:4px}
+.segmented{
+  display:inline-grid;grid-template-columns:repeat(2,1fr);background:#EDEFF0;
+  border-radius:12px;padding:3px;gap:2px
+}
+.segment{
+  border:0;background:transparent;color:#7A8084;border-radius:9px;padding:7px 11px;
+  font-size:12px;font-weight:750;cursor:pointer
+}
+.segment.active{background:#fff;color:var(--accent-dark);box-shadow:0 1px 5px rgba(0,0,0,.08)}
+.calendarShell{
+  background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;
+  box-shadow:var(--shadow)
+}
+.calendarToolbar{
+  height:50px;padding:0 13px;display:grid;grid-template-columns:40px 1fr 40px;
+  align-items:center;border-bottom:1px solid var(--line);text-align:center
+}
+.calendarToolbar strong{font-size:14px;letter-spacing:-.01em}
+.calendarArrow{
+  border:0;background:transparent;color:var(--accent);font-size:27px;line-height:1;
+  cursor:pointer;border-radius:10px;height:36px
+}
+.calendarView{display:none}.calendarView.active{display:block}
+.dayRow{
+  width:100%;border:0;border-bottom:1px solid var(--line);background:#fff;color:inherit;
+  padding:13px 15px;display:grid;grid-template-columns:48px 1fr auto;gap:12px;
+  align-items:center;text-align:left;cursor:pointer
+}
+.dayRow:last-child{border-bottom:0}
+.dayRow.today{background:var(--accent-faint)}
+.dayDate{display:flex;flex-direction:column;align-items:center;gap:2px}
+.dayDate strong{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.dayDate span{font-size:20px;font-weight:760;letter-spacing:-.04em}
+.dayEvents{display:grid;gap:5px;min-width:0}
+.miniEvent{display:flex;gap:8px;align-items:center;min-width:0;font-size:12px}
+.miniEvent span{color:var(--muted);width:44px;flex:0 0 44px}
+.miniEvent strong{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mutedEvent strong{font-weight:600;color:#545A5E}
+.todayBadge{
+  background:var(--accent);color:#fff;border-radius:999px;padding:6px 8px;
+  font-size:10px;font-weight:800
+}
+.monthWeekdays,.monthGrid{display:grid;grid-template-columns:repeat(7,1fr)}
+.monthWeekdays{padding:12px 12px 6px;color:var(--muted);font-size:10px;font-weight:800;text-align:center}
+.monthGrid{padding:0 12px 14px;gap:5px}
+.monthGrid span{
+  aspect-ratio:1;display:grid;place-items:center;border-radius:10px;font-size:12px;
+  color:var(--ink);position:relative
+}
+.monthGrid .outside{color:#B8BDC0}
+.monthGrid .hasEvent::after{
+  content:"";position:absolute;bottom:4px;width:3px;height:3px;border-radius:50%;background:var(--accent)
+}
+.monthGrid .todayCell{background:var(--accent);color:#fff;font-weight:800}
+.settingsCard{
+  width:100%;margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:24px;
+  padding:18px;text-align:left;color:inherit;cursor:pointer;box-shadow:var(--shadow)
+}
+.settingsCardTop{display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:center}
+.settingsIconWrap{
+  width:42px;height:42px;border-radius:14px;background:var(--accent-soft);color:var(--accent);
+  display:grid;place-items:center
+}
+.settingsLargeIcon,.settingsRowIcon svg,.planningIcon svg,.calendarSyncNote svg{
+  width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round
+}
+.settingsTitle h3{margin:0 0 3px;font-size:18px;letter-spacing:-.02em}
+.settingsTitle p{margin:0;color:var(--muted);font-size:13px}
+.settingsSummary{
+  margin-top:15px;padding-top:13px;border-top:1px solid var(--line);display:flex;gap:7px;flex-wrap:wrap
+}
+.settingsSummary span{
+  background:var(--accent-faint);color:var(--muted);border-radius:999px;padding:7px 9px;font-size:11px
+}
+.settingsSummary strong{color:var(--accent)}
+.compactPageHead{margin-bottom:20px}
+.planningStack{display:grid;gap:10px}
+.planningChoice{
+  width:100%;border:1px solid var(--line);background:#fff;color:inherit;border-radius:20px;
+  padding:18px;display:grid;grid-template-columns:46px 1fr auto;gap:14px;align-items:center;
+  text-align:left;cursor:pointer;box-shadow:var(--shadow)
+}
+.planningIcon{
+  width:46px;height:46px;border-radius:15px;background:var(--accent-soft);color:var(--accent);
+  display:grid;place-items:center
+}
+.planningScope{
+  display:block;color:var(--accent);font-size:10px;text-transform:uppercase;font-weight:800;
+  letter-spacing:.08em;margin-bottom:4px
+}
+.planningText h3{margin:0 0 4px;font-size:19px;letter-spacing:-.02em}
+.planningText p{margin:0;color:var(--muted);font-size:13px}
+.calendarSyncNote{
+  margin-top:14px;padding:14px 16px;border-radius:18px;background:var(--accent-faint);
+  color:var(--muted);display:flex;align-items:center;gap:11px;font-size:13px;line-height:1.4
+}
+.calendarSyncNote svg{color:var(--accent);flex:0 0 auto}
+.calendarSyncNote strong{color:var(--accent-dark)}
+.settingsList{display:grid;gap:10px}
+.settingsRow{
+  width:100%;border:1px solid var(--line);background:#fff;color:inherit;border-radius:20px;
+  padding:16px;display:grid;grid-template-columns:42px 1fr auto auto;gap:12px;align-items:center;
+  text-align:left;cursor:pointer;box-shadow:var(--shadow)
+}
+.settingsRowIcon{
+  width:42px;height:42px;border-radius:13px;background:var(--accent-soft);color:var(--accent);
+  display:grid;place-items:center
+}
+.settingsRow h3{margin:0 0 3px;font-size:16px;letter-spacing:-.015em}
+.settingsRow p{margin:0;color:var(--muted);font-size:12px}
+.statusSmall{
+  background:var(--accent-faint);color:var(--accent);border-radius:999px;padding:6px 8px;
+  font-size:10px;font-weight:800
+}
+.addSetting{
+  margin-top:14px;width:100%;min-height:54px;border:1px dashed #C8CED1;background:transparent;
+  color:var(--accent);border-radius:18px;font-weight:750;cursor:pointer
+}
+.plusCircle{
+  display:inline-grid;place-items:center;width:24px;height:24px;margin-right:8px;border-radius:50%;
+  background:var(--accent-soft);font-size:18px;vertical-align:middle
+}
+
+.toast{
+  position:fixed;left:50%;bottom:102px;z-index:100;transform:translate(-50%,20px);
+  background:#1D1D1F;color:#fff;border-radius:14px;padding:11px 15px;font-size:13px;font-weight:650;
+  opacity:0;pointer-events:none;transition:.2s ease;box-shadow:0 10px 30px rgba(0,0,0,.16);
+  width:max-content;max-width:calc(100vw - 32px);text-align:center
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:760px){
+  main,.topin{padding-left:16px;padding-right:16px}
+  main{padding-top:24px}
+  .grid3,.grid2,.toolGrid,.setupGrid{grid-template-columns:1fr}
+  .feature,.groups{grid-template-columns:1fr}
+  .feature .btn,.groups .btn{width:100%}
+  .sectionHead{align-items:flex-start;flex-direction:column;gap:4px}
+  .course{grid-template-columns:82px 1fr}
+  .course .state{grid-column:2;justify-self:start}
+  .courseLink{grid-template-columns:62px 1fr auto}
+  .quickGrid{grid-template-columns:repeat(3,1fr)}
+  .quick{min-height:96px;padding:14px 11px;font-size:13px}
+  .ready{padding:14px 15px}
+  .configBtn{padding:0 11px}
+  .calendarHead{flex-direction:row;align-items:center}
+  .calendarHead>div:first-child{flex:1}
+  .settingsRow{grid-template-columns:42px 1fr auto}
+  .settingsRow .statusSmall{display:none}
+}
+@media(max-width:390px){
+  .quickGrid{gap:8px}
+  .quick{padding:13px 9px;font-size:12px}
+  .courseLink{grid-template-columns:1fr auto}
+  .courseClock{grid-column:1/-1;margin-bottom:-4px}
+  .calendarHead{gap:10px}
+  .segment{padding:7px 9px}
+  .dayRow{grid-template-columns:42px 1fr auto;padding:12px}
+  .todayBadge{display:none}
+  .planningChoice{grid-template-columns:42px 1fr auto;padding:15px}
+  .planningIcon{width:42px;height:42px}
+  .settingsCard{padding:16px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div class="topin">
+    <div class="brand" aria-label="Henri">
+      <svg class="brandMark" viewBox="0 0 100 100" aria-hidden="true">
+        <rect x="10" y="9" width="25" height="82" rx="12.5" fill="currentColor"/>
+        <rect x="65" y="9" width="25" height="82" rx="12.5" fill="currentColor"/>
+        <path d="M21 73C32 57 41 59 48 52C56 44 62 43 78 27V45C68 55 61 57 55 64C48 72 39 72 21 89Z" fill="currentColor"/>
+      </svg>
+      <span class="brandName">Henri</span>
+    </div>
+    <div class="topActions">
+      <button class="configBtn" data-go="config" aria-label="Ouvrir la configuration">
+        <svg class="configIcon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8.25A3.75 3.75 0 1 0 12 15.75A3.75 3.75 0 0 0 12 8.25Z"/>
+          <path d="M19.05 13.45a7.7 7.7 0 0 0 .04-2.9l1.68-1.31-1.9-3.29-1.98.8a7.72 7.72 0 0 0-2.5-1.45L14.1 3.2h-3.8L10 5.3a7.72 7.72 0 0 0-2.5 1.45l-1.98-.8-1.9 3.29 1.68 1.31a7.7 7.7 0 0 0 .04 2.9l-1.72 1.34 1.9 3.29 2.02-.82A7.7 7.7 0 0 0 10 18.7l.3 2.1h3.8l.3-2.1a7.7 7.7 0 0 0 2.46-1.44l2.02.82 1.9-3.29-1.73-1.34Z"/>
+        </svg>
+        <span>Paramètres</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="home" class="screen active">
+  <div class="feature homeFeature">
+    <div>
+      <small>Prochain cours</small>
+      <h2>Secondaire 3 · Ultimate</h2>
+      <p>70 min · Se démarquer pour offrir une option de passe</p>
+    </div>
+    <button class="btn btn-light" data-go="teach">Ouvrir le cours</button>
+  </div>
+
+  <div class="sectionHead calendarHead">
+    <div>
+      <h2>Mon calendrier</h2>
+      <span id="calendarRange">21–25 septembre</span>
+    </div>
+    <div class="segmented" role="tablist" aria-label="Vue du calendrier">
+      <button class="segment active" data-calendar-view="week" aria-selected="true">Semaine</button>
+      <button class="segment" data-calendar-view="month" aria-selected="false">Mois</button>
+    </div>
+  </div>
+
+  <div class="calendarShell">
+    <div class="calendarToolbar">
+      <button class="calendarArrow" aria-label="Période précédente">‹</button>
+      <strong id="calendarTitle">Cette semaine</strong>
+      <button class="calendarArrow" aria-label="Période suivante">›</button>
+    </div>
+
+    <div id="weekView" class="calendarView active">
+      <button class="dayRow previewLink" data-title="Lundi 21 septembre" data-desc="Les cours et séances planifiés pour cette journée apparaîtront ici.">
+        <div class="dayDate"><strong>Lun</strong><span>21</span></div>
+        <div class="dayEvents">
+          <div class="miniEvent"><span>8 h 35</span><strong>Sec. 3 · Ultimate</strong></div>
+          <div class="miniEvent mutedEvent"><span>13 h 10</span><strong>Sec. 2 · Conditionnement</strong></div>
+        </div>
+        <div class="chev">›</div>
+      </button>
+      <button class="dayRow previewLink" data-title="Mardi 22 septembre" data-desc="Les cours et séances planifiés pour cette journée apparaîtront ici.">
+        <div class="dayDate"><strong>Mar</strong><span>22</span></div>
+        <div class="dayEvents">
+          <div class="miniEvent"><span>10 h 20</span><strong>Sec. 4 · Badminton</strong></div>
+        </div>
+        <div class="chev">›</div>
+      </button>
+      <button class="dayRow previewLink" data-title="Mercredi 23 septembre" data-desc="Les cours et séances planifiés pour cette journée apparaîtront ici.">
+        <div class="dayDate"><strong>Mer</strong><span>23</span></div>
+        <div class="dayEvents">
+          <div class="miniEvent"><span>8 h 35</span><strong>Sec. 2 · Conditionnement</strong></div>
+          <div class="miniEvent mutedEvent"><span>10 h 20</span><strong>Sec. 3 · Ultimate</strong></div>
+        </div>
+        <div class="chev">›</div>
+      </button>
+      <button class="dayRow previewLink" data-title="Jeudi 24 septembre" data-desc="Les cours et séances planifiés pour cette journée apparaîtront ici.">
+        <div class="dayDate"><strong>Jeu</strong><span>24</span></div>
+        <div class="dayEvents">
+          <div class="miniEvent"><span>13 h 10</span><strong>Sec. 4 · Badminton</strong></div>
+        </div>
+        <div class="chev">›</div>
+      </button>
+      <button class="dayRow today previewLink" data-title="Vendredi 25 septembre" data-desc="Aujourd’hui. Les cours planifiés sont affichés directement dans votre calendrier.">
+        <div class="dayDate"><strong>Ven</strong><span>25</span></div>
+        <div class="dayEvents">
+          <div class="miniEvent"><span>8 h 35</span><strong>Sec. 3 · Ultimate</strong></div>
+          <div class="miniEvent mutedEvent"><span>13 h 10</span><strong>Sec. 2 · Conditionnement</strong></div>
+        </div>
+        <div class="todayBadge">Aujourd’hui</div>
+      </button>
+    </div>
+
+    <div id="monthView" class="calendarView">
+      <div class="monthWeekdays">
+        <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+      </div>
+      <div class="monthGrid">
+        <span class="outside">31</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+        <span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
+        <span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span>
+        <span class="hasEvent">21</span><span class="hasEvent">22</span><span class="hasEvent">23</span><span class="hasEvent">24</span><span class="todayCell">25</span><span>26</span><span>27</span>
+        <span class="hasEvent">28</span><span>29</span><span class="hasEvent">30</span><span class="outside">1</span><span class="outside">2</span><span class="outside">3</span><span class="outside">4</span>
+      </div>
+    </div>
+  </div>
+
+  <button class="settingsCard" data-go="config">
+    <div class="settingsCardTop">
+      <div class="settingsIconWrap">
+        <svg class="settingsLargeIcon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8.25A3.75 3.75 0 1 0 12 15.75A3.75 3.75 0 0 0 12 8.25Z"/>
+          <path d="M19.05 13.45a7.7 7.7 0 0 0 .04-2.9l1.68-1.31-1.9-3.29-1.98.8a7.72 7.72 0 0 0-2.5-1.45L14.1 3.2h-3.8L10 5.3a7.72 7.72 0 0 0-2.5 1.45l-1.98-.8-1.9 3.29 1.68 1.31a7.7 7.7 0 0 0 .04 2.9l-1.72 1.34 1.9 3.29 2.02-.82A7.7 7.7 0 0 0 10 18.7l.3 2.1h3.8l.3-2.1a7.7 7.7 0 0 0 2.46-1.44l2.02.82 1.9-3.29-1.73-1.34Z"/>
+        </svg>
+      </div>
+      <div class="settingsTitle">
+        <h3>Mes groupes & paramètres</h3>
+        <p>Tout ce qui alimente Henri.</p>
+      </div>
+      <div class="chev">›</div>
+    </div>
+    <div class="settingsSummary">
+      <span><strong>5</strong> groupes</span>
+      <span><strong>✓</strong> listes de classe</span>
+      <span><strong>✓</strong> calendrier & cycle</span>
+      <span><strong>✓</strong> horaire enseignant</span>
+    </div>
+  </button>
+</section>
+
+<section id="plan" class="screen">
+  <div class="pageHead compactPageHead">
+    <div class="eyebrow">Planifier</div>
+    <h1>Planifier.</h1>
+  </div>
+
+  <div class="planningStack">
+    <button class="planningChoice previewLink" data-title="Planifier une séance" data-desc="Choisissez un groupe, une date et un objectif. La séance créée apparaîtra automatiquement dans Mon calendrier.">
+      <div class="planningIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.75v2.5M17 3.75v2.5M4.5 9h15M6.25 5.25h11.5A1.75 1.75 0 0 1 19.5 7v11A1.75 1.75 0 0 1 17.75 19.75H6.25A1.75 1.75 0 0 1 4.5 18V7A1.75 1.75 0 0 1 6.25 5.25Z"/></svg>
+      </div>
+      <div class="planningText">
+        <span class="planningScope">1 cours</span>
+        <h3>Planifier une séance</h3>
+        <p>Préparer le prochain cours maintenant.</p>
+      </div>
+      <div class="chev">›</div>
+    </button>
+
+    <button class="planningChoice previewLink" data-title="Planifier une séquence" data-desc="Construisez plusieurs séances liées à une même intention. Henri les place ensuite aux bonnes dates pour le groupe choisi.">
+      <div class="planningIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6.25h14M5 12h14M5 17.75h14M8 3.75v5M16 9.5v5M10 15.25v5"/></svg>
+      </div>
+      <div class="planningText">
+        <span class="planningScope">Plusieurs cours</span>
+        <h3>Planifier une séquence</h3>
+        <p>Construire un bloc complet de séances.</p>
+      </div>
+      <div class="chev">›</div>
+    </button>
+
+    <button class="planningChoice previewLink" data-title="Planifier l’année" data-desc="Répartissez les grandes séquences de l’année. Henri tient compte du calendrier scolaire, des jours-cycle et de votre horaire enseignant.">
+      <div class="planningIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5.5h15v14h-15v-14ZM4.5 9h15M8 3.5v4M16 3.5v4M8 12h3M13 12h3M8 16h3M13 16h3"/></svg>
+      </div>
+      <div class="planningText">
+        <span class="planningScope">Vue globale</span>
+        <h3>Planifier l’année</h3>
+        <p>Répartir les séquences sur votre calendrier.</p>
+      </div>
+      <div class="chev">›</div>
+    </button>
+  </div>
+
+  <div class="calendarSyncNote">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.75v2.5M17 3.75v2.5M4.5 9h15M6.25 5.25h11.5A1.75 1.75 0 0 1 19.5 7v11A1.75 1.75 0 0 1 17.75 19.75H6.25A1.75 1.75 0 0 1 4.5 18V7A1.75 1.75 0 0 1 6.25 5.25Z"/></svg>
+    <span>Tout ce que vous planifiez apparaît automatiquement dans <strong>Mon calendrier</strong>.</span>
+  </div>
+</section>
+
+<section id="teach" class="screen">
+  <div class="pageHead">
+    <div class="eyebrow">Enseigner</div>
+    <h1>Enseigner.</h1>
+    <p>Vos cours du jour, prêts à ouvrir.</p>
+  </div>
+
+  <div class="sectionHead firstSection">
+    <h2>Aujourd’hui</h2>
+    <span>Jour 4</span>
+  </div>
+
+  <div class="list">
+    <button class="listCard courseLink previewLink" data-title="Secondaire 3 · Ultimate" data-desc="La séance complète s’ouvrira ici avec le déroulement, les consignes, les temps, la projection et les raccourcis utiles sur le terrain.">
+      <div class="courseClock">8 h 35</div>
+      <div><h3>Secondaire 3 · Ultimate</h3><p>70 min · Se démarquer pour offrir une option de passe</p></div>
+      <div class="state">Prochain</div>
+    </button>
+    <button class="listCard courseLink previewLink" data-title="Secondaire 2 · Conditionnement" data-desc="Ouvrez la séance préparée pour ce groupe et passez directement au mode terrain.">
+      <div class="courseClock">10 h 20</div>
+      <div><h3>Secondaire 2 · Conditionnement</h3><p>60 min · Duels et jeux</p></div>
+      <div class="chev">›</div>
+    </button>
+    <button class="listCard courseLink previewLink" data-title="Secondaire 4 · Badminton" data-desc="Ouvrez la séance préparée pour ce groupe et passez directement au mode terrain.">
+      <div class="courseClock">13 h 10</div>
+      <div><h3>Secondaire 4 · Badminton</h3><p>70 min · Éducatifs et matchs</p></div>
+      <div class="chev">›</div>
+    </button>
+  </div>
+</section>
+
+<section id="tools" class="screen">
+  <div class="pageHead">
+    <div class="eyebrow">Outils</div>
+    <h1>Outils.</h1>
+    <p>Les outils du gymnase, accessibles en un toucher.</p>
+  </div>
+
+  <div class="toolGrid">
+    <button class="card toolCard previewLink" data-title="Musculation" data-desc="Circuits, rotations, chrono continu et saisie rapide des résultats seront réunis dans ce module.">
+      <div class="cardKicker">Séance</div><h3>Musculation</h3><p>Circuits, rotations et résultats.</p><div class="cardAction">Ouvrir →</div>
+    </button>
+    <button class="card toolCard previewLink" data-title="Gestion d’équipes" data-desc="Henri utilise les groupes déjà configurés pour générer rapidement des équipes équilibrées, puis vous laisse les ajuster.">
+      <div class="cardKicker">Répartition</div><h3>Gestion d’équipes</h3><p>Former des équipes équilibrées.</p><div class="cardAction">Ouvrir →</div>
+    </button>
+    <button class="card toolCard previewLink" data-title="Tournoi" data-desc="Créez les affrontements, gérez les rotations et compilez les résultats et le classement au même endroit.">
+      <div class="cardKicker">Compétition</div><h3>Tournoi</h3><p>Horaire, résultats et classement.</p><div class="cardAction">Ouvrir →</div>
+    </button>
+    <button class="card toolCard previewLink" data-title="Chrono" data-desc="Lancez un compte à rebours, des intervalles ou des rotations à projeter dans le gymnase.">
+      <div class="cardKicker">Temps</div><h3>Chrono</h3><p>Compte à rebours et intervalles.</p><div class="cardAction">Ouvrir →</div>
+    </button>
+    <button class="card toolCard previewLink" data-title="Compteur de points" data-desc="Comptez rapidement les points et projetez le score pendant une activité.">
+      <div class="cardKicker">Score</div><h3>Compteur de points</h3><p>Score rapide et projection.</p><div class="cardAction">Ouvrir →</div>
+    </button>
+  </div>
+</section>
+
+<section id="config" class="screen">
+  <button class="back" data-go="home">← Accueil</button>
+  <div class="pageHead compactPageHead">
+    <div class="eyebrow">Paramètres</div>
+    <h1>Mes groupes.</h1>
+    <p>Vos classes, vos documents et votre horaire.</p>
+  </div>
+
+  <div class="settingsList">
+    <button class="settingsRow previewLink" data-title="Groupes et listes de classe" data-desc="Ajoutez ou modifiez vos groupes. Importez les listes d’élèves en PDF, CSV ou photo, puis vérifiez les élèves reconnus.">
+      <div class="settingsRowIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.25 11A3.25 3.25 0 1 0 8.25 4.5A3.25 3.25 0 0 0 8.25 11ZM15.75 10A2.75 2.75 0 1 0 15.75 4.5A2.75 2.75 0 0 0 15.75 10ZM2.75 19.25c.35-3.24 2.45-5.25 5.5-5.25s5.15 2.01 5.5 5.25M13.25 13.75c.7-.5 1.55-.75 2.5-.75 2.83 0 4.78 1.88 5.1 4.75"/></svg>
+      </div>
+      <div>
+        <h3>Groupes & listes de classe</h3>
+        <p>5 groupes · PDF des listes d’élèves</p>
+      </div>
+      <span class="statusSmall">Prêt</span>
+      <div class="chev">›</div>
+    </button>
+
+    <button class="settingsRow previewLink" data-title="Calendrier scolaire et cycle" data-desc="Importez le calendrier scolaire de l’école et indiquez le fonctionnement du cycle. Henri reconnaîtra les congés, pédagogiques et jours-cycle.">
+      <div class="settingsRowIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.75v2.5M17 3.75v2.5M4.5 9h15M6.25 5.25h11.5A1.75 1.75 0 0 1 19.5 7v11A1.75 1.75 0 0 1 17.75 19.75H6.25A1.75 1.75 0 0 1 4.5 18V7A1.75 1.75 0 0 1 6.25 5.25Z"/></svg>
+      </div>
+      <div>
+        <h3>Calendrier scolaire & cycle</h3>
+        <p>PDF du calendrier · cycle configuré</p>
+      </div>
+      <span class="statusSmall">Prêt</span>
+      <div class="chev">›</div>
+    </button>
+
+    <button class="settingsRow previewLink" data-title="Horaire enseignant" data-desc="Importez votre horaire maître en PDF. Henri associera les groupes, périodes, locaux et jours-cycle à votre calendrier.">
+      <div class="settingsRowIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.25h14v13.5H5V5.25ZM8 3.5v3.5M16 3.5v3.5M5 9h14M8 12h3M13 12h3M8 15.5h3"/></svg>
+      </div>
+      <div>
+        <h3>Horaire enseignant</h3>
+        <p>PDF de l’horaire maître</p>
+      </div>
+      <span class="statusSmall">Prêt</span>
+      <div class="chev">›</div>
+    </button>
+  </div>
+
+  <button class="addSetting demoAction">
+    <span class="plusCircle">+</span>
+    Ajouter ou remplacer un document
+  </button>
+</section>
+
+<section id="placeholder" class="screen">
+  <button class="back" id="placeholderBack">← Retour</button>
+  <div class="pageHead">
+    <div class="eyebrow">Henri</div>
+    <h1 id="placeholderTitle">Module</h1>
+  </div>
+  <div class="placeholder">
+    <span class="placeholderLabel">Aperçu</span>
+    <h2 id="placeholderHeading">Le bon outil, au bon endroit.</h2>
+    <p id="placeholderDesc">Le contenu de ce module sera intégré ici.</p>
+  </div>
+</section>
+</main>
+
+<nav class="bottom" aria-label="Navigation principale">
+  <div class="bottomin">
+    <button class="navBtn active" data-go="home" aria-current="page">
+      <svg class="navIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.75 10.25 12 3.75l8.25 6.5v9a1 1 0 0 1-1 1h-5v-6h-4.5v6h-5a1 1 0 0 1-1-1v-9Z"/></svg>
+      <span>Accueil</span>
+    </button>
+    <button class="navBtn" data-go="plan">
+      <svg class="navIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.75v2.5M17 3.75v2.5M4.5 9h15M6.25 5.25h11.5A1.75 1.75 0 0 1 19.5 7v11A1.75 1.75 0 0 1 17.75 19.75H6.25A1.75 1.75 0 0 1 4.5 18V7A1.75 1.75 0 0 1 6.25 5.25Z"/></svg>
+      <span>Planifier</span>
+    </button>
+    <button class="navBtn" data-go="teach">
+      <svg class="navIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.25"/><path d="m10.25 8.75 5 3.25-5 3.25v-6.5Z"/></svg>
+      <span>Enseigner</span>
+    </button>
+    <button class="navBtn" data-go="tools">
+      <svg class="navIcon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.25" y="4.25" width="6" height="6" rx="1.25"/><rect x="13.75" y="4.25" width="6" height="6" rx="1.25"/><rect x="4.25" y="13.75" width="6" height="6" rx="1.25"/><rect x="13.75" y="13.75" width="6" height="6" rx="1.25"/></svg>
+      <span>Outils</span>
+    </button>
+  </div>
+</nav>
+</div>
+
+<div id="toast" class="toast">Cette action sera reliée aux documents de l’enseignant.</div>
+
+<script>
+var screens = Array.from(document.querySelectorAll(".screen"));
+var previousScreen = "home";
+
+function navGroup(id){
+  if(id === "plan") return "plan";
+  if(id === "teach") return "teach";
+  if(id === "tools") return "tools";
+  if(id === "home" || id === "config") return "home";
+  return "";
+}
+function currentScreen(){
+  var s = document.querySelector(".screen.active");
+  return s ? s.id : "home";
+}
+function go(id){
+  if(id !== "placeholder") previousScreen = currentScreen();
+  screens.forEach(function(s){s.classList.toggle("active",s.id === id);});
+  document.querySelectorAll(".navBtn").forEach(function(b){
+    var isActive = b.dataset.go === navGroup(id);
+    b.classList.toggle("active", isActive);
+    if(isActive) b.setAttribute("aria-current","page");
+    else b.removeAttribute("aria-current");
+  });
+  window.scrollTo({top:0,behavior:"auto"});
+}
+document.querySelectorAll("[data-go]").forEach(function(b){
+  b.addEventListener("click",function(){go(b.dataset.go);});
+});
+
+document.querySelectorAll(".previewLink").forEach(function(b){
+  b.addEventListener("click",function(){
+    previousScreen = currentScreen();
+    document.getElementById("placeholderTitle").textContent = b.dataset.title || "Module";
+    document.getElementById("placeholderDesc").textContent = b.dataset.desc || "Ce module sera intégré après validation du canevas.";
+    go("placeholder");
+  });
+});
+
+document.getElementById("placeholderBack").addEventListener("click",function(){
+  go(previousScreen || "home");
+});
+
+
+document.querySelectorAll("[data-calendar-view]").forEach(function(btn){
+  btn.addEventListener("click",function(){
+    var view = btn.dataset.calendarView;
+    document.querySelectorAll("[data-calendar-view]").forEach(function(b){
+      var active = b === btn;
+      b.classList.toggle("active",active);
+      b.setAttribute("aria-selected",active ? "true" : "false");
+    });
+    document.getElementById("weekView").classList.toggle("active",view === "week");
+    document.getElementById("monthView").classList.toggle("active",view === "month");
+    document.getElementById("calendarTitle").textContent = view === "week" ? "Cette semaine" : "Septembre 2026";
+    document.getElementById("calendarRange").textContent = view === "week" ? "21–25 septembre" : "Septembre 2026";
+  });
+});
+
+var toastTimer;
+function showToast(){
+  var t = document.getElementById("toast");
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){t.classList.remove("show");},1800);
+}
+document.querySelectorAll(".demoAction").forEach(function(b){
+  b.addEventListener("click",showToast);
+});
+</script>
+</body>
+</html>
