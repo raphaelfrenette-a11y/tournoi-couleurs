@@ -186,7 +186,7 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
   padding:9px max(12px,env(safe-area-inset-left)) calc(9px + env(safe-area-inset-bottom))
 }
 .bottomin{
-  max-width:720px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:5px
+  max-width:560px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:5px
 }
 .navBtn{
   position:relative;border:0;background:transparent;color:#8B9296;min-height:54px;
@@ -446,7 +446,7 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
       <h2>Secondaire 3 · Ultimate</h2>
       <p>70 min · Se démarquer pour offrir une option de passe</p>
     </div>
-    <button class="btn btn-light" data-go="teach">Ouvrir le cours</button>
+    <button class="btn btn-light openCourse" data-course="Secondaire 3 · Ultimate" data-course-desc="70 min · Se démarquer pour offrir une option de passe">Ouvrir le cours</button>
   </div>
 
   <div class="calendarTop">
@@ -547,37 +547,6 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
   <div class="calendarSyncNote">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.75v2.5M17 3.75v2.5M4.5 9h15M6.25 5.25h11.5A1.75 1.75 0 0 1 19.5 7v11A1.75 1.75 0 0 1 17.75 19.75H6.25A1.75 1.75 0 0 1 4.5 18V7A1.75 1.75 0 0 1 6.25 5.25Z"/></svg>
     <span>Tout ce que vous planifiez apparaît automatiquement dans <strong>Mon calendrier</strong>.</span>
-  </div>
-</section>
-
-<section id="teach" class="screen">
-  <div class="pageHead">
-    <div class="eyebrow">Enseigner</div>
-    <h1>Enseigner.</h1>
-    <p>Vos cours du jour, prêts à ouvrir.</p>
-  </div>
-
-  <div class="sectionHead firstSection">
-    <h2>Aujourd’hui</h2>
-    <span>Jour 4</span>
-  </div>
-
-  <div class="list">
-    <button class="listCard courseLink previewLink" data-title="Secondaire 3 · Ultimate" data-desc="La séance complète s’ouvrira ici avec le déroulement, les consignes, les temps, la projection et les raccourcis utiles sur le terrain.">
-      <div class="courseClock">8 h 35</div>
-      <div><h3>Secondaire 3 · Ultimate</h3><p>70 min · Se démarquer pour offrir une option de passe</p></div>
-      <div class="state">Prochain</div>
-    </button>
-    <button class="listCard courseLink previewLink" data-title="Secondaire 2 · Conditionnement" data-desc="Ouvrez la séance préparée pour ce groupe et passez directement au mode terrain.">
-      <div class="courseClock">10 h 20</div>
-      <div><h3>Secondaire 2 · Conditionnement</h3><p>60 min · Duels et jeux</p></div>
-      <div class="chev">›</div>
-    </button>
-    <button class="listCard courseLink previewLink" data-title="Secondaire 4 · Badminton" data-desc="Ouvrez la séance préparée pour ce groupe et passez directement au mode terrain.">
-      <div class="courseClock">13 h 10</div>
-      <div><h3>Secondaire 4 · Badminton</h3><p>70 min · Éducatifs et matchs</p></div>
-      <div class="chev">›</div>
-    </button>
   </div>
 </section>
 
@@ -683,10 +652,6 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
       <svg class="navIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.75v2.5M17 3.75v2.5M4.5 9h15M6.25 5.25h11.5A1.75 1.75 0 0 1 19.5 7v11A1.75 1.75 0 0 1 17.75 19.75H6.25A1.75 1.75 0 0 1 4.5 18V7A1.75 1.75 0 0 1 6.25 5.25Z"/></svg>
       <span>Planifier</span>
     </button>
-    <button class="navBtn" data-go="teach">
-      <svg class="navIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.25"/><path d="m10.25 8.75 5 3.25-5 3.25v-6.5Z"/></svg>
-      <span>Enseigner</span>
-    </button>
     <button class="navBtn" data-go="tools">
       <svg class="navIcon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.25" y="4.25" width="6" height="6" rx="1.25"/><rect x="13.75" y="4.25" width="6" height="6" rx="1.25"/><rect x="4.25" y="13.75" width="6" height="6" rx="1.25"/><rect x="13.75" y="13.75" width="6" height="6" rx="1.25"/></svg>
       <span>Outils</span>
@@ -703,9 +668,8 @@ var previousScreen = "home";
 
 function navGroup(id){
   if(id === "plan") return "plan";
-  if(id === "teach") return "teach";
   if(id === "tools") return "tools";
-  if(id === "home" || id === "config") return "home";
+  if(id === "home" || id === "config" || id === "placeholder") return "home";
   return "";
 }
 function currentScreen(){
@@ -725,6 +689,20 @@ function go(id){
 }
 document.querySelectorAll("[data-go]").forEach(function(b){
   b.addEventListener("click",function(){go(b.dataset.go);});
+});
+
+function openCourse(title,desc){
+  previousScreen = "home";
+  document.getElementById("placeholderTitle").textContent = title || "Cours";
+  document.getElementById("placeholderHeading").textContent = "Cours";
+  document.getElementById("placeholderDesc").textContent = desc || "Ouvrez le déroulement de la séance.";
+  go("placeholder");
+}
+
+document.querySelectorAll(".openCourse").forEach(function(b){
+  b.addEventListener("click",function(){
+    openCourse(b.dataset.course,b.dataset.courseDesc);
+  });
 });
 
 document.querySelectorAll(".previewLink").forEach(function(b){
@@ -774,7 +752,11 @@ document.getElementById("calendarViewSelect").addEventListener("change",function
 });
 
 document.getElementById("dayEvents").addEventListener("click",function(e){
-  if(e.target.closest(".eventLine")) go("teach");
+  var line = e.target.closest(".eventLine");
+  if(!line) return;
+  var title = line.querySelector("strong") ? line.querySelector("strong").textContent : "Cours";
+  var time = line.querySelector("span") ? line.querySelector("span").textContent : "";
+  openCourse(title,time ? time + " · Séance planifiée" : "Séance planifiée");
 });
 
 var toastTimer;
