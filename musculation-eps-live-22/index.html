@@ -1,0 +1,1003 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<title>Gym Arena ÉPS · LIVE 21</title>
+<style>
+:root{
+  --bg:#08101d;--panel:#101b2e;--panel2:#16243b;--text:#f7fafc;--muted:#9fb0c6;
+  --line:#263955;--accent:#4ade80;--danger:#fb7185;--warning:#fbbf24;
+  --shadow:0 18px 48px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:radial-gradient(circle at 20% 0%,#122642 0,#08101d 42%,#050a12 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.app{min-height:100vh}
+.shell{width:min(1500px,96vw);margin:0 auto;padding:20px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.04em}
+.brandMark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#4ade80,#22d3ee);color:#07111f;font-size:22px}
+.brandSub{display:block;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}
+.card{background:linear-gradient(180deg,rgba(22,36,59,.96),rgba(14,25,42,.96));border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+.setupCard{padding:26px}
+.stepTitle{font-size:clamp(26px,3vw,44px);margin:0 0 7px;font-weight:950}
+.stepText{color:var(--muted);margin:0 0 24px;font-size:16px}
+.section{margin-top:26px}
+.section h2{font-size:18px;margin:0 0 12px}
+.countRow{display:flex;flex-wrap:wrap;gap:10px}
+.pillBtn{min-width:66px;border:1px solid var(--line);background:#0c1728;color:var(--text);padding:14px 18px;border-radius:16px;font-weight:900}
+.pillBtn.active{background:var(--text);color:#08101d;border-color:var(--text)}
+.teamEditor{display:grid;grid-template-columns:1.5fr .5fr;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.teamEditor:last-child{border-bottom:0}
+.teamName,.numberInput{width:100%;border:1px solid var(--line);background:#081322;color:var(--text);border-radius:14px;padding:13px 14px;outline:none}
+.teamName:focus,.numberInput:focus{border-color:#60a5fa;box-shadow:0 0 0 3px rgba(96,165,250,.14)}
+.modeGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.modeBtn{border:1px solid var(--line);background:#0d192b;color:#fff;border-radius:20px;padding:18px 12px;text-align:left;min-height:120px;transition:.18s transform,.18s border-color}
+.modeBtn:hover{transform:translateY(-2px)}
+.modeBtn.active{border-color:var(--mode,#4ade80);box-shadow:0 0 0 2px color-mix(in srgb,var(--mode,#4ade80) 35%,transparent)}
+.modeIcon{font-size:28px}.modeName{font-size:17px;font-weight:950;margin-top:8px}.modeDesc{font-size:12px;color:var(--muted);margin-top:4px}
+.primary{border:0;background:linear-gradient(135deg,#4ade80,#22c55e);color:#04130a;padding:15px 22px;border-radius:16px;font-weight:950;font-size:17px}
+.primary:disabled{opacity:.35;cursor:not-allowed}
+.secondary{border:1px solid var(--line);background:#0c1728;color:#fff;padding:13px 17px;border-radius:14px;font-weight:850}
+.danger{border:1px solid rgba(251,113,133,.5);background:rgba(251,113,133,.1);color:#fecdd3;padding:12px 16px;border-radius:14px;font-weight:900}
+.actionRow{display:flex;justify-content:flex-end;gap:10px;margin-top:26px}
+.resumeBox{padding:18px 20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.resumeText strong{display:block;font-size:17px}.resumeText span{color:var(--muted);font-size:13px}
+.warmupWrap{display:grid;grid-template-columns:.72fr 1.28fr;gap:18px}
+.warmupMain{padding:28px}
+.bigMode{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:8px 12px;font-weight:900;background:rgba(255,255,255,.08);border:1px solid var(--line)}
+.warmupTitle{font-size:clamp(32px,4vw,58px);font-weight:1000;margin:14px 0 8px}
+.timerHuge{font-size:clamp(62px,10vw,150px);font-variant-numeric:tabular-nums;font-weight:1000;letter-spacing:-.06em;line-height:.9;margin:20px 0}
+.warmupList{padding:18px;display:grid;grid-template-columns:1fr;gap:10px}
+.warmupItem{display:grid;grid-template-columns:135px 1fr auto;align-items:center;gap:16px;padding:12px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:#0b1728}
+.warmupVisual{width:135px;height:96px;border-radius:14px;background:#08111e;border:1px solid rgba(148,163,184,.12);display:grid;place-items:center;overflow:hidden}
+.warmupVisual svg{width:125px;height:90px}
+.warmName{font-size:21px;font-weight:1000;line-height:1.05}.warmCue{color:var(--muted);font-size:13px;margin-top:4px}.warmDose{font-weight:1000;color:#dbeafe;font-size:18px;white-space:nowrap}
+.circuitShell{width:min(1900px,99vw);height:100vh;margin:0 auto;padding:10px 12px 10px;display:flex;flex-direction:column;overflow:hidden}
+.circuitTop{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:12px}
+.sessionInfo{display:flex;align-items:center;gap:12px}.modeBadge{padding:9px 12px;border-radius:999px;font-weight:950;background:rgba(255,255,255,.09);border:1px solid var(--line)}
+.timeBlock{text-align:center}.rotationLabel{font-size:13px;color:var(--muted);font-weight:900;letter-spacing:.14em;text-transform:uppercase}.rotationTimer{font-size:clamp(40px,5.5vw,78px);font-weight:1000;font-variant-numeric:tabular-nums;letter-spacing:-.05em;line-height:1}.sessionTimer{font-size:13px;color:var(--muted);margin-top:3px}
+.mainPhaseActions{display:flex;justify-content:center;margin-top:7px}
+.phaseAction{border:0;border-radius:14px;padding:10px 20px;font-size:15px;font-weight:1000;min-width:220px}
+.endExerciseBtn{background:#fee2e2;color:#7f1d1d;border:2px solid #fca5a5}
+.nextPhaseBtn{background:#f8fafc;color:#07101c;border:2px solid #f8fafc}
+.teacherBtns{display:flex;justify-content:flex-end;gap:8px}.teacherBtn{border:1px solid var(--line);background:#0d192b;color:#fff;border-radius:14px;padding:11px 14px;font-weight:900}
+.circuitShell[data-phase="results"] .rotationLabel,.circuitShell[data-phase="results"] .rotationTimer{color:#fbbf24}
+.circuitShell[data-phase="results"] .stationCard{box-shadow:0 0 0 2px rgba(251,191,36,.18),0 14px 32px rgba(0,0,0,.23)}
+.rotateBtn{background:#f8fafc;color:#07101c;border-color:#f8fafc}
+.stationGrid{display:grid;gap:10px;flex:1;min-height:0;grid-auto-rows:minmax(0,1fr)}
+.stationGrid[data-count="4"]{grid-template-columns:repeat(2,1fr)}
+.stationGrid[data-count="5"],.stationGrid[data-count="6"]{grid-template-columns:repeat(3,1fr)}
+.stationGrid[data-count="7"],.stationGrid[data-count="8"]{grid-template-columns:repeat(4,1fr)}
+.stationGrid[data-count="9"],.stationGrid[data-count="10"]{grid-template-columns:repeat(5,1fr)}
+.stationGrid[data-count="7"] .stationCard,.stationGrid[data-count="8"] .stationCard,.stationGrid[data-count="9"] .stationCard,.stationGrid[data-count="10"] .stationCard{padding:11px;min-height:0}
+.stationGrid[data-count="9"] .exerciseName,.stationGrid[data-count="10"] .exerciseName{font-size:clamp(14px,1.25vw,20px)}
+.stationGrid[data-count="9"] .exerciseDose,.stationGrid[data-count="10"] .exerciseDose{font-size:11px}
+.stationGrid[data-count="9"] .cue,.stationGrid[data-count="10"] .cue{font-size:10px;line-height:1.15}
+.stationGrid[data-count="5"] .stationCard,.stationGrid[data-count="6"] .stationCard{padding:10px}
+.stationGrid[data-count="5"] .teamTag,.stationGrid[data-count="6"] .teamTag{min-height:34px;padding:6px 9px}
+.stationGrid[data-count="5"] .teamNameBig,.stationGrid[data-count="6"] .teamNameBig{font-size:14px}
+.stationGrid[data-count="5"] .stationNum,.stationGrid[data-count="6"] .stationNum{font-size:10px}
+.stationGrid[data-count="5"] .exerciseName,.stationGrid[data-count="6"] .exerciseName{font-size:clamp(16px,1.45vw,22px);margin-top:6px}
+.stationGrid[data-count="5"] .exerciseDose,.stationGrid[data-count="6"] .exerciseDose{font-size:12px}
+.stationGrid[data-count="5"] .cue,.stationGrid[data-count="6"] .cue{font-size:11px;line-height:1.15}
+.stationGrid[data-count="5"] .exerciseTimePill,.stationGrid[data-count="6"] .exerciseTimePill{margin-top:4px;padding:3px 6px;font-size:10px}
+.stationGrid[data-count="5"] .visualBox,.stationGrid[data-count="6"] .visualBox{height:90px;margin:5px 0}
+.stationGrid[data-count="5"] .visualBox svg,.stationGrid[data-count="6"] .visualBox svg{height:84px;width:min(94%,210px)}
+.stationGrid[data-count="7"] .visualBox,.stationGrid[data-count="8"] .visualBox{height:82px;min-height:0;margin:5px 0}
+.stationGrid[data-count="9"] .visualBox,.stationGrid[data-count="10"] .visualBox{height:70px;min-height:0;margin:4px 0}
+.stationGrid[data-count="7"] .visualBox svg,.stationGrid[data-count="8"] .visualBox svg{height:76px;width:min(94%,190px)}
+.stationGrid[data-count="9"] .visualBox svg,.stationGrid[data-count="10"] .visualBox svg{height:64px;width:min(92%,165px)}
+.stationGrid[data-count="9"] .teamNameBig,.stationGrid[data-count="10"] .teamNameBig{font-size:13px}
+.stationGrid[data-count="9"] .teamTag,.stationGrid[data-count="10"] .teamTag{min-height:38px;padding:6px 7px}
+.stationGrid[data-count="9"] .scoreHint,.stationGrid[data-count="10"] .scoreHint{display:none}
+.stationGrid[data-count="9"] .tapScore,.stationGrid[data-count="10"] .tapScore{padding:6px 8px;font-size:11px}
+.circuitShell[data-phase="work"] .stationGrid[data-count="5"] .visualBox,
+.circuitShell[data-phase="work"] .stationGrid[data-count="6"] .visualBox{height:auto;min-height:82px;margin:4px 0 0}
+.circuitShell[data-phase="work"] .stationGrid[data-count="5"] .visualBox svg,
+.circuitShell[data-phase="work"] .stationGrid[data-count="6"] .visualBox svg{height:min(105px,94%);width:min(90%,210px)}
+.circuitShell[data-phase="work"] .stationGrid[data-count="7"] .visualBox,
+.circuitShell[data-phase="work"] .stationGrid[data-count="8"] .visualBox{height:auto;min-height:70px;margin:3px 0 0}
+.circuitShell[data-phase="work"] .stationGrid[data-count="7"] .visualBox svg,
+.circuitShell[data-phase="work"] .stationGrid[data-count="8"] .visualBox svg{height:min(90px,92%);width:min(88%,185px)}
+.circuitShell[data-phase="work"] .stationGrid[data-count="9"] .visualBox,
+.circuitShell[data-phase="work"] .stationGrid[data-count="10"] .visualBox{height:auto;min-height:58px;margin:2px 0 0}
+.circuitShell[data-phase="work"] .stationGrid[data-count="9"] .visualBox svg,
+.circuitShell[data-phase="work"] .stationGrid[data-count="10"] .visualBox svg{height:min(76px,90%);width:min(86%,160px)}
+.stationCard{position:relative;min-height:0;overflow:hidden;border-radius:22px;background:linear-gradient(180deg,#12213a,#0c1729);border:2px solid var(--teamColor,#334155);box-shadow:0 14px 32px rgba(0,0,0,.23);padding:14px;display:flex;flex-direction:column}
+.stationCard.scored{box-shadow:0 0 0 3px rgba(74,222,128,.18),0 14px 32px rgba(0,0,0,.23)}
+.stationHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.stationNum{font-size:11px;color:var(--muted);font-weight:950;letter-spacing:.12em}
+.teamTag{width:100%;min-height:42px;margin-top:5px;padding:8px 10px;border-radius:12px;background:var(--teamColor);color:#07101c;font-weight:1000;line-height:1.08;white-space:normal;overflow:visible;word-break:break-word;display:flex;align-items:center}
+.teamNameBig{display:block;width:100%;font-size:15px;text-align:left}
+.check{font-size:20px;flex:0 0 auto}
+.exerciseName{font-size:clamp(17px,1.7vw,25px);font-weight:1000;margin:8px 0 3px;line-height:1.05}.exerciseDose{font-weight:900;color:#dce8f6;font-size:13px}.exerciseTimePill{display:inline-block;margin-top:5px;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.08);font-size:11px;font-weight:950;color:#dbeafe}.cue{font-size:12px;color:var(--muted);margin-top:3px}
+.visualBox{position:relative;flex:0 0 auto;height:112px;margin:7px 0;border-radius:16px;background:radial-gradient(circle at 50% 44%,rgba(96,165,250,.10),transparent 52%),linear-gradient(180deg,#0a1626,#08111e);border:1px solid rgba(148,163,184,.14);display:grid;place-items:center;overflow:hidden}
+.visualBox svg{width:min(96%,230px);height:104px;transform:translateY(-1px);filter:drop-shadow(0 8px 16px rgba(0,0,0,.16))}
+.scoreFooter{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;min-height:32px}.scoreHint{font-size:11px;color:var(--muted);line-height:1.1}.scoreValue{font-size:13px;font-weight:1000}
+.circuitShell[data-phase="work"] .scoreFooter{display:none}
+.circuitShell[data-phase="work"] .exerciseTimePill{display:none}
+.circuitShell[data-phase="work"] .visualBox{flex:1 1 auto;height:auto;min-height:96px;margin:6px 0 0}
+.circuitShell[data-phase="work"] .visualBox svg{height:min(118px,95%);width:min(92%,230px);transform:none}
+.circuitShell[data-phase="results"] .visualBox{display:none}
+.circuitShell[data-phase="results"] .exerciseTimePill{display:none}
+.circuitShell[data-phase="results"] .scoreFooter{margin-top:10px;min-height:48px}
+.circuitShell[data-phase="results"] .scoreHint{font-size:12px;font-weight:950;color:#fbbf24}
+.stationGrid[data-count="5"] .scoreFooter,.stationGrid[data-count="6"] .scoreFooter,.stationGrid[data-count="7"] .scoreFooter,.stationGrid[data-count="8"] .scoreFooter{min-height:28px}
+.stationGrid[data-count="5"] .scoreHint,.stationGrid[data-count="6"] .scoreHint,.stationGrid[data-count="7"] .scoreHint,.stationGrid[data-count="8"] .scoreHint{font-size:10px}.tapScore{border:0;background:rgba(255,255,255,.08);color:white;border-radius:11px;padding:8px 10px;font-weight:900;font-size:12px}
+.rankStrip{margin-top:8px;padding:9px 12px;border-radius:16px;border:1px solid var(--line);background:rgba(8,18,32,.92);display:flex;align-items:center;gap:8px;overflow-x:auto;flex:0 0 auto}
+.rankTitle{color:#f8fafc;font-size:12px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}.rankItem{white-space:nowrap;padding:7px 10px;border-radius:999px;background:#13233a;font-size:12px;font-weight:900}.rankItem b{color:#86efac;margin-left:5px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(10px);display:grid;place-items:center;padding:18px;z-index:50}
+.modalCard{width:min(700px,96vw);max-height:94vh;overflow:auto;background:#0e1a2d;border:1px solid #30435f;border-radius:26px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.modalTeam{font-size:13px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;color:var(--teamColor,#93c5fd)}.modalExercise{font-size:28px;font-weight:1000;margin:5px 0}.modalPrompt{color:var(--muted);font-size:13px;margin-bottom:13px}.scoreDisplay{display:flex;align-items:baseline;gap:8px;padding:14px 16px;background:#07111f;border:1px solid var(--line);border-radius:16px;margin-bottom:12px}.scoreInput{width:100%;background:transparent;border:0;color:#fff;font-size:46px;font-weight:1000;outline:0;text-align:right}.unit{font-size:16px;color:var(--muted);font-weight:900}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.key{border:1px solid var(--line);background:#15253d;color:#fff;border-radius:14px;padding:14px;font-size:22px;font-weight:950}.key.action{font-size:14px}.saveScore{width:100%;border:0;background:#4ade80;color:#06120a;border-radius:14px;padding:15px;font-size:18px;font-weight:1000;margin-top:10px}.modalMeta{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:10px}
+.repCalculator{display:grid;gap:9px;margin:8px 0 12px}.repSet{padding:9px 10px;border:1px solid var(--line);border-radius:14px;background:#0a1626}.repSetHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.repSetTitle{font-size:12px;font-weight:1000;letter-spacing:.08em;text-transform:uppercase}.repSetTotal{font-size:12px;color:#86efac;font-weight:950}.repStudents{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.repCell{border:1px solid #334155;background:#13233a;color:#fff;border-radius:10px;padding:7px 5px;font-size:12px;font-weight:900;min-height:39px}.repCell.active{border-color:#60a5fa;box-shadow:0 0 0 2px rgba(96,165,250,.22);background:#193354}.repCell.empty{color:#94a3b8}.repQuick{padding:10px;border-radius:14px;background:#07111f;border:1px solid var(--line)}.repQuickTitle{font-size:11px;color:#cbd5e1;font-weight:850;margin-bottom:7px}.repChoices{display:flex;flex-wrap:wrap;gap:6px}.repChoice{flex:1 1 46px;min-width:46px;border:1px solid #3b526f;background:#162a44;color:#fff;border-radius:10px;padding:9px 7px;font-size:16px;font-weight:1000}.repChoice.zero{color:#fda4af}.repTotalBox{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;border-radius:14px;background:#10273b;border:1px solid #28506f}.repTotalLabel{font-size:12px;color:#cbd5e1;font-weight:900}.repTotalValue{font-size:28px;font-weight:1000;color:#86efac}.repHint{font-size:11px;color:#94a3b8;margin-top:5px}.numericEntry.hidden{display:none!important}.closeModal{position:absolute;top:18px;right:18px}
+.repExtraControls{display:flex;gap:8px;flex-wrap:wrap}.repExtraControls button,.repNext{border:1px solid #3b526f;background:#162a44;color:#fff;border-radius:10px;padding:9px 12px;font-size:14px;font-weight:850}.repDigits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:10px}.repDigits button{min-height:48px;border:1px solid #3b526f;background:#162a44;color:#fff;border-radius:10px;font-size:20px;font-weight:950}.repDigits .repNext{font-size:14px;background:#20517a}.repCurrent{font-size:16px;color:#dbeafe;font-weight:900;margin-top:8px}.repBonusHelp{color:#86efac;font-size:13px;line-height:1.4}.repRemove{border:0;background:transparent;color:#fda4af;font-size:13px;font-weight:800}
+.repStudents{grid-template-columns:repeat(auto-fit,minmax(105px,1fr))}
+.repTeamQuick{padding:13px;border-radius:16px;background:#10273b;border:1px solid #28506f}
+.repTeamQuickTitle{font-size:13px;font-weight:1000;margin-bottom:4px}.repTeamQuickSub{font-size:11px;color:#94a3b8;margin-bottom:9px}
+.repFastRows{display:grid;gap:8px}.repFastRow{padding:10px;border:1px solid var(--line);border-radius:14px;background:#0a1626}
+.repFastHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}.repFastName{font-size:13px;font-weight:1000}.repFastTotal{font-size:12px;color:#86efac;font-weight:950}
+.repFastChoices{display:flex;gap:6px;flex-wrap:wrap}.repFastChoice{flex:1 1 42px;min-width:42px;border:1px solid #3b526f;background:#162a44;color:#fff;border-radius:10px;padding:9px 6px;font-size:15px;font-weight:1000}.repFastChoice.active{border-color:#4ade80;background:#173d31}.repFastDetail{border:1px solid #3b526f;background:#0f1d31;color:#cbd5e1;border-radius:10px;padding:9px 10px;font-size:12px;font-weight:900}.repFastClear{border:0;background:transparent;color:#fda4af;padding:7px 4px;font-size:11px;font-weight:850}
+.repDetailBox{margin-top:9px;padding-top:9px;border-top:1px solid var(--line)}
+.finishCard{padding:28px}.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}.podiumItem{padding:20px;border-radius:20px;background:#0f1d31;border:1px solid var(--line);text-align:center}.podiumPos{font-size:30px}.podiumTeam{font-size:21px;font-weight:1000}.podiumPts{color:#86efac;font-weight:950}
+.allRanks{display:grid;gap:8px}.allRank{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px;background:#0c1728}.allRank strong{font-size:15px}.allRank span{color:#86efac;font-weight:950}
+.rotateFlash{position:fixed;inset:0;z-index:60;background:#07111f;display:grid;place-items:center;text-align:center;padding:20px}.rotateFlash h1{font-size:clamp(50px,10vw,130px);margin:0;font-weight:1000}.rotateFlash p{font-size:clamp(20px,4vw,46px);color:#cbd5e1;margin:8px 0 0}
+.smallNote{font-size:12px;color:var(--muted)}
+@media(max-width:900px){
+  .modeGrid{grid-template-columns:repeat(2,1fr)}.teamEditor{grid-template-columns:1fr}.warmupWrap{grid-template-columns:1fr}
+  .circuitTop{grid-template-columns:1fr auto 1fr}.sessionInfo{justify-content:flex-start}.teacherBtns{justify-content:flex-end}
+}
+@media(max-width:600px){.podium{grid-template-columns:1fr}.shell{padding:12px}.circuitShell{min-width:760px;overflow:hidden}}
+</style>
+</head>
+<body>
+<div class="app">
+  <main id="setupScreen" class="shell">
+    <div class="topbar">
+      <div class="brand"><div class="brandMark">GA</div><div>GYM ARENA <span class="brandSub">Éducation physique · VERSION 22</span></div></div>
+    </div>
+    <div id="resumeBox" class="card resumeBox hidden">
+      <div class="resumeText"><strong>Séance en cours trouvée</strong><span id="resumeMeta"></span></div>
+      <div><button class="secondary" id="resumeBtn">Reprendre</button> <button class="danger" id="discardBtn">Nouvelle séance</button></div>
+    </div>
+    <section class="card setupCard">
+      <h1 class="stepTitle">Préparer la séance</h1>
+      <p class="stepText" style="color:#86efac;font-weight:850">Saisie rapide : appliquez un résultat à toute l’équipe, puis ajustez seulement les élèves qui ont fait différent.</p>
+      <p class="stepText">Une classe, un objectif, des rotations simples. L'application s'occupe du reste.</p>
+
+      <div class="section">
+        <h2>1. Nombre d'équipes</h2>
+        <div class="countRow" id="teamCountRow"></div>
+      </div>
+
+      <div class="section">
+        <h2>2. Équipes</h2>
+        <div id="teamsEditor"></div><div class="card" style="margin-top:14px;padding:14px 16px;border-left:4px solid #4ade80"><strong>PRINCIPE DE CHARGE</strong><div class="smallNote" style="margin-top:5px">Choisissez une charge adaptée pour terminer chaque série avec environ <b>1 à 3 reps en réserve (RIR)</b>. La compétition porte sur le respect du volume prescrit et la constance.</div></div>
+        
+      </div>
+
+      <div class="section">
+        <h2>3. Objectif du jour</h2>
+        <div class="modeGrid" id="modeGrid"></div>
+      </div>
+
+      <div class="actionRow">
+        <button class="primary" id="toWarmupBtn" disabled>Démarrer le circuit →</button>
+      </div>
+    </section>
+  </main>
+
+  <main id="warmupScreen" class="shell hidden">
+    <div class="topbar">
+      <div class="brand"><div class="brandMark">GA</div><div>GYM ARENA <span class="brandSub">Échauffement</span></div></div>
+      
+    </div>
+    <div class="warmupWrap">
+      <section class="card warmupMain">
+        <div class="bigMode" id="warmupMode"></div>
+        <h1 class="warmupTitle">Échauffement</h1>
+        <p class="stepText" id="warmupIntro"></p><div style="font-size:18px;font-weight:900;margin:-10px 0 10px">Faites les 3 mouvements ci-contre ensemble.</div><div class="smallNote" style="margin-top:-12px;margin-bottom:12px">Tout le monde ensemble · 4 minutes</div>
+        <div class="timerHuge" id="warmupTimer">04:00</div><div class="sessionTimer" style="font-size:15px">Temps total de séance <span id="warmupSessionTimer">00:00</span></div>
+        <div class="actionRow" style="justify-content:flex-start">
+          <button class="primary" id="startCircuitBtn">Suivant →</button>
+        </div>
+      </section>
+      <section class="card warmupList" id="warmupList"></section>
+    </div>
+  </main>
+
+  <main id="circuitScreen" class="circuitShell hidden">
+    <header class="circuitTop">
+      <div class="sessionInfo">
+        <div class="brandMark">GA</div>
+        <div><div class="modeBadge" id="circuitMode"></div><div class="smallNote" id="rotationProgress"></div></div>
+      </div>
+      <div class="timeBlock">
+        <div class="rotationLabel" id="phaseLabel">EXERCICE</div>
+        <div class="rotationTimer" id="rotationTimer">00:00</div>
+        <div class="sessionTimer"><span id="sessionTimerLabel">Séance</span> <span id="sessionTimer">00:00</span></div>
+        <div class="mainPhaseActions">
+          <button class="phaseAction endExerciseBtn" id="endExerciseBtn">Terminer l’exercice</button>
+          <button class="phaseAction nextPhaseBtn hidden" id="rotateBtn">Suivant →</button>
+        </div>
+      </div>
+      <div class="teacherBtns">
+        <button class="teacherBtn" id="pauseBtn">⏸ Pause</button>
+        <button class="teacherBtn" id="finishBtn">Terminer la séance</button>
+      </div>
+    </header>
+    <section class="stationGrid" id="stationGrid"></section>
+    <section class="rankStrip" id="rankStrip"></section>
+  </main>
+
+  <main id="finishScreen" class="shell hidden">
+    <div class="topbar"><div class="brand"><div class="brandMark">GA</div><div>GYM ARENA <span class="brandSub">Résultats</span></div></div></div>
+    <section class="card finishCard">
+      <h1 class="stepTitle">🏆 Classement final</h1>
+      <p class="stepText">Fin de la séance : podium et classement complet calculés automatiquement.</p>
+      <div class="podium" id="podium"></div>
+      <div class="allRanks" id="allRanks"></div>
+      <div class="actionRow"><button class="primary" id="newSessionBtn">Nouvelle séance</button></div>
+    </section>
+  </main>
+</div>
+
+<div id="scoreModal" class="modal hidden">
+  <div class="modalCard" id="modalCard">
+    <div class="modalTeam" id="modalTeam"></div>
+    <div class="modalExercise" id="modalExercise"></div>
+    <div class="modalPrompt" id="modalPrompt"></div><div id="teamTotalHelp" style="margin:-4px 0 12px;padding:9px 11px;border-radius:12px;background:#14243b;color:#dbeafe;font-size:12px;font-weight:850"></div>
+    <div id="repCalculator" class="repCalculator hidden"></div>
+    <div id="numericEntry" class="numericEntry">
+      <div class="scoreDisplay"><input id="scoreInput" class="scoreInput" inputmode="decimal" readonly value=""><span class="unit" id="modalUnit"></span></div>
+      <div class="keypad" id="keypad"></div>
+    </div>
+    <button class="saveScore" id="saveScoreBtn">✓ Enregistrer le résultat</button>
+    <div class="modalMeta"><span id="modalProfile"></span><span id="modalTarget"></span></div>
+  </div>
+</div>
+
+<div id="rotateFlash" class="rotateFlash hidden"><div><h1>ROTATION</h1><p id="rotateFlashText"></p></div></div>
+
+<script>
+const WARMUP_BANK = {
+  force:[
+    ["🚶","Course légère sur place","Rythme facile","60 s"],
+    ["🦵","Squats au poids du corps","Amplitude contrôlée","10 reps"],
+    ["↔️","Fentes alternées","Contrôle des appuis","8 / côté"],
+    ["💪","Push-ups faciles","Technique propre","8 reps"],
+    ["🔄","Cercles de bras","Progressifs","30 s"]
+  ],
+  hypertrophie:[
+    ["🚶","Course légère sur place","Rythme facile","60 s"],
+    ["🦵","Squats contrôlés","Descente lente","12 reps"],
+    ["↔️","Fentes alternées","Sans charge","8 / côté"],
+    ["💪","Push-ups faciles","Amplitude confortable","8 reps"],
+    ["🔄","Cercles de bras","Petits puis grands","30 s"]
+  ],
+  endurance:[
+    ["🏃","Jogging sur place","Rythme continu","60 s"],
+    ["⭐","Jumping jacks","Rythme facile","30 s"],
+    ["🦵","Squats","Rythme fluide","12 reps"],
+    ["↔️","Fentes alternées","Sans charge","8 / côté"],
+    ["⬆️","Montées de genoux","Progressif","30 s"]
+  ],
+  power:[
+    ["🏃","Jogging sur place","Progressif","60 s"],
+    ["🦵","Squats dynamiques","Accélérer à la montée","10 reps"],
+    ["⬆️","Petits sauts verticaux","Atterrissage silencieux","6 reps"],
+    ["↔️","Fentes dynamiques","Contrôle","6 / côté"],
+    ["⚡","Pogos légers","Petits rebonds rapides","20 s"]
+  ],
+  cardio:[
+    ["🚶","Marche rapide sur place","Bras actifs","60 s"],
+    ["⭐","Jumping jacks","Rythme confortable","30 s"],
+    ["⬆️","Montées de genoux","Progressif","30 s"],
+    ["🦵","Squats","Rythme fluide","12 reps"],
+    ["🏃","Jogging sur place","Progressif","45 s"]
+  ]
+};
+
+const CIRCUIT_TIMING={
+  force:{work:270,results:90},
+  hypertrophie:{work:390,results:90},
+  endurance:{work:210,results:90},
+  power:{work:210,results:90},
+  cardio:{work:210,results:90}
+};
+
+const MODES = {
+  force:{
+    label:"Force",icon:"🏋️",color:"#60a5fa",desc:"5–8 reps propres, charge exigeante et contrôlée.",
+    warmupIntro:"3 mouvements simples pour préparer tout le groupe.",
+    warmup:[
+      ["🚲","Vélo léger","Rythme facile","2 min"],
+      ["🦵","Squats au poids du corps","Amplitude contrôlée","10 reps"],
+      ["↔️","Fentes alternées","Genou dans l'axe","8 / côté"],
+      ["💪","Push-ups faciles","Garder 3–4 reps en réserve","8 reps"],
+      ["🏋️","Série légère du premier exercice","Technique parfaite","6 reps"]
+    ],
+    exercises:[
+      ex("Squat assisté","5–8 reps / élève","Additionnez les répétitions propres.","reps","rép.","squat",{progression:5,active:6,performance:7},8),
+      ex("Machine bench press","5–8 reps / élève","Omoplates stables, contrôle de la descente.","reps","rép.","press",{progression:5,active:6,performance:7},8),
+      ex("Deadlift","5–8 reps / élève","Dos neutre, pousser le sol.","reps","rép.","hinge",{progression:5,active:6,performance:7},8),
+      ex("Lat pulldown","5–8 reps / élève","Tirer vers le haut de la poitrine.","reps","rép.","pulldown",{progression:5,active:6,performance:7},8),
+      ex("Split squat avec haltères","5–8 reps / jambe","Buste stable, pousser avec la jambe avant.","reps","rép.","lunge",{progression:5,active:6,performance:7},8),
+      ex("Développé épaules haltères","5–8 reps / élève","Gainé, trajectoire verticale.","reps","rép.","shoulder",{progression:5,active:6,performance:7},8),
+      ex("Goblet squat lourd","5–8 reps / élève","Charge près du corps, talons au sol.","reps","rép.","squat",{progression:5,active:6,performance:7},8),
+      ex("Chest press double poulie","5–8 reps / élève","Pousser les poignées vers l’avant, tronc stable.","reps","rép.","press",{progression:5,active:6,performance:7},8),
+      ex("Curl EZ lourd","5–8 reps / élève","Coudes fixes, mouvement contrôlé.","reps","rép.","curl",{progression:5,active:6,performance:7},8),
+      ex("Triceps corde lourd","5–8 reps / élève","Coudes près du corps, extension complète.","reps","rép.","triceps",{progression:5,active:6,performance:7},8)
+    ]
+  },
+  hypertrophie:{
+    label:"Hypertrophie",icon:"💪",color:"#c084fc",desc:"Volume adapté à la station : 1 à 3 séries, charge contrôlée.",
+    warmupIntro:"3 mouvements simples pour préparer tout le groupe.",
+    warmup:[
+      ["🚲","Vélo léger","Rythme continu","2 min"],
+      ["🦵","Squats contrôlés","Descente lente","12 reps"],
+      ["💪","Push-ups","Amplitude confortable","10 reps"],
+      ["⬇️","Tirage poulie très léger","Serrer les omoplates","10 reps"],
+      ["↔️","Fentes alternées","Contrôle","8 / côté"]
+    ],
+    exercises:[
+      ex("Machine bench press","1 série × 8–10 reps / élève","Défi lourd : charge exigeante, aucune rep forcée.","reps","rép.","press",{progression:8,active:9,performance:10},10,1),
+      ex("Squat assisté","2 séries × 10–12 reps / élève","Contrôle à la descente, charge adaptée.","reps","rép.","squat",{progression:20,active:22,performance:24},24,2),
+      ex("Lat pulldown","2 séries × 8–12 reps / élève","Poitrine haute, tirer avec le dos.","reps","rép.","pulldown",{progression:16,active:20,performance:22},24,2),
+      ex("Élévations latérales haltères","3 séries × 12–15 reps / élève","Charge légère, mouvement strict, peu d'élan.","reps","rép.","shoulder",{progression:36,active:40,performance:44},45,3),
+      ex("Chest fly double poulie","2 séries × 10–12 reps / élève","Bras légèrement fléchis, tension continue.","reps","rép.","fly",{progression:20,active:22,performance:24},24,2),
+      ex("Curl EZ bar","3 séries × 10–12 reps / élève","Coudes fixes, contrôle complet.","reps","rép.","curl",{progression:30,active:33,performance:36},36,3),
+      ex("Triceps corde","1 série × 12–15 reps / élève","Défi lourd propre : finir près de la limite technique.","reps","rép.","triceps",{progression:12,active:14,performance:15},15,1),
+      ex("Goblet squat kettlebell","3 séries × 10–15 reps / élève","Rythme contrôlé, amplitude confortable.","reps","rép.","squat",{progression:30,active:36,performance:42},45,3),
+      ex("Développé épaules haltères","2 séries × 8–12 reps / élève","Gainé, trajectoire verticale.","reps","rép.","shoulder",{progression:16,active:20,performance:22},24,2),
+      ex("Soulevé de terre roumain haltères","3 séries × 8–12 reps / élève","Hanches vers l'arrière, dos neutre.","reps","rép.","hinge",{progression:24,active:30,performance:33},36,3)
+    ]
+  },
+  endurance:{
+    label:"Endurance",icon:"🔥",color:"#fb923c",desc:"Efforts prolongés et répétitions propres.",
+    warmupIntro:"3 mouvements simples pour préparer tout le groupe.",
+    warmup:[
+      ["🏃","Marche/course légère sur place","Rythme progressif","90 s"],
+      ["🪢","Corde à sauter facile","Petits bonds","45 s"],
+      ["🦵","Squats","Rythme fluide","15 reps"],
+      ["↔️","Fentes alternées","Sans charge","10 / côté"],
+      ["💪","Push-ups faciles","Technique d'abord","8 reps"]
+    ],
+    exercises:[
+      ex("Push-ups","45 s / élève","Additionnez toutes les répétitions propres.","reps","rép.","pushup",{progression:8,active:12,performance:16}),
+      ex("Goblet squat léger","45 s / élève","Rythme constant, amplitude propre.","reps","rép.","squat",{progression:12,active:16,performance:20}),
+      ex("Lat pulldown léger","45 s / élève","Pas d'élan, contrôle complet.","reps","rép.","pulldown",{progression:10,active:14,performance:18}),
+      ex("Fentes alternées","45 s / élève","Chaque jambe compte 1 répétition.","reps","rép.","lunge",{progression:10,active:14,performance:18}),
+      ex("Curl EZ léger","45 s / élève","Amplitude complète.","reps","rép.","curl",{progression:10,active:14,performance:18}),
+      ex("Triceps corde","45 s / élève","Coudes immobiles.","reps","rép.","triceps",{progression:10,active:14,performance:18}),
+      ex("Wall sit","Meilleur temps / élève","Additionnez les secondes de chaque élève.","seconds","s","wallsit",{progression:25,active:40,performance:55}),
+      ex("Corde à sauter","45 s / élève","Additionnez les sauts réussis.","reps","sauts","rope",{progression:35,active:55,performance:75}),
+      ex("Élévations latérales légères","45 s / élève","Mouvement contrôlé, sans élan.","reps","rép.","shoulder",{progression:10,active:14,performance:18}),
+      ex("Kettlebell swing","45 s / élève","Rythme constant, hanches actives.","reps","rép.","swing",{progression:12,active:16,performance:20})
+    ]
+  },
+  power:{
+    label:"Puissance",icon:"⚡",color:"#facc15",desc:"Efforts courts, explosifs et récupérés.",
+    warmupIntro:"3 mouvements simples pour préparer tout le groupe.",
+    warmup:[
+      ["🚲","Vélo progressif","Finir à rythme moyen","2 min"],
+      ["🦵","Squats dynamiques","Accélérer à la montée","10 reps"],
+      ["↔️","Fentes dynamiques","Contrôle des appuis","8 / côté"],
+      ["⬆️","Petits sauts verticaux","Atterrissage silencieux","6 reps"],
+      ["⚡","3 accélérations explosives","70 % → 85 %","3 essais"]
+    ],
+    exercises:[
+      ex("Saut en longueur sans élan","3 essais / élève","Additionnez le meilleur saut de chaque élève.","distance","cm","jump",{progression:120,active:150,performance:180}),
+      ex("Box jump","3 essais / élève","Additionnez la hauteur réussie par chaque élève.","height","cm","jump",{progression:35,active:45,performance:55}),
+      ex("Med-ball chest throw","3 essais / élève","Additionnez le meilleur lancer de chacun.","distance","cm","throw",{progression:250,active:350,performance:450}),
+      ex("Sprint vélo 15 s","1 essai / élève","Additionnez la distance de tous les élèves.","distance","m","bike",{progression:90,active:120,performance:150}),
+      ex("Kettlebell swing explosif","20 s / élève","Additionnez les répétitions explosives propres.","reps","rép.","swing",{progression:8,active:11,performance:14}),
+      ex("Squat jumps","20 s / élève","Additionnez les sauts avec atterrissage contrôlé.","reps","rép.","jump",{progression:7,active:10,performance:13}),
+      ex("Push-ups explosifs","20 s / élève","Additionnez les répétitions réellement explosives.","reps","rép.","pushup",{progression:4,active:7,performance:10}),
+      ex("Med-ball slam","20 s / élève","Additionnez les répétitions puissantes.","reps","rép.","slam",{progression:7,active:10,performance:13}),
+      ex("Fentes sautées","20 s / élève","Sauts rapides, atterrissages contrôlés.","reps","rép.","jump",{progression:5,active:8,performance:11}),
+      ex("Sauts latéraux","20 s / élève","Bondir d'un côté à l'autre avec contrôle.","reps","rép.","jump",{progression:8,active:12,performance:16})
+    ]
+  },
+  cardio:{
+    label:"Cardio",icon:"❤️",color:"#fb7185",desc:"Défis courts pour faire monter le rythme cardiaque.",
+    warmupIntro:"3 mouvements simples pour préparer tout le groupe.",
+    warmup:[
+      ["🚶","Marche rapide sur place","Bras actifs","1 min"],
+      ["🪢","Corde à sauter facile","Rythme confortable","1 min"],
+      ["🦵","Step-ups tranquilles","Alterner la jambe","1 min"],
+      ["🏃","Montées de genoux légères","Progressif","30 s"],
+      ["🔥","Accélération progressive","Pas au maximum","30 s"]
+    ],
+    exercises:[
+      ex("Vélo stationnaire","45 s / élève","Additionnez la distance de toute l'équipe.","distance","m","bike",{progression:250,active:330,performance:420}),
+      ex("Corde à sauter","45 s / élève","Additionnez les sauts réussis.","reps","sauts","rope",{progression:35,active:55,performance:75}),
+      ex("Step-ups sur box","45 s / élève","Chaque montée complète compte 1.","reps","rép.","stepup",{progression:10,active:14,performance:18}),
+      ex("Shuttle run","45 s / élève","Additionnez les longueurs complètes.","reps","long.","run",{progression:5,active:7,performance:9}),
+      ex("Mountain climbers","45 s / élève","Chaque genou vers l'avant compte 1.","reps","rép.","climber",{progression:24,active:34,performance:44}),
+      ex("Kettlebell swing","45 s / élève","Rythme continu avec technique propre.","reps","rép.","swing",{progression:12,active:16,performance:20}),
+      ex("Burpees","45 s / élève","Additionnez les répétitions complètes.","reps","rép.","burpee",{progression:5,active:8,performance:11}),
+      ex("Med-ball slam","45 s / élève","Additionnez les répétitions complètes.","reps","rép.","slam",{progression:10,active:14,performance:18}),
+      ex("Jumping jacks","45 s / élève","Additionnez les répétitions complètes.","reps","rép.","jump",{progression:20,active:30,performance:40}),
+      ex("Montées de genoux","45 s / élève","Chaque genou haut compte 1 répétition.","reps","rép.","run",{progression:30,active:45,performance:60})
+    ]
+  }
+};
+function ex(name,dose,prompt,type,unit,motion,target,maxPerPerson=null,sets=1){return{name,dose,prompt,type,unit,motion,target,maxPerPerson,sets};}
+
+const PALETTE=["#60a5fa","#fb7185","#facc15","#4ade80","#f8fafc","#fb923c","#c084fc","#22d3ee","#f472b6","#a3e635"];
+const STORE_KEY="gymArenaEPS_v1";
+let state={
+  teamCount:6,teams:[],mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,
+  rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,sessionBreakStartedAt:null,paused:false,pauseStartedAt:null,
+  sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false
+};
+let warmupTick=null,circuitTick=null,modalContext=null,modalRepData=null,activeRepCell=null,repDigitDraft="",repDetailStudent=null;
+
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+const screens=["setupScreen","warmupScreen","circuitScreen","finishScreen"];
+
+function defaultTeams(n){
+  return Array.from({length:n},(_,i)=>({name:"",size:4,color:PALETTE[i]}));
+}
+function init(){
+  state.teams=defaultTeams(state.teamCount);
+  renderSetup();
+  buildKeypad();
+  const saved=readSaved();
+  if(saved && saved.screen!=="setup" && !saved.finished){
+    $("#resumeBox").classList.remove("hidden");
+    $("#resumeMeta").textContent=(MODES[saved.mode]?.label||"Séance")+" · "+saved.teams.length+" équipes · rotation "+(saved.rotation+1);
+  }
+}
+function renderSetup(){
+  $("#teamCountRow").innerHTML=[4,5,6,7,8,9,10].map(n=>`<button class="pillBtn ${state.teamCount===n?"active":""}" data-count="${n}">${n}</button>`).join("");
+  $$("#teamCountRow .pillBtn").forEach(b=>b.onclick=()=>setTeamCount(+b.dataset.count));
+  renderTeamsEditor();
+  $("#modeGrid").innerHTML=Object.entries(MODES).map(([k,m])=>`
+    <button class="modeBtn ${state.mode===k?"active":""}" data-mode="${k}" style="--mode:${m.color}">
+      <div class="modeIcon">${m.icon}</div><div class="modeName">${m.label}</div><div class="modeDesc">${m.desc}</div>
+    </button>`).join("");
+  $$("#modeGrid .modeBtn").forEach(b=>b.onclick=()=>{state.mode=b.dataset.mode;renderSetup();validateSetup();});
+  validateSetup();
+}
+function setTeamCount(n){
+  const old=state.teams;
+  state.teamCount=n;
+  state.teams=Array.from({length:n},(_,i)=>old[i]||{name:"",size:4,color:PALETTE[i]});
+  state.teams.forEach((t,i)=>t.color=PALETTE[i]);
+  renderSetup();
+}
+function renderTeamsEditor(){
+  $("#teamsEditor").innerHTML=state.teams.map((t,i)=>`
+    <div class="teamEditor" data-i="${i}">
+      <input class="teamName" maxlength="22" value="${escapeHtml(t.name)}" placeholder="Équipe ${i+1} — facultatif" aria-label="Nom équipe ${i+1}">
+      <select class="numberInput teamSize" aria-label="Nombre d'élèves">
+        ${[2,3,4,5,6,7,8].map(n=>`<option value="${n}" ${t.size===n?"selected":""}>${n} élèves</option>`).join("")}
+      </select>
+    </div>`).join("");
+  $$(".teamEditor").forEach(row=>{
+    const i=+row.dataset.i;
+    row.querySelector(".teamName").oninput=e=>{state.teams[i].name=e.target.value;validateSetup();};
+    row.querySelector(".teamSize").onchange=e=>state.teams[i].size=+e.target.value;
+  });
+}
+function validateSetup(){
+  const ok=!!state.mode;
+  $("#toWarmupBtn").disabled=!ok;
+}
+function showScreen(id){
+  screens.forEach(s=>$("#"+s).classList.toggle("hidden",s!==id));
+}
+function prepareWarmup(){
+  state.teams=state.teams.map((t,i)=>({name:t.name.trim()||("Équipe "+(i+1)),size:t.size,color:PALETTE[i]}));
+  state.warmupPlan=pickWarmup(state.mode);
+  state.warmupRemaining=240;
+  state.warmupRunning=true;
+  state.screen="warmup";
+  state.sessionStartedAt=Date.now();
+  state.sessionPauseTotal=0;
+  state.paused=false;
+  renderWarmup();
+  showScreen("warmupScreen");
+  startWarmupTick();
+  save();
+}
+function renderWarmup(){
+  const m=MODES[state.mode];
+  $("#warmupMode").innerHTML=`${m.icon} ${m.label}`;
+  $("#warmupMode").style.borderColor=m.color;
+  $("#warmupIntro").textContent=m.warmupIntro;
+  $("#warmupTimer").textContent=formatTime(state.warmupRemaining);
+  const plan=state.warmupPlan?.length?state.warmupPlan:pickWarmup(state.mode); state.warmupPlan=plan;
+  $("#warmupList").innerHTML=plan.map(x=>`
+    <div class="warmupItem">
+      <div class="warmupVisual">${motionVisual(warmupMotion(x[1]))}</div>
+      <div><div class="warmName">${x[1]}</div><div class="warmCue">${x[2]}</div></div>
+      <div class="warmDose">${x[3]}</div>
+    </div>`).join("");
+}
+function startWarmupTick(){
+  clearInterval(warmupTick);
+  warmupTick=setInterval(()=>{
+    if(state.screen!=="warmup") return;
+    if(state.warmupRunning && state.warmupRemaining>0){
+      state.warmupRemaining=Math.max(0,state.warmupRemaining-1);
+      if(state.warmupRemaining===0){state.warmupRunning=false;beep();}
+    }
+    $("#warmupTimer").textContent=formatTime(state.warmupRemaining);
+    const elapsed=Math.max(0,Date.now()-state.sessionStartedAt-state.sessionPauseTotal);
+    const totalEl=$("#warmupSessionTimer");
+    if(totalEl) totalEl.textContent=formatTime(Math.floor(elapsed/1000));
+    save();
+  },1000);
+}
+function startCircuit(){
+  clearInterval(warmupTick);
+  state.screen="circuit";
+  state.rotation=0;
+  state.phase="work";
+  state.sessionBreakStartedAt=null;
+  state.scores={};
+  state.finished=false;
+  state.paused=false;
+  if(!state.sessionStartedAt) state.sessionStartedAt=Date.now();
+  state.rotationStartedAt=Date.now();
+  state.rotationPauseTotal=0;
+  showScreen("circuitScreen");
+  renderCircuit();
+  startCircuitTick();
+  save();
+}
+function startCircuitTick(){
+  clearInterval(circuitTick);
+  circuitTick=setInterval(updateTimers,250);
+  updateTimers();
+}
+function phaseDuration(){
+  const t=CIRCUIT_TIMING[state.mode]||CIRCUIT_TIMING.hypertrophie;
+  return state.phase==="results"?t.results:t.work;
+}
+function phaseLabel(){
+  return state.phase==="results" ? "ENTREZ VOS RÉSULTATS" : "EXERCICE";
+}
+function phaseRemainingSeconds(now=Date.now()){
+  const clockNow=state.paused?(state.pauseStartedAt||now):now;
+  const phaseMs=Math.max(0,clockNow-state.rotationStartedAt-state.rotationPauseTotal);
+  return Math.max(0,phaseDuration()-Math.floor(phaseMs/1000));
+}
+function updateTimers(){
+  if(state.screen!=="circuit")return;
+  const realNow=Date.now();
+  const clockNow=state.paused?(state.pauseStartedAt||realNow):realNow;
+  const sessionClock=(state.phase==="results" && state.sessionBreakStartedAt)
+    ? state.sessionBreakStartedAt
+    : clockNow;
+  const sessionMs=Math.max(0,sessionClock-state.sessionStartedAt-state.sessionPauseTotal);
+  const remaining=phaseRemainingSeconds(realNow);
+
+  $("#sessionTimer").textContent=formatTime(Math.floor(sessionMs/1000));
+  $("#sessionTimerLabel").textContent=state.phase==="results"?"Séance en pause":"Séance";
+  $("#rotationTimer").textContent=formatTime(remaining);
+  $("#phaseLabel").textContent=phaseLabel();
+  $("#circuitScreen").dataset.phase=state.phase;
+
+  const nextBtn=$("#rotateBtn");
+  const endBtn=$("#endExerciseBtn");
+  const ready=state.phase==="results";
+  nextBtn.classList.toggle("hidden",!ready);
+  endBtn.classList.toggle("hidden",state.phase!=="work");
+  if(ready) nextBtn.textContent=state.rotation>=state.teamCount-1?"Voir le classement →":"Suivant →";
+  endBtn.textContent="Terminer l’exercice";
+
+  if(!state.paused && state.phase==="work" && remaining<=0) startResultsPhase();
+}
+function endExerciseEarly(){
+  if(state.screen!=="circuit" || state.phase!=="work")return;
+  startResultsPhase();
+}
+function startResultsPhase(){
+  if(state.phase==="results")return;
+  state.phase="results";
+  state.rotationStartedAt=Date.now();
+  state.rotationPauseTotal=0;
+  state.sessionBreakStartedAt=Date.now();
+  beep();
+  renderCircuit();
+  save();
+  updateTimers();
+}
+function finishScoreBreak(){
+  if(!state.sessionBreakStartedAt)return;
+  state.sessionPauseTotal+=Date.now()-state.sessionBreakStartedAt;
+  state.sessionBreakStartedAt=null;
+}
+function advanceToNextStation(){
+  if(state.phase!=="results")return;
+  finishScoreBreak();
+  if(state.rotation>=state.teamCount-1){
+    finishSession(true);
+    return;
+  }
+  state.rotation++;
+  state.phase="work";
+  state.rotationStartedAt=Date.now();
+  state.rotationPauseTotal=0;
+  beep();
+  flashRotation();
+  renderCircuit();
+  save();
+  updateTimers();
+}
+function currentExerciseIndex(teamIndex){
+  return (teamIndex+state.rotation)%state.teamCount;
+}
+function renderCircuit(){
+  const m=MODES[state.mode];
+  $("#circuitMode").textContent=m.icon+" "+m.label;
+  $("#circuitMode").style.borderColor=m.color;
+  $("#rotationProgress").textContent=`Rotation ${state.rotation+1} / ${state.teamCount}`;
+  const grid=$("#stationGrid");grid.dataset.count=state.teamCount;
+  grid.innerHTML=state.teams.map((team,teamIndex)=>{
+    const exIndex=currentExerciseIndex(teamIndex), exercise=m.exercises[exIndex];
+    const score=getScore(state.rotation,teamIndex);
+    return `<article class="stationCard ${score?"scored":""}" data-team="${teamIndex}" style="--teamColor:${team.color}">
+      <div class="stationHeader"><div style="min-width:0;flex:1"><div class="stationNum">STATION ${exIndex+1}</div><div class="teamTag"><span class="teamNameBig">${escapeHtml(team.name)}</span></div></div><div class="check">${score?"✅":""}</div></div>
+      <div class="exerciseName">${exercise.name}</div>
+      <div class="exerciseDose">${exercise.dose}</div>
+      <div class="exerciseTimePill">⏱ Temps officiel : ${formatTime(CIRCUIT_TIMING[state.mode].work)}</div>
+      <div class="cue">${exercise.prompt}</div>
+      <div class="visualBox">${motionVisual(exercise.motion)}</div>
+      <div class="scoreFooter"><div><div class="scoreHint">${state.phase==="results"?"ENTREZ VOTRE RÉSULTAT MAINTENANT":"Travail en cours"}</div><div class="scoreValue">${score?escapeHtml(score.raw+" "+exercise.unit):"Score non entré"}</div></div><button class="tapScore">${score?"Modifier":"Score"}</button></div>
+    </article>`;
+  }).join("");
+  $$(".stationCard").forEach(c=>c.onclick=()=>openScore(+c.dataset.team));
+  renderRanking();
+}
+function parseRepRange(exercise){
+  if(exercise.type!=="reps")return null;
+  const m=exercise.dose.match(/(\d+)\s*[–-]\s*(\d+)\s*reps/i);
+  return m?{min:+m[1],max:+m[2]}:null;
+}
+function usesRepCalculator(exercise){return !!parseRepRange(exercise);}
+function makeRepData(exercise,team,existing){
+  const sets=Math.max(1,exercise.sets||1);
+  if(existing?.breakdown && existing.breakdown.length>=sets && existing.breakdown.every(r=>Array.isArray(r)&&r.length===team.size)){
+    return existing.breakdown.map(r=>r.map(v=>Number.isFinite(v)?v:null));
+  }
+  return Array.from({length:sets},()=>Array(team.size).fill(null));
+}
+function repTotal(){
+  return (modalRepData||[]).flat().reduce((s,v)=>s+(Number.isFinite(v)?v:0),0);
+}
+function repOptions(exercise){
+  const range=parseRepRange(exercise);
+  if(!range)return [];
+  const vals=[];
+  for(let n=range.min;n<=range.max;n++) vals.push(n);
+  if(vals.length<=6)return vals;
+  const mid=Math.round((range.min+range.max)/2);
+  return [...new Set([range.min,range.min+1,mid,range.max-1,range.max])].sort((a,b)=>a-b);
+}
+function studentRepTotal(student){
+  return (modalRepData||[]).reduce((sum,row)=>sum+(Number.isFinite(row[student])?row[student]:0),0);
+}
+function studentUniformValue(student){
+  if(!modalRepData?.length)return null;
+  const vals=modalRepData.map(row=>row[student]);
+  if(vals.some(v=>!Number.isFinite(v)))return null;
+  return vals.every(v=>v===vals[0])?vals[0]:null;
+}
+function applyRepToAll(value){
+  if(!modalRepData)return;
+  modalRepData=modalRepData.map(row=>row.map(()=>value));
+  activeRepCell=null;repDigitDraft="";repDetailStudent=null;
+  renderRepCalculator();
+}
+function applyRepToStudent(student,value){
+  if(!modalRepData)return;
+  modalRepData.forEach(row=>row[student]=value);
+  activeRepCell=null;repDigitDraft="";
+  renderRepCalculator();
+}
+function clearRepStudent(student){
+  if(!modalRepData)return;
+  modalRepData.forEach(row=>row[student]=null);
+  activeRepCell=null;repDigitDraft="";
+  renderRepCalculator();
+}
+function clearAllReps(){
+  if(!modalRepData)return;
+  modalRepData=modalRepData.map(row=>row.map(()=>null));
+  activeRepCell=null;repDigitDraft="";repDetailStudent=null;
+  renderRepCalculator();
+}
+function toggleRepDetail(student){
+  repDetailStudent=repDetailStudent===student?null:student;
+  activeRepCell=null;repDigitDraft="";
+  renderRepCalculator();
+}
+function setActiveRepCell(set,student){
+  activeRepCell=activeRepCell?.set===set&&activeRepCell?.student===student?null:{set,student};
+  repDetailStudent=student;
+  repDigitDraft="";renderRepCalculator();
+  if(activeRepCell)$("#repQuick")?.scrollIntoView({block:"nearest"});
+}
+function enterRepDigit(key){
+  if(!modalRepData||!activeRepCell)return;
+  const {set,student}=activeRepCell;
+  if(key==="clear")repDigitDraft="";
+  else if(key==="back")repDigitDraft=(repDigitDraft||String(modalRepData[set][student]??"")).slice(0,-1);
+  else repDigitDraft=(repDigitDraft+key).slice(0,3);
+  modalRepData[set][student]=repDigitDraft===""?null:Number(repDigitDraft);
+  renderRepCalculator();
+}
+function nextRepCell(){
+  if(!modalRepData||!activeRepCell)return;
+  const sets=modalRepData.length;
+  const nextSet=(activeRepCell.set+1)%sets;
+  const nextStudent=nextSet===0?(activeRepCell.student+1)%modalRepData[0].length:activeRepCell.student;
+  repDetailStudent=nextStudent;
+  activeRepCell={set:nextSet,student:nextStudent};
+  repDigitDraft="";
+  renderRepCalculator();
+}
+function addRepSet(){
+  if(!modalRepData||!modalContext||modalRepData.length>=10)return;
+  modalRepData.push(Array(modalContext.team.size).fill(null));
+  activeRepCell=null;repDigitDraft="";renderRepCalculator();
+}
+function removeRepSet(){
+  if(!modalRepData||!modalContext||modalRepData.length<=(modalContext.exercise.sets||1))return;
+  modalRepData.pop();activeRepCell=null;repDigitDraft="";renderRepCalculator();
+}
+function renderRepCalculator(){
+  if(!modalContext||!modalRepData)return;
+  const {exercise,team}=modalContext,range=parseRepRange(exercise);
+  const box=$("#repCalculator");
+  if(!range)return;
+  const opts=repOptions(exercise);
+  const optionButtons=(attrs="",active=null)=>opts.map(v=>`<button type="button" class="repFastChoice ${active===v?"active":""}" ${attrs} data-rep="${v}">${v}</button>`).join("");
+  box.innerHTML=`
+    <div class="repTotalBox"><div><div class="repTotalLabel">TOTAL ÉQUIPE</div><div class="repHint">L’app calcule tout. Commencez par un résultat commun, puis ajustez seulement les exceptions.</div></div><div class="repTotalValue">${repTotal()} <span style="font-size:13px;color:#cbd5e1">rép.</span></div></div>
+    <div class="repTeamQuick">
+      <div class="repTeamQuickTitle">Même nombre de reps par série pour toute l’équipe</div>
+      <div class="repTeamQuickSub">${modalRepData.length} série${modalRepData.length>1?"s":""} · un seul toucher remplit tout le groupe.</div>
+      <div class="repFastChoices">${optionButtons('data-teamquick="1"')}<button type="button" class="repFastClear" id="clearAllReps">Effacer tout</button></div>
+    </div>
+    <div class="repFastRows">
+      ${Array.from({length:team.size},(_,p)=>{
+        const uniform=studentUniformValue(p);
+        return `<div class="repFastRow">
+          <div class="repFastHead"><div class="repFastName">Élève ${p+1}</div><div class="repFastTotal">${studentRepTotal(p)} reps</div></div>
+          <div class="repFastChoices">
+            ${optionButtons(`data-student="${p}"`,uniform)}
+            <button type="button" class="repFastDetail" data-detail="${p}">${repDetailStudent===p?"Fermer":"Détaillé"}</button>
+            <button type="button" class="repFastClear" data-clearstudent="${p}">Effacer</button>
+          </div>
+          ${repDetailStudent===p?`<div class="repDetailBox">
+            <div class="repStudents">${modalRepData.map((row,s)=>`<button type="button" class="repCell ${activeRepCell?.set===s&&activeRepCell?.student===p?"active":""} ${row[p]===null?"empty":""}" data-set="${s}" data-student="${p}">Série ${s+1}${s>=(exercise.sets||1)?" ★":""} · ${row[p]===null?"—":row[p]}</button>`).join("")}</div>
+            ${activeRepCell?.student===p?`<div class="repQuick" id="repQuick" style="margin-top:9px"><div class="repQuickTitle">Élève ${p+1} · série ${activeRepCell.set+1}</div><div class="repCurrent">${modalRepData[activeRepCell.set][p]??"—"} répétitions · tapez 1 puis 5 pour 15</div><div class="repDigits">${[1,2,3,4,5,6,7,8,9,"Effacer",0,"⌫"].map(v=>`<button type="button" data-digit="${v==="Effacer"?"clear":v==="⌫"?"back":v}">${v}</button>`).join("")}</div><button type="button" class="repNext" id="nextRepCell" style="width:100%;margin-top:8px">Suivant →</button></div>`:""}
+          </div>`:""}
+        </div>`;
+      }).join("")}
+    </div>
+    <div class="repExtraControls"><button type="button" id="addRepSet">+ Ajouter une série bonus</button>${modalRepData.length>(exercise.sets||1)?'<button type="button" class="repRemove" id="removeRepSet">Retirer la dernière série</button>':""}</div>
+    <div class="repBonusHelp">Les résultats restent individuels. Le mode détaillé sert seulement aux élèves dont les séries sont différentes. Reps propres seulement.</div>`;
+  box.querySelectorAll("[data-teamquick]").forEach(b=>b.onclick=()=>applyRepToAll(+b.dataset.rep));
+  box.querySelectorAll("[data-student][data-rep]").forEach(b=>b.onclick=()=>applyRepToStudent(+b.dataset.student,+b.dataset.rep));
+  box.querySelectorAll("[data-detail]").forEach(b=>b.onclick=()=>toggleRepDetail(+b.dataset.detail));
+  box.querySelectorAll("[data-clearstudent]").forEach(b=>b.onclick=()=>clearRepStudent(+b.dataset.clearstudent));
+  box.querySelectorAll(".repCell").forEach(b=>b.onclick=()=>setActiveRepCell(+b.dataset.set,+b.dataset.student));
+  box.querySelectorAll("[data-digit]").forEach(b=>b.onclick=()=>enterRepDigit(b.dataset.digit));
+  if(box.querySelector("#nextRepCell"))box.querySelector("#nextRepCell").onclick=nextRepCell;
+  box.querySelector("#clearAllReps").onclick=clearAllReps;
+  box.querySelector("#addRepSet").onclick=addRepSet;
+  if(box.querySelector("#removeRepSet"))box.querySelector("#removeRepSet").onclick=removeRepSet;
+}
+function openScore(teamIndex){
+  const exIndex=currentExerciseIndex(teamIndex), exercise=MODES[state.mode].exercises[exIndex], team=state.teams[teamIndex];
+  modalContext={teamIndex,exIndex,exercise,team,rotation:state.rotation};
+  const existing=getScore(state.rotation,teamIndex);
+  $("#modalCard").style.setProperty("--teamColor",team.color);
+  $("#modalTeam").textContent=team.name;
+  $("#modalExercise").textContent=exercise.name;
+  $("#modalPrompt").textContent=exercise.prompt;
+  const calc=usesRepCalculator(exercise);
+  $("#repCalculator").classList.toggle("hidden",!calc);
+  $("#numericEntry").classList.toggle("hidden",calc);
+  const totalHelp=$("#teamTotalHelp");
+  if(calc){
+    totalHelp.textContent="Choisissez d’abord une valeur pour toute l’équipe, puis ajustez seulement les élèves qui ont fait différent.";
+    modalRepData=makeRepData(exercise,team,existing);
+    activeRepCell=null;repDigitDraft="";repDetailStudent=null;
+    renderRepCalculator();
+  }else{
+    modalRepData=null;activeRepCell=null;
+    if(exercise.type==="seconds") totalHelp.textContent="Entrez le total des secondes de tous les élèves de l’équipe.";
+    else totalHelp.textContent="Entrez une seule valeur totale pour toute l’équipe.";
+    $("#scoreInput").value=existing?existing.raw:"";
+  }
+  $("#modalUnit").textContent=exercise.unit;
+  $("#modalProfile").textContent=team.size+" élèves · cible : 1–3 RIR";
+  $("#modalTarget").textContent="Standard : "+standardTarget(exercise)+" "+exercise.unit+" / élève"+((exercise.sets||1)>1?" au total":"");
+  $("#scoreModal").classList.remove("hidden");
+}
+function closeScore(){$("#scoreModal").classList.add("hidden");modalContext=null;modalRepData=null;activeRepCell=null;repDigitDraft="";repDetailStudent=null;}
+function buildKeypad(){
+  const keys=["1","2","3","4","5","6","7","8","9",".","0","⌫"];
+  $("#keypad").innerHTML=keys.map(k=>`<button class="key ${k==="⌫"?"action":""}" data-k="${k}">${k}</button>`).join("");
+  $$("#keypad .key").forEach(b=>b.onclick=()=>keyPress(b.dataset.k));
+  $("#saveScoreBtn").onclick=saveScore;
+}
+function keyPress(k){
+  const input=$("#scoreInput");let v=input.value;
+  if(k==="⌫")v=v.slice(0,-1);
+  else if(k==="." && !v.includes("."))v=(v||"0")+".";
+  else if(k!==".")v+=(k);
+  if(v.length<=7)input.value=v;
+}
+function standardTarget(exercise){
+  if(typeof exercise.target==="number") return exercise.target;
+  return exercise.target?.active ?? exercise.target?.progression ?? Object.values(exercise.target||{})[0] ?? 1;
+}
+function teamStreak(teamIndex){
+  let streak=0,best=0;
+  for(let r=0;r<state.teamCount;r++){
+    const s=getScore(r,teamIndex);
+    if(s && s.standardMet){streak++;best=Math.max(best,streak);}else if(s){streak=0;}else break;
+  }
+  return {current:streak,best};
+}
+function recomputeStreakBonuses(teamIndex){
+  let streak=0;
+  for(let r=0;r<state.teamCount;r++){
+    const s=getScore(r,teamIndex);
+    if(!s)break;
+    if(s.standardMet) streak++; else streak=0;
+    s.streak=streak;
+    s.streakBonus=s.standardMet?Math.min(15,Math.max(0,streak-1)*5):0;
+    s.points=(s.basePoints??s.points??0)+(s.extraBonus||0)+s.streakBonus;
+  }
+}
+function saveScore(){
+  if(!modalContext)return;
+  const {teamIndex,exIndex,exercise,team,rotation}=modalContext;
+  const calc=usesRepCalculator(exercise);
+  const raw=calc?repTotal():parseFloat($("#scoreInput").value);
+  if(!Number.isFinite(raw)||raw<0)return;
+  const requiredSets=exercise.sets||1;
+  const requiredTotal=calc?modalRepData.slice(0,requiredSets).flat().reduce((sum,v)=>sum+(Number.isFinite(v)?v:0),0):raw;
+  const avg=requiredTotal/team.size;
+  const validAvg=calc?avg:(exercise.maxPerPerson?Math.min(avg,exercise.maxPerPerson):avg);
+  const target=standardTarget(exercise);
+  const basePoints=Math.round(Math.min(calc?100:110,(validAvg/target)*100));
+  const standardMet=validAvg>=target;
+  const extraReps=calc&&standardMet?Math.min(10,Math.floor(Math.max(0,validAvg-target)/2)):0;
+  const extraSets=calc&&standardMet?Math.min(2,modalRepData.slice(requiredSets).filter(row=>row.every(v=>Number.isFinite(v)&&v>0)).length):0;
+  const extraBonus=extraReps+extraSets*5;
+  state.scores[rotation] ||= {};
+  state.scores[rotation][teamIndex]={raw,avg:validAvg,target,basePoints,extraBonus,standardMet,points:basePoints+extraBonus,exIndex,...(calc?{breakdown:modalRepData.map(r=>r.map(v=>Number.isFinite(v)?v:0))}:{})};
+  recomputeStreakBonuses(teamIndex);
+  save();closeScore();renderCircuit();
+}
+function getScore(rotation,teamIndex){return state.scores?.[rotation]?.[teamIndex]||null;}
+function teamTotal(teamIndex){
+  return Object.values(state.scores).reduce((sum,r)=>sum+(r?.[teamIndex]?.points||0),0);
+}
+function renderRanking(){
+  const ranked=state.teams.map((t,i)=>({i,name:t.name,color:t.color,total:teamTotal(i)})).sort((a,b)=>b.total-a.total);
+  $("#rankStrip").innerHTML=`<div class="rankTitle">Classement</div>`+ranked.map((r,idx)=>{const st=teamStreak(r.i).current;return `<div class="rankItem" style="border:1px solid ${r.color}55">${idx+1}. ${escapeHtml(r.name)} <b>${r.total}</b>${st>=2?` <span title="Série de standards réussis">🔥×${st}</span>`:""}</div>`;}).join("");
+}
+function rotate(){
+  advanceToNextStation();
+}
+function flashRotation(){
+  $("#rotateFlashText").textContent=`Nouvelle station · rotation ${state.rotation+1} / ${state.teamCount}`;
+  $("#rotateFlash").classList.remove("hidden");
+  setTimeout(()=>$("#rotateFlash").classList.add("hidden"),1800);
+}
+function togglePause(){
+  if(!state.paused){
+    state.paused=true;state.pauseStartedAt=Date.now();$("#pauseBtn").textContent="▶ Reprendre";
+  }else{
+    const d=Date.now()-state.pauseStartedAt;
+    if(state.phase!=="results") state.sessionPauseTotal+=d;
+    state.rotationPauseTotal+=d;
+    state.paused=false;state.pauseStartedAt=null;$("#pauseBtn").textContent="⏸ Pause";
+  }
+  save();updateTimers();
+}
+function finishSession(auto=false){
+  if(!auto && !confirm("Terminer la séance et afficher le classement final?"))return;
+  clearInterval(circuitTick);state.finished=true;state.screen="finish";save();renderFinish();showScreen("finishScreen");
+}
+function renderFinish(){
+  const ranked=state.teams.map((t,i)=>({name:t.name,total:teamTotal(i),color:t.color,bestStreak:teamStreak(i).best})).sort((a,b)=>b.total-a.total);
+  $("#podium").innerHTML=ranked.slice(0,3).map((r,i)=>`<div class="podiumItem"><div class="podiumPos">${["🥇","🥈","🥉"][i]}</div><div class="podiumTeam">${escapeHtml(r.name)}</div><div class="podiumPts">${r.total} pts${r.bestStreak>=2?` · 🔥×${r.bestStreak}`:""}</div></div>`).join("");
+  $("#allRanks").innerHTML=ranked.map((r,i)=>`<div class="allRank"><strong>${i+1}. ${escapeHtml(r.name)}</strong><span>${r.total} pts${r.bestStreak>=2?` · 🔥×${r.bestStreak}`:""}</span></div>`).join("");
+}
+function save(){localStorage.setItem(STORE_KEY,JSON.stringify(state));}
+function readSaved(){try{return JSON.parse(localStorage.getItem(STORE_KEY)||"null")}catch{return null}}
+function resumeSaved(){
+  const s=readSaved();if(!s)return;state=s;
+  if(state.screen==="warmup"){renderWarmup();showScreen("warmupScreen");startWarmupTick();}
+  else if(state.screen==="circuit"){
+    state.phase=state.phase==="results"?"results":"work";
+    state.sessionBreakStartedAt=state.sessionBreakStartedAt||((state.phase==="results")?Date.now():null);
+    if(state.paused&&state.pauseStartedAt){/* stay paused */}
+    renderCircuit();showScreen("circuitScreen");startCircuitTick();
+  }
+  else if(state.screen==="finish"){renderFinish();showScreen("finishScreen");}
+}
+function resetAll(){
+  localStorage.removeItem(STORE_KEY);
+  clearInterval(warmupTick);clearInterval(circuitTick);
+  state={teamCount:6,teams:defaultTeams(6),mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,sessionBreakStartedAt:null,paused:false,pauseStartedAt:null,sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false};
+  $("#resumeBox").classList.add("hidden");renderSetup();showScreen("setupScreen");
+}
+function beep(){try{const A=new(window.AudioContext||window.webkitAudioContext)();const o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=740;g.gain.value=.08;o.start();setTimeout(()=>{o.stop();A.close()},180)}catch{}}
+function warmupMotion(name){
+  const n=name.toLowerCase();
+  if(n.includes("vélo")) return "bike";
+  if(n.includes("corde")) return "rope";
+  if(n.includes("squat")) return "squat";
+  if(n.includes("fente")) return "lunge";
+  if(n.includes("push")) return "pushup";
+  if(n.includes("saut")||n.includes("pogo")||n.includes("jumping")) return "jump";
+  if(n.includes("genou")||n.includes("jog")||n.includes("course")||n.includes("marche")) return "run";
+  if(n.includes("bras")) return "shoulder";
+  return "run";
+}
+function pickWarmup(mode){
+  const bank=[...(WARMUP_BANK[mode]||WARMUP_BANK.cardio)];
+  for(let i=bank.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[bank[i],bank[j]]=[bank[j],bank[i]];}
+  return bank.slice(0,3);
+}
+function formatTime(s){s=Math.max(0,s|0);return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+
+function motionVisual(type){
+  const common=`<defs><style>
+    .sk{stroke:#dbeafe;stroke-width:5;stroke-linecap:round;fill:none}.eq{stroke:#60a5fa;stroke-width:5;stroke-linecap:round;fill:none}.ball{fill:#facc15}.base{stroke:#334155;stroke-width:3}
+  </style></defs>`;
+  const head=`<circle cx="80" cy="25" r="10" fill="#dbeafe"/>`;
+  if(type==="squat")return `<svg viewBox="0 0 160 120">${common}<line class="base" x1="20" y1="108" x2="140" y2="108"/><g>${head}<line class="sk" x1="80" y1="38" x2="80" y2="70"/><line class="sk" x1="80" y1="48" x2="60" y2="62"/><line class="sk" x1="80" y1="48" x2="100" y2="62"/><line class="sk" x1="80" y1="70" x2="58" y2="90"/><line class="sk" x1="80" y1="70" x2="102" y2="90"/></g></svg>`;
+  if(type==="press")return `<svg viewBox="0 0 160 120">${common}<line class="base" x1="35" y1="88" x2="125" y2="88"/><circle cx="55" cy="70" r="9" fill="#dbeafe"/><line class="sk" x1="65" y1="72" x2="105" y2="78"/><line class="sk" x1="105" y1="78" x2="122" y2="92"/><g><line class="eq" x1="48" y1="50" x2="110" y2="50"/><line class="sk" x1="72" y1="72" x2="72" y2="52"/><line class="sk" x1="96" y1="76" x2="96" y2="52"/></g></svg>`;
+  if(type==="pulldown")return `<svg viewBox="0 0 160 120">${common}<line class="base" x1="55" y1="100" x2="105" y2="100"/>${head}<line class="sk" x1="80" y1="38" x2="80" y2="80"/><line class="sk" x1="80" y1="80" x2="60" y2="100"/><line class="sk" x1="80" y1="80" x2="100" y2="100"/><g><line class="eq" x1="45" y1="20" x2="115" y2="20"/><line class="sk" x1="60" y1="22" x2="72" y2="52"/><line class="sk" x1="100" y1="22" x2="88" y2="52"/></g></svg>`;
+  if(type==="row")return `<svg viewBox="0 0 160 120">${common}<circle cx="62" cy="32" r="9" fill="#dbeafe"/><line class="sk" x1="68" y1="40" x2="92" y2="70"/><line class="sk" x1="92" y1="70" x2="72" y2="103"/><line class="sk" x1="92" y1="70" x2="115" y2="102"/><g><line class="eq" x1="55" y1="68" x2="105" y2="68"/><line class="sk" x1="78" y1="52" x2="78" y2="66"/></g></svg>`;
+  if(type==="fly")return `<svg viewBox="0 0 160 120">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="83"/><line class="sk" x1="80" y1="83" x2="62" y2="105"/><line class="sk" x1="80" y1="83" x2="98" y2="105"/><g><line class="eq" x1="28" y1="55" x2="75" y2="55"/><line class="eq" x1="85" y1="55" x2="132" y2="55"/></g></svg>`;
+  if(type==="curl"||type==="triceps"||type==="shoulder")return `<svg viewBox="0 0 160 120">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="76"/><line class="sk" x1="80" y1="76" x2="62" y2="105"/><line class="sk" x1="80" y1="76" x2="98" y2="105"/><g><line class="eq" x1="55" y1="57" x2="105" y2="57"/><line class="sk" x1="65" y1="48" x2="65" y2="60"/><line class="sk" x1="95" y1="48" x2="95" y2="60"/></g></svg>`;
+  if(type==="hinge"||type==="swing")return `<svg viewBox="0 0 160 120">${common}<circle cx="62" cy="30" r="9" fill="#dbeafe"/><line class="sk" x1="67" y1="39" x2="88" y2="68"/><line class="sk" x1="88" y1="68" x2="68" y2="103"/><line class="sk" x1="88" y1="68" x2="110" y2="103"/><g><line class="sk" x1="75" y1="50" x2="95" y2="75"/><circle class="ball" cx="101" cy="82" r="9"/></g></svg>`;
+  if(type==="lunge"||type==="stepup"||type==="run")return `<svg viewBox="0 0 160 120">${common}<line class="base" x1="20" y1="106" x2="140" y2="106"/><g>${head}<line class="sk" x1="80" y1="38" x2="80" y2="70"/><line class="sk" x1="80" y1="50" x2="60" y2="62"/><line class="sk" x1="80" y1="50" x2="100" y2="62"/><line class="sk" x1="80" y1="70" x2="50" y2="103"/><line class="sk" x1="80" y1="70" x2="116" y2="94"/></g></svg>`;
+  if(type==="pushup"||type==="climber")return `<svg viewBox="0 0 160 120">${common}<line class="base" x1="20" y1="102" x2="140" y2="102"/><g><circle cx="112" cy="56" r="8" fill="#dbeafe"/><line class="sk" x1="105" y1="63" x2="63" y2="72"/><line class="sk" x1="63" y1="72" x2="30" y2="94"/><line class="sk" x1="95" y1="66" x2="110" y2="95"/><line class="sk" x1="72" y1="71" x2="68" y2="96"/></g></svg>`;
+  if(type==="wallsit")return `<svg viewBox="0 0 160 120">${common}<line class="base" x1="45" y1="15" x2="45" y2="108"/><circle cx="70" cy="32" r="9" fill="#dbeafe"/><line class="sk" x1="65" y1="42" x2="65" y2="70"/><line class="sk" x1="65" y1="70" x2="95" y2="70"/><line class="sk" x1="95" y1="70" x2="95" y2="103"/><circle cx="126" cy="38" r="17" fill="none" stroke="#60a5fa" stroke-width="4"/><line class="eq" x1="126" y1="38" x2="126" y2="27"></line></svg>`;
+  if(type==="jump"||type==="burpee")return `<svg viewBox="0 0 160 120">${common}<line class="base" x1="20" y1="107" x2="140" y2="107"/><g>${head}<line class="sk" x1="80" y1="38" x2="80" y2="70"/><line class="sk" x1="80" y1="49" x2="58" y2="35"/><line class="sk" x1="80" y1="49" x2="102" y2="35"/><line class="sk" x1="80" y1="70" x2="62" y2="98"/><line class="sk" x1="80" y1="70" x2="98" y2="98"/></g></svg>`;
+  if(type==="throw"||type==="slam")return `<svg viewBox="0 0 160 120">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="78"/><line class="sk" x1="80" y1="78" x2="62" y2="106"/><line class="sk" x1="80" y1="78" x2="98" y2="106"/><line class="sk" x1="80" y1="48" x2="103" y2="58"/><circle class="ball" cx="108" cy="58" r="10"></circle></svg>`;
+  if(type==="bike")return `<svg viewBox="0 0 160 120">${common}<circle class="eq" cx="48" cy="88" r="24"/><circle class="eq" cx="112" cy="88" r="24"/><circle cx="80" cy="30" r="9" fill="#dbeafe"/><line class="sk" x1="78" y1="39" x2="68" y2="65"/><line class="sk" x1="68" y1="65" x2="90" y2="75"/><line class="sk" x1="68" y1="65" x2="50" y2="88"/><circle cx="82" cy="76" r="5" fill="#facc15"></circle><line class="eq" x1="68" y1="65" x2="108" y2="57"/></svg>`;
+  if(type==="rope")return `<svg viewBox="0 0 160 120">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="74"/><line class="sk" x1="80" y1="74" x2="66" y2="104"/><line class="sk" x1="80" y1="74" x2="94" y2="104"/><ellipse cx="80" cy="66" rx="48" ry="44" fill="none" stroke="#60a5fa" stroke-width="4"></ellipse></svg>`;
+  return `<svg viewBox="0 0 160 120">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="75"/><line class="sk" x1="80" y1="50" x2="60" y2="67"/><line class="sk" x1="80" y1="50" x2="100" y2="67"/><line class="sk" x1="80" y1="75" x2="65" y2="105"/><line class="sk" x1="80" y1="75" x2="95" y2="105"/></svg>`;
+}
+
+$("#toWarmupBtn").onclick=prepareWarmup;
+$("#startCircuitBtn").onclick=startCircuit;
+$("#pauseBtn").onclick=togglePause;
+$("#endExerciseBtn").onclick=endExerciseEarly;
+$("#rotateBtn").onclick=rotate;
+$("#finishBtn").onclick=finishSession;
+$("#newSessionBtn").onclick=resetAll;
+$("#resumeBtn").onclick=resumeSaved;
+$("#discardBtn").onclick=()=>{if(confirm("Supprimer la séance enregistrée et repartir à zéro?"))resetAll();};
+$("#scoreModal").onclick=e=>{if(e.target.id==="scoreModal")closeScore();};
+document.addEventListener("keydown",e=>{if(!$("#scoreModal").classList.contains("hidden")){if(e.key==="Enter")saveScore();else if(e.key==="Escape")closeScore();else if(!$("#repCalculator").classList.contains("hidden")){if(/^[0-9]$/.test(e.key))enterRepDigit(e.key);else if(e.key==="Backspace")enterRepDigit("back");}else if(!$("#numericEntry").classList.contains("hidden")){if(/^[0-9]$/.test(e.key))keyPress(e.key);else if(e.key==="Backspace")keyPress("⌫");}}});
+
+init();
+</script>
+</body>
+</html>
