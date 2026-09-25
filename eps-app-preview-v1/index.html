@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f2eb">
+<title>Projet ÉPS — Aperçu V1</title>
+<style>
+:root{
+  --bg:#f5f2eb;--panel:#ffffff;--ink:#18211d;--muted:#6b756f;--line:#dfe4df;
+  --accent:#245c48;--accent2:#e3eee8;--warm:#f0e4ce;--dark:#16382c;
+  --shadow:0 10px 28px rgba(28,43,35,.08);--radius:22px
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
+button,select,input{font:inherit}.app{min-height:100vh;padding-bottom:92px}.top{position:sticky;top:0;z-index:10;background:rgba(245,242,235,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,0,0,.05)}
+.topin{max-width:980px;margin:auto;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{font-weight:900;letter-spacing:-.02em}.badge{font-size:12px;font-weight:800;padding:7px 10px;border-radius:999px;background:var(--accent2);color:var(--accent)}
+main{max-width:980px;margin:auto;padding:26px 22px 40px}.screen{display:none}.screen.active{display:block}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);font-weight:900}.hero h1{font-size:clamp(34px,6vw,62px);line-height:.98;margin:8px 0 10px;letter-spacing:-.045em}.hero p{font-size:18px;color:var(--muted);max-width:680px;line-height:1.45}
+.next{margin-top:24px;background:var(--dark);color:#fff;border-radius:26px;padding:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}.next small{color:#bcd0c6;font-weight:800}.next h2{margin:5px 0;font-size:26px}.next p{margin:0;color:#d8e5df}.primary,.secondary,.ghost{min-height:50px;border-radius:14px;padding:0 18px;font-weight:900;border:0;cursor:pointer}.primary{background:#fff;color:var(--dark)}.secondary{background:var(--accent);color:white}.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.sectionTitle{display:flex;align-items:end;justify-content:space-between;gap:14px;margin:34px 0 14px}.sectionTitle h2{margin:0;font-size:25px;letter-spacing:-.025em}.sectionTitle span{color:var(--muted);font-size:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);cursor:pointer;text-align:left;color:inherit}.card:hover{border-color:#b8c6bf}.icon{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--accent2);font-size:23px;margin-bottom:18px}.card h3{margin:0 0 6px;font-size:22px}.card p{margin:0;color:var(--muted);line-height:1.4}.card .arrow{margin-top:18px;font-weight:900;color:var(--accent)}
+.back{border:0;background:transparent;padding:10px 0;font-weight:900;color:var(--accent);cursor:pointer;font-size:16px}.pageHead{margin:6px 0 24px}.pageHead h1{font-size:42px;letter-spacing:-.04em;margin:6px 0}.pageHead p{color:var(--muted);font-size:17px;max-width:680px}
+.planCard{display:flex;gap:16px;align-items:center}.planCard .icon{margin:0;flex:0 0 54px;width:54px;height:54px}.planCard h3{font-size:24px}.planCard p{font-size:15px}
+.timeline{display:grid;gap:10px}.unitBlock{display:grid;grid-template-columns:110px 1fr auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px}.month{font-weight:900;color:var(--accent)}.unitName{font-weight:900}.unitMeta{font-size:13px;color:var(--muted);margin-top:3px}.pill{font-size:12px;font-weight:900;background:var(--accent2);color:var(--accent);border-radius:999px;padding:7px 10px;white-space:nowrap}
+.formCard{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:var(--shadow)}.formGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.field label{display:block;font-size:12px;font-weight:900;color:var(--muted);margin-bottom:7px;text-transform:uppercase;letter-spacing:.06em}.field select,.field input{width:100%;min-height:52px;border:1px solid var(--line);border-radius:14px;padding:0 14px;background:#fff;color:var(--ink);font-weight:750}
+.lesson{margin-top:18px;display:grid;gap:10px}.lessonBlock{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;grid-template-columns:48px 1fr auto;gap:14px;align-items:center}.num{width:42px;height:42px;border-radius:13px;background:var(--warm);display:grid;place-items:center;font-weight:1000}.lessonBlock h4{margin:0 0 4px;font-size:17px}.lessonBlock p{margin:0;color:var(--muted);font-size:14px}.time{font-weight:1000;color:var(--accent)}
+.toolGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.tool{min-height:160px}.tool .icon{margin-bottom:12px}.tool h3{font-size:20px}.tool small{display:block;margin-top:12px;color:var(--accent);font-weight:900}
+.teamControls{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.toggle{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;font-weight:850}.toggle input{width:22px;height:22px}.teamsOut{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.teamBox{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}.teamBox h4{margin:0 0 10px}.teamBox div{padding:7px 0;border-top:1px solid #edf0ed;font-size:14px}.score{font-size:12px;color:var(--accent);font-weight:900;margin-top:10px}
+.note{background:#fff7df;border:1px solid #ead9a8;border-radius:16px;padding:14px 16px;color:#62552d;font-size:14px;line-height:1.4}
+.bottom{position:fixed;bottom:0;left:0;right:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border-top:1px solid var(--line);padding:8px max(10px,env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom))}
+.bottomin{max-width:760px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.navBtn{border:0;background:transparent;min-height:58px;border-radius:13px;color:#7a837e;font-size:12px;font-weight:850;cursor:pointer}.navBtn b{display:block;font-size:21px;line-height:1.1;margin-bottom:3px}.navBtn.active{background:var(--accent2);color:var(--accent)}
+@media(max-width:760px){.grid3,.grid2,.toolGrid,.teamsOut{grid-template-columns:1fr}.formGrid,.teamControls{grid-template-columns:1fr}.next{grid-template-columns:1fr}.unitBlock{grid-template-columns:86px 1fr}.unitBlock .pill{grid-column:2}.topin,main{padding-left:16px;padding-right:16px}.pageHead h1{font-size:36px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="topin"><div class="brand">PROJET ÉPS</div><div class="badge">APERÇU V1</div></div></header>
+
+<main>
+<section id="home" class="screen active">
+  <div class="hero">
+    <div class="eyebrow">L’outil terrain du prof d’ÉPS</div>
+    <h1>Planifier.<br>Enseigner.</h1>
+    <p>Une application simple pour préparer l’année, construire des séances cohérentes et utiliser les bons outils directement dans le gymnase.</p>
+  </div>
+  <div class="next">
+    <div><small>COURS À VENIR — EXEMPLE</small><h2>Secondaire 3 · Ultimate</h2><p>70 min · Se démarquer pour offrir une option de passe</p></div>
+    <button class="primary" data-go="teach">Ouvrir le cours</button>
+  </div>
+  <div class="sectionTitle"><h2>Que voulez-vous faire?</h2><span>3 choix. Rien de caché.</span></div>
+  <div class="grid3">
+    <button class="card" data-go="plan"><div class="icon">🗓️</div><h3>Planifier</h3><p>Année, séquences, PDA/PFEQ ou construction d’une séance.</p><div class="arrow">Ouvrir →</div></button>
+    <button class="card" data-go="teach"><div class="icon">▶️</div><h3>Enseigner</h3><p>Ouvrir le cours du jour et projeter les consignes.</p><div class="arrow">Ouvrir →</div></button>
+    <button class="card" data-go="tools"><div class="icon">🧰</div><h3>Outils</h3><p>Musculation, équipes, tournoi, chrono et compteur.</p><div class="arrow">Ouvrir →</div></button>
+  </div>
+</section>
+
+<section id="plan" class="screen">
+  <button class="back" data-go="home">← Accueil</button>
+  <div class="pageHead"><div class="eyebrow">Planifier</div><h1>Deux façons de commencer.</h1><p>Planifiez le portrait global de votre année ou construisez directement une séance. Les deux restent liés.</p></div>
+  <div class="grid2">
+    <button class="card planCard" data-go="year"><div class="icon">📚</div><div><h3>Mon année</h3><p>Unités, séquences, progression, calendrier scolaire et couverture PFEQ/PDA.</p><div class="arrow">Planifier l’année →</div></div></button>
+    <button class="card planCard" data-go="lesson"><div class="icon">✏️</div><div><h3>Ma séance</h3><p>Objectif, échauffement, éducatifs progressifs et banque d’activités.</p><div class="arrow">Construire une séance →</div></div></button>
+  </div>
+</section>
+
+<section id="year" class="screen">
+  <button class="back" data-go="plan">← Planifier</button>
+  <div class="pageHead"><div class="eyebrow">Mon année</div><h1>Secondaire 3</h1><p>Exemple de vue très simple. Les blocs pourront ensuite être déplacés dans le vrai calendrier scolaire importé par PDF.</p></div>
+  <div class="timeline">
+    <div class="unitBlock"><div class="month">Septembre</div><div><div class="unitName">Conditionnement physique</div><div class="unitMeta">5 cours · développer une démarche d’entraînement</div></div><div class="pill">PDA ✓</div></div>
+    <div class="unitBlock"><div class="month">Octobre</div><div><div class="unitName">Ultimate</div><div class="unitMeta">6 cours · démarquage, occupation de l’espace, prise de décision</div></div><div class="pill">Interagir</div></div>
+    <div class="unitBlock"><div class="month">Novembre</div><div><div class="unitName">Badminton</div><div class="unitMeta">7 cours · créer et exploiter l’espace libre</div></div><div class="pill">Agir</div></div>
+  </div>
+  <div style="margin-top:16px" class="note"><b>Vision PFEQ/PDA :</b> l’arrimage demeure visible au besoin, mais ne surcharge jamais l’écran principal.</div>
+</section>
+
+<section id="lesson" class="screen">
+  <button class="back" data-go="plan">← Planifier</button>
+  <div class="pageHead"><div class="eyebrow">Ma séance</div><h1>Construire un cours</h1><p>Le prof choisit son objectif. La banque propose ensuite une progression logique du simple vers le complexe.</p></div>
+  <div class="formCard">
+    <div class="formGrid">
+      <div class="field"><label>Niveau</label><select><option>Secondaire 3</option><option>Secondaire 2</option><option>Secondaire 4</option></select></div>
+      <div class="field"><label>Activité</label><select><option>Ultimate</option><option>Badminton</option><option>Basketball</option></select></div>
+      <div class="field"><label>Durée</label><select><option>70 minutes</option><option>60 minutes</option><option>75 minutes</option></select></div>
+      <div class="field"><label>Objectif</label><select><option>Se démarquer pour offrir une option de passe</option><option>Créer de l’espace</option><option>Maintenir la possession</option></select></div>
+    </div>
+    <div style="margin-top:16px"><button class="secondary" id="buildLesson">Construire un exemple</button></div>
+  </div>
+  <div id="lessonBlocks" class="lesson"></div>
+</section>
+
+<section id="teach" class="screen">
+  <button class="back" data-go="home">← Accueil</button>
+  <div class="pageHead"><div class="eyebrow">Enseigner</div><h1>Ultimate · Secondaire 3</h1><p>Mode gymnase : gros boutons, peu de texte, tout ce qu’il faut pour avancer dans le cours.</p></div>
+  <div class="next">
+    <div><small>ACTIVITÉ EN COURS</small><h2>Éducatif 1 · Passe et déplacement</h2><p>8 min · 8 frisbees · groupes de 4</p></div>
+    <button class="primary">▶ Démarrer</button>
+  </div>
+  <div class="grid2" style="margin-top:14px">
+    <button class="card"><div class="icon">📺</div><h3>Projeter</h3><p>Afficher uniquement le schéma, la consigne et le chrono aux élèves.</p></button>
+    <button class="card"><div class="icon">➡️</div><h3>Activité suivante</h3><p>Passer à l’éducatif 2, plus complexe, avec sensiblement le même matériel.</p></button>
+  </div>
+</section>
+
+<section id="tools" class="screen">
+  <button class="back" data-go="home">← Accueil</button>
+  <div class="pageHead"><div class="eyebrow">Outils</div><h1>Directement dans le gym.</h1><p>Aucun cours à préparer pour les utiliser. Ouvrez l’outil et commencez.</p></div>
+  <div class="toolGrid">
+    <button class="card tool" id="openMuscu"><div class="icon">💪</div><h3>Musculation</h3><p>Circuits, rotations et saisie rapide des résultats.</p><small>Ouvrir la V22 →</small></button>
+    <button class="card tool" data-go="teams"><div class="icon">👥</div><h3>Équipes</h3><p>Créer des équipes équilibrées en quelques secondes.</p><small>Voir l’aperçu →</small></button>
+    <button class="card tool" data-placeholder="Tournoi"><div class="icon">🏆</div><h3>Tournoi</h3><p>Horaire, rotations, résultats et classement.</p><small>Aperçu seulement</small></button>
+    <button class="card tool" data-placeholder="Chrono"><div class="icon">⏱️</div><h3>Chrono</h3><p>Compte à rebours, intervalles et rotations.</p><small>Aperçu seulement</small></button>
+    <button class="card tool" data-placeholder="Compteur"><div class="icon">🔢</div><h3>Compteur</h3><p>Scores rapides, équipes et projection.</p><small>Aperçu seulement</small></button>
+  </div>
+</section>
+
+<section id="teams" class="screen">
+  <button class="back" data-go="tools">← Outils</button>
+  <div class="pageHead"><div class="eyebrow">Gestion d’équipes</div><h1>Équilibrer sans calculer.</h1><p>Importez une liste, attribuez une cote d’habileté et laissez l’application proposer une répartition que vous pouvez ensuite ajuster.</p></div>
+  <div class="formCard">
+    <div class="formGrid">
+      <div class="field"><label>Liste d’élèves</label><button class="ghost" style="width:100%">＋ Importer PDF / CSV</button></div>
+      <div class="field"><label>Nombre d’équipes</label><select id="teamNum"><option>4</option><option selected>5</option><option>6</option></select></div>
+    </div>
+    <div class="teamControls" style="margin-top:14px">
+      <label class="toggle">Équilibrer les habiletés <input type="checkbox" checked></label>
+      <label class="toggle">Répartir filles / garçons <input type="checkbox" checked></label>
+      <label class="toggle">Répartir les leaders <input type="checkbox" checked></label>
+      <label class="toggle">Respecter les contraintes <input type="checkbox" checked></label>
+    </div>
+    <div style="margin-top:16px"><button class="secondary" id="makeTeams">Créer les équipes</button></div>
+  </div>
+  <div id="teamsOut" class="teamsOut"></div>
+</section>
+
+<section id="placeholder" class="screen">
+  <button class="back" data-go="tools">← Outils</button>
+  <div class="pageHead"><div class="eyebrow">Aperçu V1</div><h1 id="placeholderTitle">Outil</h1><p>Cette première maquette sert surtout à valider l’organisation générale. On intégrera ensuite la version optimisée de cet outil dans le même design.</p></div>
+  <div class="note">Le but de cette V1 est de vérifier : « Est-ce que je trouve ce que je cherche immédiatement? » avant de développer tout le reste.</div>
+</section>
+</main>
+
+<nav class="bottom"><div class="bottomin">
+  <button class="navBtn active" data-go="home"><b>⌂</b>Accueil</button>
+  <button class="navBtn" data-go="plan"><b>▦</b>Planifier</button>
+  <button class="navBtn" data-go="teach"><b>▶</b>Enseigner</button>
+  <button class="navBtn" data-go="tools"><b>＋</b>Outils</button>
+</div></nav>
+</div>
+
+<script>
+const screens=[...document.querySelectorAll(".screen")];
+function go(id){
+  screens.forEach(s=>s.classList.toggle("active",s.id===id));
+  document.querySelectorAll(".navBtn").forEach(b=>b.classList.toggle("active",b.dataset.go===id || (id==="year"||id==="lesson")&&b.dataset.go==="plan" || id==="teams"&&b.dataset.go==="tools"));
+  scrollTo({top:0,behavior:"instant"});
+}
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.go)));
+document.querySelectorAll("[data-placeholder]").forEach(b=>b.addEventListener("click",()=>{document.getElementById("placeholderTitle").textContent=b.dataset.placeholder;go("placeholder")}));
+document.getElementById("openMuscu").onclick=()=>location.href="https://raphaelfrenette-a11y.github.io/tournoi-couleurs/musculation-eps-live-22/";
+document.getElementById("buildLesson").onclick=()=>{
+ const blocks=[
+  ["1","Échauffement · Passes en mouvement","6 min · proposé pour préparer l’objectif du cours","6 min"],
+  ["2","Éducatif 1 · Se rendre disponible","8 min · opposition très faible · organisation simple","8 min"],
+  ["3","Éducatif 2 · Créer une ligne de passe","10 min · même matériel · prise de décision ajoutée","10 min"],
+  ["4","Situation globale · 4 zones","35 min · transfert en situation de jeu","35 min"]
+ ];
+ document.getElementById("lessonBlocks").innerHTML=blocks.map(x=>`<div class="lessonBlock"><div class="num">${x[0]}</div><div><h4>${x[1]}</h4><p>${x[2]}</p></div><div class="time">${x[3]}</div></div>`).join("");
+};
+document.getElementById("makeTeams").onclick=()=>{
+ const n=+document.getElementById("teamNum").value;
+ const names=["Alex","Charlie","Maude","Thomas","Léa","Émile","Jade","Nathan","Camille","Félix","Zoé","Antoine","Sarah","Louis","Emma","Jacob","Mia","William","Juliette","Noah","Rosalie","Olivier","Florence","Samuel","Clara","Xavier","Élodie","Gabriel","Anaïs","Mathis"];
+ const teams=Array.from({length:n},()=>[]);
+ names.slice(0,n*5).forEach((name,i)=>teams[i%n].push(name));
+ document.getElementById("teamsOut").innerHTML=teams.map((t,i)=>`<div class="teamBox"><h4>Équipe ${i+1}</h4>${t.map(x=>`<div>${x}</div>`).join("")}<div class="score">Équilibre : très bon</div></div>`).join("");
+};
+</script>
+</body>
+</html>
