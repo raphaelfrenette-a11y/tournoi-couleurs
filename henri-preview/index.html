@@ -45,10 +45,18 @@ button:focus-visible{outline:3px solid rgba(49,74,91,.2);outline-offset:3px}
 .brand{display:flex;align-items:center;gap:10px;color:var(--accent-dark)}
 .brandMark{width:34px;height:34px;display:block;flex:0 0 34px}
 .brandName{font-size:22px;font-weight:600;letter-spacing:-.045em;line-height:1}
+.topActions{display:flex;align-items:center;gap:8px}
 .mode{
   font-size:11px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;
   padding:7px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)
 }
+.configBtn{
+  min-height:36px;border:1px solid var(--line);background:#fff;color:var(--accent-dark);
+  border-radius:999px;padding:0 13px;font-size:13px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;gap:7px;box-shadow:0 4px 14px rgba(49,74,91,.04)
+}
+.configDot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+
 main{max-width:980px;margin:auto;padding:30px 22px 44px}
 .screen{display:none}.screen.active{display:block}
 .eyebrow{
@@ -203,6 +211,8 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
   .sectionHead{align-items:flex-start;flex-direction:column;gap:4px}
   .course{grid-template-columns:82px 1fr}
   .course .state{grid-column:2;justify-self:start}
+  .mode{display:none}
+  .configBtn{padding:0 11px}
 }
 </style>
 </head>
@@ -218,7 +228,10 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
       </svg>
       <span class="brandName">Henri</span>
     </div>
-    <div class="mode">Mode exploration</div>
+    <div class="topActions">
+      <button class="configBtn" data-go="config"><span class="configDot"></span>Configuration</button>
+      <div class="mode">Mode exploration</div>
+    </div>
   </div>
 </header>
 
@@ -266,21 +279,21 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
   </div>
 
   <div class="sectionHead">
-    <h2>Mes groupes</h2>
-    <span>Horaire et listes au même endroit.</span>
+    <h2>Votre environnement</h2>
+    <span>Les données de base de Henri.</span>
   </div>
 
   <div class="groups">
     <div>
-      <h3>5 groupes configurés</h3>
-      <p>Calendrier scolaire, horaire maître et listes d’élèves.</p>
+      <h3>Configuration prête</h3>
+      <p>Calendrier scolaire, horaire maître, groupes et listes d’élèves alimentent automatiquement le reste de l’application.</p>
       <div class="chips">
-        <span class="chip">Aujourd’hui · Jour 4</span>
-        <span class="chip">3 cours</span>
-        <span class="chip">Aperçu</span>
+        <span class="chip">Calendrier ajouté</span>
+        <span class="chip">Horaire ajouté</span>
+        <span class="chip">5 groupes</span>
       </div>
     </div>
-    <button class="btn btn-primary" data-go="mygroups">Mes groupes</button>
+    <button class="btn btn-primary" data-go="config">Configuration</button>
   </div>
 </section>
 
@@ -346,8 +359,8 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
     <button class="card toolCard previewLink" data-title="Musculation" data-desc="Le module de circuits, rotations et saisie rapide sera branché ici une fois l’interface principale approuvée.">
       <div class="cardKicker">Séance</div><h3>Musculation</h3><p>Circuits, rotations et résultats.</p><div class="cardAction">Aperçu →</div>
     </button>
-    <button class="card toolCard previewLink" data-title="Gestion d’équipes" data-desc="Import des élèves, cotes d’habileté, génération équilibrée et ajustements manuels seront intégrés ici.">
-      <div class="cardKicker">Groupes</div><h3>Équipes</h3><p>Créer des équipes équilibrées rapidement.</p><div class="cardAction">Aperçu →</div>
+    <button class="card toolCard previewLink" data-title="Gestion d’équipes" data-desc="Henri utilisera ici les listes d’élèves déjà enregistrées dans Configuration pour générer et ajuster des équipes équilibrées.">
+      <div class="cardKicker">Répartition</div><h3>Équipes</h3><p>Former des équipes équilibrées à partir de vos groupes configurés.</p><div class="cardAction">Aperçu →</div>
     </button>
     <button class="card toolCard previewLink" data-title="Tournoi" data-desc="Horaires, rotations, résultats et classement seront intégrés dans cet espace.">
       <div class="cardKicker">Compétition</div><h3>Tournoi</h3><p>Horaire, résultats et classement.</p><div class="cardAction">Aperçu →</div>
@@ -361,53 +374,78 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
   </div>
 </section>
 
-<section id="mygroups" class="screen">
+<section id="config" class="screen">
   <button class="back" data-go="home">← Accueil</button>
   <div class="pageHead">
-    <div class="eyebrow">Mes groupes</div>
-    <h1>Configurer sans tout saisir.</h1>
-    <p>Cette vue sert uniquement à valider le parcours. Les imports et l’analyse des documents ne sont pas actifs dans le prototype.</p>
+    <div class="eyebrow">Configuration</div>
+    <h1>Préparer Henri une seule fois.</h1>
+    <p>Ajoutez les documents de base de votre année scolaire. Henri pourra ensuite reconnaître vos groupes, placer vos cours sur les bonnes dates et réutiliser les listes d’élèves partout dans l’application.</p>
   </div>
+
+  <div class="prototypeNote"><strong>Première utilisation :</strong> Henri guidera l’enseignant à travers ces étapes avant d’utiliser l’application. Tout pourra ensuite être modifié ici en tout temps.</div>
 
   <div class="setupGrid">
     <div class="setup">
       <div class="step">1</div>
       <h3>Calendrier scolaire</h3>
-      <p>Jours-cycle, congés, pédagogiques et journées spéciales.</p>
-      <button class="btn btn-outline demoAction">Importer le PDF</button>
+      <p>Importez le PDF de l’école avec les jours-cycle, congés, pédagogiques et journées spéciales.</p>
+      <button class="btn btn-outline demoAction">Ajouter le calendrier</button>
     </div>
     <div class="setup">
       <div class="step">2</div>
       <h3>Horaire maître</h3>
-      <p>Groupes, périodes et jours-cycle de l’enseignant.</p>
-      <button class="btn btn-outline demoAction">Importer l’horaire</button>
+      <p>Ajoutez votre horaire pour associer automatiquement chaque groupe à ses périodes et jours-cycle.</p>
+      <button class="btn btn-outline demoAction">Ajouter l’horaire</button>
     </div>
     <div class="setup">
       <div class="step">3</div>
-      <h3>Listes de groupes</h3>
-      <p>Élèves disponibles ensuite dans les outils qui en ont besoin.</p>
-      <button class="btn btn-outline demoAction">Ajouter les listes</button>
+      <h3>Groupes et élèves</h3>
+      <p>Importez les listes de classe en PDF, CSV ou photo. Elles seront disponibles dans tous les outils qui en ont besoin.</p>
+      <button class="btn btn-outline demoAction">Ajouter les groupes</button>
     </div>
   </div>
 
   <div class="sectionHead">
-    <h2>Aperçu d’une journée</h2>
-    <span>Exemple · Jour 4</span>
+    <h2>Ce que Henri a compris</h2>
+    <span>Exemple de validation.</span>
+  </div>
+
+  <div class="course">
+    <div class="courseTime">Jour 4 · P1</div>
+    <div><h3>Secondaire 2 · Groupe 22</h3><p>Gymnase · 8 h 35 · 28 élèves</p></div>
+    <div class="state">Validé</div>
   </div>
   <div class="course">
-    <div class="courseTime">Période 1</div>
-    <div><h3>Secondaire 2 · Groupe 22</h3><p>Gymnase · 8 h 35</p></div>
-    <div class="state">Exemple</div>
+    <div class="courseTime">Jour 4 · P3</div>
+    <div><h3>Secondaire 3 · Groupe 32</h3><p>Gymnase · 10 h 20 · 30 élèves</p></div>
+    <div class="state">Validé</div>
   </div>
   <div class="course">
-    <div class="courseTime">Période 3</div>
-    <div><h3>Secondaire 3 · Groupe 32</h3><p>Gymnase · 10 h 20</p></div>
-    <div class="state">Exemple</div>
+    <div class="courseTime">Jour 4 · P5</div>
+    <div><h3>Secondaire 4 · Groupe 41</h3><p>Gymnase · 13 h 10 · 27 élèves</p></div>
+    <div class="state">Validé</div>
   </div>
-  <div class="course">
-    <div class="courseTime">Période 5</div>
-    <div><h3>Secondaire 4 · Groupe 41</h3><p>Gymnase · 13 h 10</p></div>
-    <div class="state">Exemple</div>
+
+  <div class="sectionHead">
+    <h2>Utilisé automatiquement</h2>
+    <span>Plus de double saisie.</span>
+  </div>
+  <div class="grid3">
+    <div class="card">
+      <div class="cardKicker">Planification</div>
+      <h3>Bonnes dates</h3>
+      <p>Les séquences se placent selon les vraies journées où vous voyez chaque groupe.</p>
+    </div>
+    <div class="card">
+      <div class="cardKicker">Accueil</div>
+      <h3>Prochain cours</h3>
+      <p>Henri sait quel groupe vous enseignez et peut afficher le bon cours automatiquement.</p>
+    </div>
+    <div class="card">
+      <div class="cardKicker">Outils</div>
+      <h3>Listes prêtes</h3>
+      <p>Équipes, tournoi et autres outils peuvent réutiliser les élèves déjà configurés.</p>
+    </div>
   </div>
 </section>
 
@@ -436,7 +474,7 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
 </nav>
 </div>
 
-<div id="toast" class="toast">Fonction volontairement désactivée dans le prototype.</div>
+<div id="toast" class="toast">Import volontairement simulé dans le prototype.</div>
 
 <script>
 var screens = Array.from(document.querySelectorAll(".screen"));
@@ -446,7 +484,7 @@ function navGroup(id){
   if(id === "plan") return "plan";
   if(id === "teach") return "teach";
   if(id === "tools") return "tools";
-  if(id === "home" || id === "mygroups") return "home";
+  if(id === "home" || id === "config") return "home";
   return "";
 }
 function currentScreen(){
