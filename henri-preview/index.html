@@ -242,50 +242,56 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
 }
 .configHint strong{color:var(--accent-dark)}
 
-.calendarHead{align-items:center}
-.calendarHead>div:first-child{display:flex;flex-direction:column;gap:4px}
-.segmented{
-  display:inline-grid;grid-template-columns:repeat(2,1fr);background:#EDEFF0;
-  border-radius:12px;padding:3px;gap:2px
+.calendarTop{
+  margin:34px 0 12px;display:flex;align-items:center;justify-content:space-between;gap:12px
 }
-.segment{
-  border:0;background:transparent;color:#7A8084;border-radius:9px;padding:7px 11px;
-  font-size:12px;font-weight:750;cursor:pointer
+.calendarTop h2{margin:0;font-size:25px;letter-spacing:-.03em}
+.calendarControls{display:flex;align-items:center;gap:4px}
+.calendarNav{
+  width:30px;height:32px;border:0;background:transparent;color:var(--accent);border-radius:9px;
+  font-size:23px;line-height:1;cursor:pointer;padding:0
 }
-.segment.active{background:#fff;color:var(--accent-dark);box-shadow:0 1px 5px rgba(0,0,0,.08)}
+.calendarPeriod{
+  min-width:74px;text-align:center;color:var(--muted);font-size:11px;font-weight:700
+}
+.viewSelect{
+  margin-left:4px;min-height:34px;border:1px solid var(--line);background:#fff;color:var(--accent-dark);
+  border-radius:10px;padding:0 25px 0 10px;font:inherit;font-size:11px;font-weight:750;cursor:pointer
+}
 .calendarShell{
-  background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;
+  background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;
   box-shadow:var(--shadow)
 }
-.calendarToolbar{
-  height:50px;padding:0 13px;display:grid;grid-template-columns:40px 1fr 40px;
-  align-items:center;border-bottom:1px solid var(--line);text-align:center
-}
-.calendarToolbar strong{font-size:14px;letter-spacing:-.01em}
-.calendarArrow{
-  border:0;background:transparent;color:var(--accent);font-size:27px;line-height:1;
-  cursor:pointer;border-radius:10px;height:36px
-}
 .calendarView{display:none}.calendarView.active{display:block}
-.dayRow{
-  width:100%;border:0;border-bottom:1px solid var(--line);background:#fff;color:inherit;
-  padding:13px 15px;display:grid;grid-template-columns:48px 1fr auto;gap:12px;
-  align-items:center;text-align:left;cursor:pointer
+.weekStrip{
+  display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--line)
 }
-.dayRow:last-child{border-bottom:0}
-.dayRow.today{background:var(--accent-faint)}
-.dayDate{display:flex;flex-direction:column;align-items:center;gap:2px}
-.dayDate strong{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-.dayDate span{font-size:20px;font-weight:760;letter-spacing:-.04em}
-.dayEvents{display:grid;gap:5px;min-width:0}
-.miniEvent{display:flex;gap:8px;align-items:center;min-width:0;font-size:12px}
-.miniEvent span{color:var(--muted);width:44px;flex:0 0 44px}
-.miniEvent strong{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mutedEvent strong{font-weight:600;color:#545A5E}
-.todayBadge{
-  background:var(--accent);color:#fff;border-radius:999px;padding:6px 8px;
-  font-size:10px;font-weight:800
+.dayChip{
+  min-height:62px;border:0;border-right:1px solid var(--line);background:#fff;color:var(--muted);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  cursor:pointer;position:relative
 }
+.dayChip:last-child{border-right:0}
+.dayChip span{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.dayChip strong{font-size:17px;line-height:1.05;color:var(--ink)}
+.dayChip i{
+  width:4px;height:4px;border-radius:50%;background:#AEB5B9;position:absolute;bottom:6px
+}
+.dayChip.active{background:var(--accent-faint);color:var(--accent)}
+.dayChip.active strong{color:var(--accent)}
+.dayChip.active i{background:var(--accent)}
+.selectedDay{
+  padding:13px 15px 6px;color:var(--muted);font-size:11px;font-weight:750
+}
+.compactEvents{padding:0 9px 9px;display:grid;gap:4px}
+.eventLine{
+  width:100%;min-height:45px;border:0;background:#fff;color:inherit;border-radius:12px;
+  padding:0 9px;display:grid;grid-template-columns:56px 1fr auto;gap:8px;align-items:center;
+  text-align:left;cursor:pointer
+}
+.eventLine:active{background:var(--accent-faint)}
+.eventLine span{font-size:11px;color:var(--muted);font-weight:700}
+.eventLine strong{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .monthWeekdays,.monthGrid{display:grid;grid-template-columns:repeat(7,1fr)}
 .monthWeekdays{padding:12px 12px 6px;color:var(--muted);font-size:10px;font-weight:800;text-align:center}
 .monthGrid{padding:0 12px 14px;gap:5px}
@@ -388,8 +394,7 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
   .quick{min-height:96px;padding:14px 11px;font-size:13px}
   .ready{padding:14px 15px}
   .configBtn{padding:0 11px}
-  .calendarHead{flex-direction:row;align-items:center}
-  .calendarHead>div:first-child{flex:1}
+  .calendarTop{align-items:center}
   .settingsRow{grid-template-columns:42px 1fr auto}
   .settingsRow .statusSmall{display:none}
 }
@@ -398,10 +403,11 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
   .quick{padding:13px 9px;font-size:12px}
   .courseLink{grid-template-columns:1fr auto}
   .courseClock{grid-column:1/-1;margin-bottom:-4px}
-  .calendarHead{gap:10px}
-  .segment{padding:7px 9px}
-  .dayRow{grid-template-columns:42px 1fr auto;padding:12px}
-  .todayBadge{display:none}
+  .calendarTop{gap:8px}
+  .calendarControls{gap:2px}
+  .calendarPeriod{display:none}
+  .viewSelect{margin-left:2px}
+  .eventLine{grid-template-columns:52px 1fr auto}
   .planningChoice{grid-template-columns:42px 1fr auto;padding:15px}
   .planningIcon{width:42px;height:42px}
   .settingsCard{padding:16px}
@@ -443,63 +449,38 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
     <button class="btn btn-light" data-go="teach">Ouvrir le cours</button>
   </div>
 
-  <div class="sectionHead calendarHead">
-    <div>
-      <h2>Mon calendrier</h2>
-      <span id="calendarRange">21–25 septembre</span>
-    </div>
-    <div class="segmented" role="tablist" aria-label="Vue du calendrier">
-      <button class="segment active" data-calendar-view="week" aria-selected="true">Semaine</button>
-      <button class="segment" data-calendar-view="month" aria-selected="false">Mois</button>
+  <div class="calendarTop">
+    <h2>Mon calendrier</h2>
+    <div class="calendarControls">
+      <button class="calendarNav" type="button" aria-label="Semaine précédente">‹</button>
+      <span class="calendarPeriod" id="calendarPeriod">21–25 sept.</span>
+      <button class="calendarNav" type="button" aria-label="Semaine suivante">›</button>
+      <select class="viewSelect" id="calendarViewSelect" aria-label="Vue du calendrier">
+        <option value="week" selected>Semaine</option>
+        <option value="month">Mois</option>
+      </select>
     </div>
   </div>
 
-  <div class="calendarShell">
-    <div class="calendarToolbar">
-      <button class="calendarArrow" aria-label="Période précédente">‹</button>
-      <strong id="calendarTitle">Cette semaine</strong>
-      <button class="calendarArrow" aria-label="Période suivante">›</button>
-    </div>
-
+  <div class="calendarShell compactCalendar">
     <div id="weekView" class="calendarView active">
-      <button class="dayRow previewLink" data-title="Lundi 21 septembre" data-desc="Les cours et séances planifiés pour cette journée apparaîtront ici.">
-        <div class="dayDate"><strong>Lun</strong><span>21</span></div>
-        <div class="dayEvents">
-          <div class="miniEvent"><span>8 h 35</span><strong>Sec. 3 · Ultimate</strong></div>
-          <div class="miniEvent mutedEvent"><span>13 h 10</span><strong>Sec. 2 · Conditionnement</strong></div>
-        </div>
-        <div class="chev">›</div>
-      </button>
-      <button class="dayRow previewLink" data-title="Mardi 22 septembre" data-desc="Les cours et séances planifiés pour cette journée apparaîtront ici.">
-        <div class="dayDate"><strong>Mar</strong><span>22</span></div>
-        <div class="dayEvents">
-          <div class="miniEvent"><span>10 h 20</span><strong>Sec. 4 · Badminton</strong></div>
-        </div>
-        <div class="chev">›</div>
-      </button>
-      <button class="dayRow previewLink" data-title="Mercredi 23 septembre" data-desc="Les cours et séances planifiés pour cette journée apparaîtront ici.">
-        <div class="dayDate"><strong>Mer</strong><span>23</span></div>
-        <div class="dayEvents">
-          <div class="miniEvent"><span>8 h 35</span><strong>Sec. 2 · Conditionnement</strong></div>
-          <div class="miniEvent mutedEvent"><span>10 h 20</span><strong>Sec. 3 · Ultimate</strong></div>
-        </div>
-        <div class="chev">›</div>
-      </button>
-      <button class="dayRow previewLink" data-title="Jeudi 24 septembre" data-desc="Les cours et séances planifiés pour cette journée apparaîtront ici.">
-        <div class="dayDate"><strong>Jeu</strong><span>24</span></div>
-        <div class="dayEvents">
-          <div class="miniEvent"><span>13 h 10</span><strong>Sec. 4 · Badminton</strong></div>
-        </div>
-        <div class="chev">›</div>
-      </button>
-      <button class="dayRow today previewLink" data-title="Vendredi 25 septembre" data-desc="Aujourd’hui. Les cours planifiés sont affichés directement dans votre calendrier.">
-        <div class="dayDate"><strong>Ven</strong><span>25</span></div>
-        <div class="dayEvents">
-          <div class="miniEvent"><span>8 h 35</span><strong>Sec. 3 · Ultimate</strong></div>
-          <div class="miniEvent mutedEvent"><span>13 h 10</span><strong>Sec. 2 · Conditionnement</strong></div>
-        </div>
-        <div class="todayBadge">Aujourd’hui</div>
-      </button>
+      <div class="weekStrip" aria-label="Jours de la semaine">
+        <button class="dayChip" type="button" data-day="21"><span>Lun</span><strong>21</strong><i></i></button>
+        <button class="dayChip" type="button" data-day="22"><span>Mar</span><strong>22</strong><i></i></button>
+        <button class="dayChip" type="button" data-day="23"><span>Mer</span><strong>23</strong><i></i></button>
+        <button class="dayChip" type="button" data-day="24"><span>Jeu</span><strong>24</strong><i></i></button>
+        <button class="dayChip active" type="button" data-day="25"><span>Ven</span><strong>25</strong><i></i></button>
+      </div>
+
+      <div class="selectedDay" id="selectedDayLabel">Vendredi 25</div>
+      <div class="compactEvents" id="dayEvents">
+        <button class="eventLine" type="button">
+          <span>8 h 35</span><strong>Sec. 3 · Ultimate</strong><div class="chev">›</div>
+        </button>
+        <button class="eventLine" type="button">
+          <span>13 h 10</span><strong>Sec. 2 · Conditionnement</strong><div class="chev">›</div>
+        </button>
+      </div>
     </div>
 
     <div id="monthView" class="calendarView">
@@ -780,19 +761,40 @@ document.getElementById("placeholderBack").addEventListener("click",function(){
 });
 
 
-document.querySelectorAll("[data-calendar-view]").forEach(function(btn){
-  btn.addEventListener("click",function(){
-    var view = btn.dataset.calendarView;
-    document.querySelectorAll("[data-calendar-view]").forEach(function(b){
-      var active = b === btn;
-      b.classList.toggle("active",active);
-      b.setAttribute("aria-selected",active ? "true" : "false");
-    });
-    document.getElementById("weekView").classList.toggle("active",view === "week");
-    document.getElementById("monthView").classList.toggle("active",view === "month");
-    document.getElementById("calendarTitle").textContent = view === "week" ? "Cette semaine" : "Septembre 2026";
-    document.getElementById("calendarRange").textContent = view === "week" ? "21–25 septembre" : "Septembre 2026";
+
+var calendarData = {
+  "21": {label:"Lundi 21", events:[["8 h 35","Sec. 3 · Ultimate"],["13 h 10","Sec. 2 · Conditionnement"]]},
+  "22": {label:"Mardi 22", events:[["10 h 20","Sec. 4 · Badminton"]]},
+  "23": {label:"Mercredi 23", events:[["8 h 35","Sec. 2 · Conditionnement"],["10 h 20","Sec. 3 · Ultimate"]]},
+  "24": {label:"Jeudi 24", events:[["13 h 10","Sec. 4 · Badminton"]]},
+  "25": {label:"Vendredi 25", events:[["8 h 35","Sec. 3 · Ultimate"],["13 h 10","Sec. 2 · Conditionnement"]]}
+};
+
+function showCalendarDay(day){
+  var data = calendarData[day];
+  if(!data) return;
+  document.querySelectorAll(".dayChip").forEach(function(b){
+    b.classList.toggle("active",b.dataset.day === day);
   });
+  document.getElementById("selectedDayLabel").textContent = data.label;
+  document.getElementById("dayEvents").innerHTML = data.events.map(function(event){
+    return '<button class="eventLine" type="button"><span>'+event[0]+'</span><strong>'+event[1]+'</strong><div class="chev">›</div></button>';
+  }).join("");
+}
+
+document.querySelectorAll(".dayChip").forEach(function(btn){
+  btn.addEventListener("click",function(){showCalendarDay(btn.dataset.day);});
+});
+
+document.getElementById("calendarViewSelect").addEventListener("change",function(){
+  var month = this.value === "month";
+  document.getElementById("weekView").classList.toggle("active",!month);
+  document.getElementById("monthView").classList.toggle("active",month);
+  document.getElementById("calendarPeriod").textContent = month ? "Sept. 2026" : "21–25 sept.";
+});
+
+document.getElementById("dayEvents").addEventListener("click",function(e){
+  if(e.target.closest(".eventLine")) go("teach");
 });
 
 var toastTimer;
