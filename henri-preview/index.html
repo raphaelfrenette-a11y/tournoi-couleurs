@@ -241,6 +241,132 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
   border-radius:18px;padding:15px 17px;font-size:14px;line-height:1.45
 }
 .configHint strong{color:var(--accent-dark)}
+
+.calendarHead{align-items:center}
+.calendarHead>div:first-child{display:flex;flex-direction:column;gap:4px}
+.segmented{
+  display:inline-grid;grid-template-columns:repeat(2,1fr);background:#EDEFF0;
+  border-radius:12px;padding:3px;gap:2px
+}
+.segment{
+  border:0;background:transparent;color:#7A8084;border-radius:9px;padding:7px 11px;
+  font-size:12px;font-weight:750;cursor:pointer
+}
+.segment.active{background:#fff;color:var(--accent-dark);box-shadow:0 1px 5px rgba(0,0,0,.08)}
+.calendarShell{
+  background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;
+  box-shadow:var(--shadow)
+}
+.calendarToolbar{
+  height:50px;padding:0 13px;display:grid;grid-template-columns:40px 1fr 40px;
+  align-items:center;border-bottom:1px solid var(--line);text-align:center
+}
+.calendarToolbar strong{font-size:14px;letter-spacing:-.01em}
+.calendarArrow{
+  border:0;background:transparent;color:var(--accent);font-size:27px;line-height:1;
+  cursor:pointer;border-radius:10px;height:36px
+}
+.calendarView{display:none}.calendarView.active{display:block}
+.dayRow{
+  width:100%;border:0;border-bottom:1px solid var(--line);background:#fff;color:inherit;
+  padding:13px 15px;display:grid;grid-template-columns:48px 1fr auto;gap:12px;
+  align-items:center;text-align:left;cursor:pointer
+}
+.dayRow:last-child{border-bottom:0}
+.dayRow.today{background:var(--accent-faint)}
+.dayDate{display:flex;flex-direction:column;align-items:center;gap:2px}
+.dayDate strong{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.dayDate span{font-size:20px;font-weight:760;letter-spacing:-.04em}
+.dayEvents{display:grid;gap:5px;min-width:0}
+.miniEvent{display:flex;gap:8px;align-items:center;min-width:0;font-size:12px}
+.miniEvent span{color:var(--muted);width:44px;flex:0 0 44px}
+.miniEvent strong{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mutedEvent strong{font-weight:600;color:#545A5E}
+.todayBadge{
+  background:var(--accent);color:#fff;border-radius:999px;padding:6px 8px;
+  font-size:10px;font-weight:800
+}
+.monthWeekdays,.monthGrid{display:grid;grid-template-columns:repeat(7,1fr)}
+.monthWeekdays{padding:12px 12px 6px;color:var(--muted);font-size:10px;font-weight:800;text-align:center}
+.monthGrid{padding:0 12px 14px;gap:5px}
+.monthGrid span{
+  aspect-ratio:1;display:grid;place-items:center;border-radius:10px;font-size:12px;
+  color:var(--ink);position:relative
+}
+.monthGrid .outside{color:#B8BDC0}
+.monthGrid .hasEvent::after{
+  content:"";position:absolute;bottom:4px;width:3px;height:3px;border-radius:50%;background:var(--accent)
+}
+.monthGrid .todayCell{background:var(--accent);color:#fff;font-weight:800}
+.settingsCard{
+  width:100%;margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:24px;
+  padding:18px;text-align:left;color:inherit;cursor:pointer;box-shadow:var(--shadow)
+}
+.settingsCardTop{display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:center}
+.settingsIconWrap{
+  width:42px;height:42px;border-radius:14px;background:var(--accent-soft);color:var(--accent);
+  display:grid;place-items:center
+}
+.settingsLargeIcon,.settingsRowIcon svg,.planningIcon svg,.calendarSyncNote svg{
+  width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round
+}
+.settingsTitle h3{margin:0 0 3px;font-size:18px;letter-spacing:-.02em}
+.settingsTitle p{margin:0;color:var(--muted);font-size:13px}
+.settingsSummary{
+  margin-top:15px;padding-top:13px;border-top:1px solid var(--line);display:flex;gap:7px;flex-wrap:wrap
+}
+.settingsSummary span{
+  background:var(--accent-faint);color:var(--muted);border-radius:999px;padding:7px 9px;font-size:11px
+}
+.settingsSummary strong{color:var(--accent)}
+.compactPageHead{margin-bottom:20px}
+.planningStack{display:grid;gap:10px}
+.planningChoice{
+  width:100%;border:1px solid var(--line);background:#fff;color:inherit;border-radius:20px;
+  padding:18px;display:grid;grid-template-columns:46px 1fr auto;gap:14px;align-items:center;
+  text-align:left;cursor:pointer;box-shadow:var(--shadow)
+}
+.planningIcon{
+  width:46px;height:46px;border-radius:15px;background:var(--accent-soft);color:var(--accent);
+  display:grid;place-items:center
+}
+.planningScope{
+  display:block;color:var(--accent);font-size:10px;text-transform:uppercase;font-weight:800;
+  letter-spacing:.08em;margin-bottom:4px
+}
+.planningText h3{margin:0 0 4px;font-size:19px;letter-spacing:-.02em}
+.planningText p{margin:0;color:var(--muted);font-size:13px}
+.calendarSyncNote{
+  margin-top:14px;padding:14px 16px;border-radius:18px;background:var(--accent-faint);
+  color:var(--muted);display:flex;align-items:center;gap:11px;font-size:13px;line-height:1.4
+}
+.calendarSyncNote svg{color:var(--accent);flex:0 0 auto}
+.calendarSyncNote strong{color:var(--accent-dark)}
+.settingsList{display:grid;gap:10px}
+.settingsRow{
+  width:100%;border:1px solid var(--line);background:#fff;color:inherit;border-radius:20px;
+  padding:16px;display:grid;grid-template-columns:42px 1fr auto auto;gap:12px;align-items:center;
+  text-align:left;cursor:pointer;box-shadow:var(--shadow)
+}
+.settingsRowIcon{
+  width:42px;height:42px;border-radius:13px;background:var(--accent-soft);color:var(--accent);
+  display:grid;place-items:center
+}
+.settingsRow h3{margin:0 0 3px;font-size:16px;letter-spacing:-.015em}
+.settingsRow p{margin:0;color:var(--muted);font-size:12px}
+.statusSmall{
+  background:var(--accent-faint);color:var(--accent);border-radius:999px;padding:6px 8px;
+  font-size:10px;font-weight:800
+}
+.addSetting{
+  margin-top:14px;width:100%;min-height:54px;border:1px dashed #C8CED1;background:transparent;
+  color:var(--accent);border-radius:18px;font-weight:750;cursor:pointer
+}
+.plusCircle{
+  display:inline-grid;place-items:center;width:24px;height:24px;margin-right:8px;border-radius:50%;
+  background:var(--accent-soft);font-size:18px;vertical-align:middle
+}
+
 .toast{
   position:fixed;left:50%;bottom:102px;z-index:100;transform:translate(-50%,20px);
   background:#1D1D1F;color:#fff;border-radius:14px;padding:11px 15px;font-size:13px;font-weight:650;
@@ -262,12 +388,23 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
   .quick{min-height:96px;padding:14px 11px;font-size:13px}
   .ready{padding:14px 15px}
   .configBtn{padding:0 11px}
+  .calendarHead{flex-direction:row;align-items:center}
+  .calendarHead>div:first-child{flex:1}
+  .settingsRow{grid-template-columns:42px 1fr auto}
+  .settingsRow .statusSmall{display:none}
 }
 @media(max-width:390px){
   .quickGrid{gap:8px}
   .quick{padding:13px 9px;font-size:12px}
   .courseLink{grid-template-columns:1fr auto}
   .courseClock{grid-column:1/-1;margin-bottom:-4px}
+  .calendarHead{gap:10px}
+  .segment{padding:7px 9px}
+  .dayRow{grid-template-columns:42px 1fr auto;padding:12px}
+  .todayBadge{display:none}
+  .planningChoice{grid-template-columns:42px 1fr auto;padding:15px}
+  .planningIcon{width:42px;height:42px}
+  .settingsCard{padding:16px}
 }
 </style>
 </head>
@@ -289,7 +426,7 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
           <path d="M12 8.25A3.75 3.75 0 1 0 12 15.75A3.75 3.75 0 0 0 12 8.25Z"/>
           <path d="M19.05 13.45a7.7 7.7 0 0 0 .04-2.9l1.68-1.31-1.9-3.29-1.98.8a7.72 7.72 0 0 0-2.5-1.45L14.1 3.2h-3.8L10 5.3a7.72 7.72 0 0 0-2.5 1.45l-1.98-.8-1.9 3.29 1.68 1.31a7.7 7.7 0 0 0 .04 2.9l-1.72 1.34 1.9 3.29 2.02-.82A7.7 7.7 0 0 0 10 18.7l.3 2.1h3.8l.3-2.1a7.7 7.7 0 0 0 2.46-1.44l2.02.82 1.9-3.29-1.73-1.34Z"/>
         </svg>
-        <span>Configuration</span>
+        <span>Paramètres</span>
       </button>
     </div>
   </div>
@@ -306,64 +443,149 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
     <button class="btn btn-light" data-go="teach">Ouvrir le cours</button>
   </div>
 
-  <div class="sectionHead compactHead">
-    <h2>Raccourcis</h2>
-    <span>Les actions les plus fréquentes.</span>
+  <div class="sectionHead calendarHead">
+    <div>
+      <h2>Mon calendrier</h2>
+      <span id="calendarRange">21–25 septembre</span>
+    </div>
+    <div class="segmented" role="tablist" aria-label="Vue du calendrier">
+      <button class="segment active" data-calendar-view="week" aria-selected="true">Semaine</button>
+      <button class="segment" data-calendar-view="month" aria-selected="false">Mois</button>
+    </div>
   </div>
 
-  <div class="quickGrid">
-    <button class="quick" data-go="plan">
-      <svg class="quickIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.75v2.5M17 3.75v2.5M4.5 9h15M6.25 5.25h11.5A1.75 1.75 0 0 1 19.5 7v11A1.75 1.75 0 0 1 17.75 19.75H6.25A1.75 1.75 0 0 1 4.5 18V7A1.75 1.75 0 0 1 6.25 5.25Z"/></svg>
-      <span>Préparer un cours</span>
-    </button>
-    <button class="quick previewLink" data-title="Gestion d’équipes" data-desc="Choisissez un groupe configuré, le nombre d’équipes et les critères souhaités. Henri générera ensuite des équipes équilibrées que vous pourrez ajuster.">
-      <svg class="quickIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.25 11A3.25 3.25 0 1 0 8.25 4.5A3.25 3.25 0 0 0 8.25 11ZM15.75 10A2.75 2.75 0 1 0 15.75 4.5A2.75 2.75 0 0 0 15.75 10ZM2.75 19.25c.35-3.24 2.45-5.25 5.5-5.25s5.15 2.01 5.5 5.25M13.25 13.75c.7-.5 1.55-.75 2.5-.75 2.83 0 4.78 1.88 5.1 4.75"/></svg>
-      <span>Former des équipes</span>
-    </button>
-    <button class="quick previewLink" data-title="Chrono" data-desc="Ouvrez rapidement un compte à rebours ou un intervalle à projeter dans le gymnase.">
-      <svg class="quickIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3.5h6M12 3.5v2.25M17.7 7.3l1.45-1.45M12 7A6.5 6.5 0 1 0 12 20A6.5 6.5 0 0 0 12 7Zm0 3v3.5l2.25 1.25"/></svg>
-      <span>Chrono</span>
-    </button>
-  </div>
+  <div class="calendarShell">
+    <div class="calendarToolbar">
+      <button class="calendarArrow" aria-label="Période précédente">‹</button>
+      <strong id="calendarTitle">Cette semaine</strong>
+      <button class="calendarArrow" aria-label="Période suivante">›</button>
+    </div>
 
-  <div class="ready">
-    <div class="readyTop">
-      <span class="readyDot" aria-hidden="true"></span>
-      <div>
-        <strong>Henri est prêt</strong>
-        <div class="readyMeta">Calendrier · Horaire · 5 groupes</div>
+    <div id="weekView" class="calendarView active">
+      <button class="dayRow previewLink" data-title="Lundi 21 septembre" data-desc="Les cours et séances planifiés pour cette journée apparaîtront ici.">
+        <div class="dayDate"><strong>Lun</strong><span>21</span></div>
+        <div class="dayEvents">
+          <div class="miniEvent"><span>8 h 35</span><strong>Sec. 3 · Ultimate</strong></div>
+          <div class="miniEvent mutedEvent"><span>13 h 10</span><strong>Sec. 2 · Conditionnement</strong></div>
+        </div>
+        <div class="chev">›</div>
+      </button>
+      <button class="dayRow previewLink" data-title="Mardi 22 septembre" data-desc="Les cours et séances planifiés pour cette journée apparaîtront ici.">
+        <div class="dayDate"><strong>Mar</strong><span>22</span></div>
+        <div class="dayEvents">
+          <div class="miniEvent"><span>10 h 20</span><strong>Sec. 4 · Badminton</strong></div>
+        </div>
+        <div class="chev">›</div>
+      </button>
+      <button class="dayRow previewLink" data-title="Mercredi 23 septembre" data-desc="Les cours et séances planifiés pour cette journée apparaîtront ici.">
+        <div class="dayDate"><strong>Mer</strong><span>23</span></div>
+        <div class="dayEvents">
+          <div class="miniEvent"><span>8 h 35</span><strong>Sec. 2 · Conditionnement</strong></div>
+          <div class="miniEvent mutedEvent"><span>10 h 20</span><strong>Sec. 3 · Ultimate</strong></div>
+        </div>
+        <div class="chev">›</div>
+      </button>
+      <button class="dayRow previewLink" data-title="Jeudi 24 septembre" data-desc="Les cours et séances planifiés pour cette journée apparaîtront ici.">
+        <div class="dayDate"><strong>Jeu</strong><span>24</span></div>
+        <div class="dayEvents">
+          <div class="miniEvent"><span>13 h 10</span><strong>Sec. 4 · Badminton</strong></div>
+        </div>
+        <div class="chev">›</div>
+      </button>
+      <button class="dayRow today previewLink" data-title="Vendredi 25 septembre" data-desc="Aujourd’hui. Les cours planifiés sont affichés directement dans votre calendrier.">
+        <div class="dayDate"><strong>Ven</strong><span>25</span></div>
+        <div class="dayEvents">
+          <div class="miniEvent"><span>8 h 35</span><strong>Sec. 3 · Ultimate</strong></div>
+          <div class="miniEvent mutedEvent"><span>13 h 10</span><strong>Sec. 2 · Conditionnement</strong></div>
+        </div>
+        <div class="todayBadge">Aujourd’hui</div>
+      </button>
+    </div>
+
+    <div id="monthView" class="calendarView">
+      <div class="monthWeekdays">
+        <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+      </div>
+      <div class="monthGrid">
+        <span class="outside">31</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+        <span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
+        <span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span>
+        <span class="hasEvent">21</span><span class="hasEvent">22</span><span class="hasEvent">23</span><span class="hasEvent">24</span><span class="todayCell">25</span><span>26</span><span>27</span>
+        <span class="hasEvent">28</span><span>29</span><span class="hasEvent">30</span><span class="outside">1</span><span class="outside">2</span><span class="outside">3</span><span class="outside">4</span>
       </div>
     </div>
-    <button class="readyAction" data-go="config">Gérer</button>
   </div>
+
+  <button class="settingsCard" data-go="config">
+    <div class="settingsCardTop">
+      <div class="settingsIconWrap">
+        <svg class="settingsLargeIcon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8.25A3.75 3.75 0 1 0 12 15.75A3.75 3.75 0 0 0 12 8.25Z"/>
+          <path d="M19.05 13.45a7.7 7.7 0 0 0 .04-2.9l1.68-1.31-1.9-3.29-1.98.8a7.72 7.72 0 0 0-2.5-1.45L14.1 3.2h-3.8L10 5.3a7.72 7.72 0 0 0-2.5 1.45l-1.98-.8-1.9 3.29 1.68 1.31a7.7 7.7 0 0 0 .04 2.9l-1.72 1.34 1.9 3.29 2.02-.82A7.7 7.7 0 0 0 10 18.7l.3 2.1h3.8l.3-2.1a7.7 7.7 0 0 0 2.46-1.44l2.02.82 1.9-3.29-1.73-1.34Z"/>
+        </svg>
+      </div>
+      <div class="settingsTitle">
+        <h3>Mes groupes & paramètres</h3>
+        <p>Tout ce qui alimente Henri.</p>
+      </div>
+      <div class="chev">›</div>
+    </div>
+    <div class="settingsSummary">
+      <span><strong>5</strong> groupes</span>
+      <span><strong>✓</strong> listes de classe</span>
+      <span><strong>✓</strong> calendrier & cycle</span>
+      <span><strong>✓</strong> horaire enseignant</span>
+    </div>
+  </button>
 </section>
 
 <section id="plan" class="screen">
-  <div class="pageHead">
+  <div class="pageHead compactPageHead">
     <div class="eyebrow">Planifier</div>
     <h1>Planifier.</h1>
-    <p>L’année, les séquences et les cours au même endroit.</p>
   </div>
 
-  <div class="grid3">
-    <button class="card priorityCard previewLink" data-title="Préparer un cours" data-desc="Choisissez un groupe et un objectif. Henri rassemble ensuite l’échauffement, les éducatifs, la situation globale et les notes utiles dans une seule séance.">
-      <div class="cardKicker">Action rapide</div>
-      <h3>Préparer un cours</h3>
-      <p>Créer ou ajuster la prochaine séance.</p>
-      <div class="cardAction">Commencer →</div>
+  <div class="planningStack">
+    <button class="planningChoice previewLink" data-title="Planifier une séance" data-desc="Choisissez un groupe, une date et un objectif. La séance créée apparaîtra automatiquement dans Mon calendrier.">
+      <div class="planningIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.75v2.5M17 3.75v2.5M4.5 9h15M6.25 5.25h11.5A1.75 1.75 0 0 1 19.5 7v11A1.75 1.75 0 0 1 17.75 19.75H6.25A1.75 1.75 0 0 1 4.5 18V7A1.75 1.75 0 0 1 6.25 5.25Z"/></svg>
+      </div>
+      <div class="planningText">
+        <span class="planningScope">1 cours</span>
+        <h3>Planifier une séance</h3>
+        <p>Préparer le prochain cours maintenant.</p>
+      </div>
+      <div class="chev">›</div>
     </button>
-    <button class="card previewLink" data-title="Planifier l’année" data-desc="Organisez les séquences sur votre calendrier scolaire et visualisez la progression de chaque groupe.">
-      <div class="cardKicker">Vue annuelle</div>
-      <h3>Planifier l’année</h3>
-      <p>Placer les séquences sur les vraies dates de cours.</p>
-      <div class="cardAction">Ouvrir →</div>
+
+    <button class="planningChoice previewLink" data-title="Planifier une séquence" data-desc="Construisez plusieurs séances liées à une même intention. Henri les place ensuite aux bonnes dates pour le groupe choisi.">
+      <div class="planningIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6.25h14M5 12h14M5 17.75h14M8 3.75v5M16 9.5v5M10 15.25v5"/></svg>
+      </div>
+      <div class="planningText">
+        <span class="planningScope">Plusieurs cours</span>
+        <h3>Planifier une séquence</h3>
+        <p>Construire un bloc complet de séances.</p>
+      </div>
+      <div class="chev">›</div>
     </button>
-    <button class="card previewLink" data-title="Mes séquences" data-desc="Retrouvez, dupliquez et ajustez rapidement les séquences déjà préparées.">
-      <div class="cardKicker">Bibliothèque</div>
-      <h3>Mes séquences</h3>
-      <p>Retrouver les blocs déjà préparés.</p>
-      <div class="cardAction">Ouvrir →</div>
+
+    <button class="planningChoice previewLink" data-title="Planifier l’année" data-desc="Répartissez les grandes séquences de l’année. Henri tient compte du calendrier scolaire, des jours-cycle et de votre horaire enseignant.">
+      <div class="planningIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5.5h15v14h-15v-14ZM4.5 9h15M8 3.5v4M16 3.5v4M8 12h3M13 12h3M8 16h3M13 16h3"/></svg>
+      </div>
+      <div class="planningText">
+        <span class="planningScope">Vue globale</span>
+        <h3>Planifier l’année</h3>
+        <p>Répartir les séquences sur votre calendrier.</p>
+      </div>
+      <div class="chev">›</div>
     </button>
+  </div>
+
+  <div class="calendarSyncNote">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.75v2.5M17 3.75v2.5M4.5 9h15M6.25 5.25h11.5A1.75 1.75 0 0 1 19.5 7v11A1.75 1.75 0 0 1 17.75 19.75H6.25A1.75 1.75 0 0 1 4.5 18V7A1.75 1.75 0 0 1 6.25 5.25Z"/></svg>
+    <span>Tout ce que vous planifiez apparaît automatiquement dans <strong>Mon calendrier</strong>.</span>
   </div>
 </section>
 
@@ -426,44 +648,54 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
 
 <section id="config" class="screen">
   <button class="back" data-go="home">← Accueil</button>
-  <div class="pageHead">
-    <div class="eyebrow">Configuration</div>
-    <h1>Configuration.</h1>
-    <p>Les données de base que Henri réutilise partout.</p>
+  <div class="pageHead compactPageHead">
+    <div class="eyebrow">Paramètres</div>
+    <h1>Mes groupes.</h1>
+    <p>Vos classes, vos documents et votre horaire.</p>
   </div>
 
-  <div class="configStatus">
-    <div>
-      <strong>Configuration complète</strong>
-      <span>3 éléments sur 3</span>
-    </div>
-    <span class="statusPill">Prêt</span>
+  <div class="settingsList">
+    <button class="settingsRow previewLink" data-title="Groupes et listes de classe" data-desc="Ajoutez ou modifiez vos groupes. Importez les listes d’élèves en PDF, CSV ou photo, puis vérifiez les élèves reconnus.">
+      <div class="settingsRowIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.25 11A3.25 3.25 0 1 0 8.25 4.5A3.25 3.25 0 0 0 8.25 11ZM15.75 10A2.75 2.75 0 1 0 15.75 4.5A2.75 2.75 0 0 0 15.75 10ZM2.75 19.25c.35-3.24 2.45-5.25 5.5-5.25s5.15 2.01 5.5 5.25M13.25 13.75c.7-.5 1.55-.75 2.5-.75 2.83 0 4.78 1.88 5.1 4.75"/></svg>
+      </div>
+      <div>
+        <h3>Groupes & listes de classe</h3>
+        <p>5 groupes · PDF des listes d’élèves</p>
+      </div>
+      <span class="statusSmall">Prêt</span>
+      <div class="chev">›</div>
+    </button>
+
+    <button class="settingsRow previewLink" data-title="Calendrier scolaire et cycle" data-desc="Importez le calendrier scolaire de l’école et indiquez le fonctionnement du cycle. Henri reconnaîtra les congés, pédagogiques et jours-cycle.">
+      <div class="settingsRowIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.75v2.5M17 3.75v2.5M4.5 9h15M6.25 5.25h11.5A1.75 1.75 0 0 1 19.5 7v11A1.75 1.75 0 0 1 17.75 19.75H6.25A1.75 1.75 0 0 1 4.5 18V7A1.75 1.75 0 0 1 6.25 5.25Z"/></svg>
+      </div>
+      <div>
+        <h3>Calendrier scolaire & cycle</h3>
+        <p>PDF du calendrier · cycle configuré</p>
+      </div>
+      <span class="statusSmall">Prêt</span>
+      <div class="chev">›</div>
+    </button>
+
+    <button class="settingsRow previewLink" data-title="Horaire enseignant" data-desc="Importez votre horaire maître en PDF. Henri associera les groupes, périodes, locaux et jours-cycle à votre calendrier.">
+      <div class="settingsRowIcon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.25h14v13.5H5V5.25ZM8 3.5v3.5M16 3.5v3.5M5 9h14M8 12h3M13 12h3M8 15.5h3"/></svg>
+      </div>
+      <div>
+        <h3>Horaire enseignant</h3>
+        <p>PDF de l’horaire maître</p>
+      </div>
+      <span class="statusSmall">Prêt</span>
+      <div class="chev">›</div>
+    </button>
   </div>
 
-  <div class="setupGrid">
-    <div class="setup">
-      <div class="step done">✓</div>
-      <h3>Calendrier scolaire</h3>
-      <p>Jours-cycle, congés, pédagogiques et journées spéciales.</p>
-      <button class="btn btn-outline demoAction">Modifier</button>
-    </div>
-    <div class="setup">
-      <div class="step done">✓</div>
-      <h3>Horaire maître</h3>
-      <p>Périodes, groupes, locaux et jours-cycle associés automatiquement.</p>
-      <button class="btn btn-outline demoAction">Modifier</button>
-    </div>
-    <div class="setup">
-      <div class="step done">✓</div>
-      <h3>Groupes et élèves</h3>
-      <p>5 groupes configurés · listes disponibles dans tous les outils.</p>
-      <button class="btn btn-outline demoAction">Modifier</button>
-    </div>
-  </div>
-
-  <div class="configHint">
-    Ces données alimentent automatiquement <strong>Planifier</strong>, <strong>Enseigner</strong> et les <strong>Outils</strong>. Vous ne les entrez qu’une seule fois.
-  </div>
+  <button class="addSetting demoAction">
+    <span class="plusCircle">+</span>
+    Ajouter ou remplacer un document
+  </button>
 </section>
 
 <section id="placeholder" class="screen">
@@ -545,6 +777,22 @@ document.querySelectorAll(".previewLink").forEach(function(b){
 
 document.getElementById("placeholderBack").addEventListener("click",function(){
   go(previousScreen || "home");
+});
+
+
+document.querySelectorAll("[data-calendar-view]").forEach(function(btn){
+  btn.addEventListener("click",function(){
+    var view = btn.dataset.calendarView;
+    document.querySelectorAll("[data-calendar-view]").forEach(function(b){
+      var active = b === btn;
+      b.classList.toggle("active",active);
+      b.setAttribute("aria-selected",active ? "true" : "false");
+    });
+    document.getElementById("weekView").classList.toggle("active",view === "week");
+    document.getElementById("monthView").classList.toggle("active",view === "month");
+    document.getElementById("calendarTitle").textContent = view === "week" ? "Cette semaine" : "Septembre 2026";
+    document.getElementById("calendarRange").textContent = view === "week" ? "21–25 septembre" : "Septembre 2026";
+  });
 });
 
 var toastTimer;
