@@ -55,20 +55,17 @@ button:focus-visible{outline:3px solid rgba(49,74,91,.2);outline-offset:3px}
   border-radius:999px;padding:0 13px;font-size:13px;font-weight:700;cursor:pointer;
   display:flex;align-items:center;gap:7px;box-shadow:0 4px 14px rgba(49,74,91,.04)
 }
-.configDot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.configIcon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 
 main{max-width:980px;margin:auto;padding:30px 22px 44px}
 .screen{display:none}.screen.active{display:block}
 .eyebrow{
   font-size:12px;font-weight:750;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)
 }
-.hero{padding:12px 0 4px}
+.hero{padding:12px 0 8px}
 .hero h1{
-  font-size:clamp(40px,7vw,68px);line-height:.98;margin:10px 0 14px;
+  font-size:clamp(40px,7vw,68px);line-height:.98;margin:10px 0 0;
   letter-spacing:-.055em;font-weight:760
-}
-.hero p{
-  margin:0;max-width:660px;font-size:18px;line-height:1.5;color:var(--muted)
 }
 .feature{
   margin-top:28px;background:var(--accent);color:#fff;border-radius:28px;padding:26px;
@@ -191,10 +188,58 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
   max-width:720px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:5px
 }
 .navBtn{
-  position:relative;border:0;background:transparent;color:#8B9296;min-height:48px;
-  border-radius:13px;font-size:12px;font-weight:700;cursor:pointer
+  position:relative;border:0;background:transparent;color:#8B9296;min-height:54px;
+  border-radius:14px;font-size:11px;font-weight:700;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px
 }
 .navBtn.active{color:var(--accent);background:var(--accent-faint)}
+.navIcon{
+  width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;
+  stroke-linecap:round;stroke-linejoin:round
+}
+.quickGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.quick{
+  min-height:104px;border:1px solid var(--line);background:#fff;color:var(--accent-dark);
+  border-radius:20px;padding:16px 12px;cursor:pointer;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;
+  text-align:left;font-weight:720;font-size:14px;line-height:1.2;transition:transform .15s ease,border-color .15s ease
+}
+.quick:active{transform:scale(.985)}
+.quickIcon{
+  width:24px;height:24px;fill:none;stroke:var(--accent);stroke-width:1.65;
+  stroke-linecap:round;stroke-linejoin:round
+}
+.compactHead{margin-top:30px}
+.ready{
+  margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:20px;
+  padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  box-shadow:var(--shadow)
+}
+.readyTop{display:flex;align-items:center;gap:11px;min-width:0}
+.readyTop strong{display:block;font-size:15px;letter-spacing:-.01em}
+.readyDot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--accent-soft);flex:0 0 9px}
+.readyMeta{margin-top:3px;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.readyAction{
+  border:0;background:var(--accent-faint);color:var(--accent);border-radius:999px;
+  min-height:38px;padding:0 14px;font-weight:750;cursor:pointer
+}
+.priorityCard{background:linear-gradient(180deg,#fff,var(--accent-faint));border-color:#D9E1E5}
+.firstSection{margin-top:4px}
+.courseLink{grid-template-columns:76px 1fr auto}
+.courseClock{font-size:13px;font-weight:780;color:var(--accent)}
+.configStatus{
+  margin:-2px 0 16px;background:var(--accent);color:#fff;border-radius:20px;padding:17px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:14px
+}
+.configStatus strong{display:block;font-size:16px}
+.configStatus span:not(.statusPill){display:block;margin-top:3px;color:#DCE4E8;font-size:13px}
+.statusPill{background:#fff;color:var(--accent);border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800}
+.step.done{background:var(--accent);color:#fff}
+.configHint{
+  margin-top:14px;border:1px solid var(--line);background:var(--accent-faint);color:var(--muted);
+  border-radius:18px;padding:15px 17px;font-size:14px;line-height:1.45
+}
+.configHint strong{color:var(--accent-dark)}
 .toast{
   position:fixed;left:50%;bottom:102px;z-index:100;transform:translate(-50%,20px);
   background:#1D1D1F;color:#fff;border-radius:14px;padding:11px 15px;font-size:13px;font-weight:650;
@@ -211,8 +256,17 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
   .sectionHead{align-items:flex-start;flex-direction:column;gap:4px}
   .course{grid-template-columns:82px 1fr}
   .course .state{grid-column:2;justify-self:start}
-  .mode{display:none}
+  .courseLink{grid-template-columns:62px 1fr auto}
+  .quickGrid{grid-template-columns:repeat(3,1fr)}
+  .quick{min-height:96px;padding:14px 11px;font-size:13px}
+  .ready{padding:14px 15px}
   .configBtn{padding:0 11px}
+}
+@media(max-width:390px){
+  .quickGrid{gap:8px}
+  .quick{padding:13px 9px;font-size:12px}
+  .courseLink{grid-template-columns:1fr auto}
+  .courseClock{grid-column:1/-1;margin-bottom:-4px}
 }
 </style>
 </head>
@@ -229,8 +283,13 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
       <span class="brandName">Henri</span>
     </div>
     <div class="topActions">
-      <button class="configBtn" data-go="config"><span class="configDot"></span>Configuration</button>
-      <div class="mode">Mode exploration</div>
+      <button class="configBtn" data-go="config" aria-label="Ouvrir la configuration">
+        <svg class="configIcon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8.25A3.75 3.75 0 1 0 12 15.75A3.75 3.75 0 0 0 12 8.25Z"/>
+          <path d="M19.05 13.45a7.7 7.7 0 0 0 .04-2.9l1.68-1.31-1.9-3.29-1.98.8a7.72 7.72 0 0 0-2.5-1.45L14.1 3.2h-3.8L10 5.3a7.72 7.72 0 0 0-2.5 1.45l-1.98-.8-1.9 3.29 1.68 1.31a7.7 7.7 0 0 0 .04 2.9l-1.72 1.34 1.9 3.29 2.02-.82A7.7 7.7 0 0 0 10 18.7l.3 2.1h3.8l.3-2.1a7.7 7.7 0 0 0 2.46-1.44l2.02.82 1.9-3.29-1.73-1.34Z"/>
+        </svg>
+        <span>Configuration</span>
+      </button>
     </div>
   </div>
 </header>
@@ -240,136 +299,131 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
   <div class="hero">
     <div class="eyebrow">Henri · L’outil terrain du prof d’ÉPS</div>
     <h1>Planifier.<br>Enseigner.</h1>
-    <p>Un espace simple pour organiser l’année, ouvrir le cours du jour et accéder rapidement aux outils utilisés dans le gymnase.</p>
   </div>
 
   <div class="feature">
     <div>
-      <small>Prochain cours · exemple</small>
+      <small>Prochain cours</small>
       <h2>Secondaire 3 · Ultimate</h2>
       <p>70 min · Se démarquer pour offrir une option de passe</p>
     </div>
-    <button class="btn btn-light" data-go="teach">Voir le cours</button>
+    <button class="btn btn-light" data-go="teach">Ouvrir le cours</button>
   </div>
 
-  <div class="sectionHead">
-    <h2>Que voulez-vous faire?</h2>
-    <span>Trois accès principaux.</span>
+  <div class="sectionHead compactHead">
+    <h2>Raccourcis</h2>
+    <span>Les actions les plus fréquentes.</span>
   </div>
 
-  <div class="grid3">
-    <button class="card" data-go="plan">
-      <div class="cardKicker">Organisation</div>
-      <h3>Planifier</h3>
-      <p>Construire l’année et préparer une séance au même endroit.</p>
-      <div class="cardAction">Ouvrir →</div>
+  <div class="quickGrid">
+    <button class="quick" data-go="plan">
+      <svg class="quickIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.75v2.5M17 3.75v2.5M4.5 9h15M6.25 5.25h11.5A1.75 1.75 0 0 1 19.5 7v11A1.75 1.75 0 0 1 17.75 19.75H6.25A1.75 1.75 0 0 1 4.5 18V7A1.75 1.75 0 0 1 6.25 5.25Z"/></svg>
+      <span>Préparer un cours</span>
     </button>
-    <button class="card" data-go="teach">
-      <div class="cardKicker">Terrain</div>
-      <h3>Enseigner</h3>
-      <p>Retrouver le cours du jour et passer rapidement en mode gymnase.</p>
-      <div class="cardAction">Ouvrir →</div>
+    <button class="quick previewLink" data-title="Gestion d’équipes" data-desc="Choisissez un groupe configuré, le nombre d’équipes et les critères souhaités. Henri générera ensuite des équipes équilibrées que vous pourrez ajuster.">
+      <svg class="quickIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.25 11A3.25 3.25 0 1 0 8.25 4.5A3.25 3.25 0 0 0 8.25 11ZM15.75 10A2.75 2.75 0 1 0 15.75 4.5A2.75 2.75 0 0 0 15.75 10ZM2.75 19.25c.35-3.24 2.45-5.25 5.5-5.25s5.15 2.01 5.5 5.25M13.25 13.75c.7-.5 1.55-.75 2.5-.75 2.83 0 4.78 1.88 5.1 4.75"/></svg>
+      <span>Former des équipes</span>
     </button>
-    <button class="card" data-go="tools">
-      <div class="cardKicker">Utilitaires</div>
-      <h3>Outils</h3>
-      <p>Musculation, équipes, tournoi, chrono et compteur.</p>
-      <div class="cardAction">Ouvrir →</div>
+    <button class="quick previewLink" data-title="Chrono" data-desc="Ouvrez rapidement un compte à rebours ou un intervalle à projeter dans le gymnase.">
+      <svg class="quickIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3.5h6M12 3.5v2.25M17.7 7.3l1.45-1.45M12 7A6.5 6.5 0 1 0 12 20A6.5 6.5 0 0 0 12 7Zm0 3v3.5l2.25 1.25"/></svg>
+      <span>Chrono</span>
     </button>
   </div>
 
-  <div class="sectionHead">
-    <h2>Votre environnement</h2>
-    <span>Les données de base de Henri.</span>
-  </div>
-
-  <div class="groups">
-    <div>
-      <h3>Configuration prête</h3>
-      <p>Calendrier scolaire, horaire maître, groupes et listes d’élèves alimentent automatiquement le reste de l’application.</p>
-      <div class="chips">
-        <span class="chip">Calendrier ajouté</span>
-        <span class="chip">Horaire ajouté</span>
-        <span class="chip">5 groupes</span>
+  <div class="ready">
+    <div class="readyTop">
+      <span class="readyDot" aria-hidden="true"></span>
+      <div>
+        <strong>Henri est prêt</strong>
+        <div class="readyMeta">Calendrier · Horaire · 5 groupes</div>
       </div>
     </div>
-    <button class="btn btn-primary" data-go="config">Configuration</button>
+    <button class="readyAction" data-go="config">Gérer</button>
   </div>
 </section>
 
 <section id="plan" class="screen">
-  <button class="back" data-go="home">← Accueil</button>
   <div class="pageHead">
     <div class="eyebrow">Planifier</div>
-    <h1>Tout commence ici.</h1>
-    <p>Le prototype montre seulement la structure. Les outils de planification complets seront intégrés une fois la navigation validée.</p>
+    <h1>Planifier.</h1>
+    <p>L’année, les séquences et les cours au même endroit.</p>
   </div>
 
-  <div class="prototypeNote"><strong>Mode exploration :</strong> aucun moteur de planification n’est encore chargé dans cette version.</div>
-
-  <div class="grid2">
-    <button class="card previewLink" data-title="Planifier l’année" data-desc="Calendrier scolaire, séquences, progression et liens au programme seront réunis ici.">
-      <div class="cardKicker">Vue globale</div>
-      <h3>Planifier l’année</h3>
-      <p>Voir la progression annuelle et organiser les séquences.</p>
-      <div class="cardAction">Voir l’emplacement →</div>
+  <div class="grid3">
+    <button class="card priorityCard previewLink" data-title="Préparer un cours" data-desc="Choisissez un groupe et un objectif. Henri rassemble ensuite l’échauffement, les éducatifs, la situation globale et les notes utiles dans une seule séance.">
+      <div class="cardKicker">Action rapide</div>
+      <h3>Préparer un cours</h3>
+      <p>Créer ou ajuster la prochaine séance.</p>
+      <div class="cardAction">Commencer →</div>
     </button>
-    <button class="card previewLink" data-title="Préparer une séance" data-desc="Objectif, échauffement, éducatifs et situation globale seront assemblés ici dans une interface rapide.">
-      <div class="cardKicker">Cours</div>
-      <h3>Préparer une séance</h3>
-      <p>Construire un cours simple à partir d’un objectif précis.</p>
-      <div class="cardAction">Voir l’emplacement →</div>
+    <button class="card previewLink" data-title="Planifier l’année" data-desc="Organisez les séquences sur votre calendrier scolaire et visualisez la progression de chaque groupe.">
+      <div class="cardKicker">Vue annuelle</div>
+      <h3>Planifier l’année</h3>
+      <p>Placer les séquences sur les vraies dates de cours.</p>
+      <div class="cardAction">Ouvrir →</div>
+    </button>
+    <button class="card previewLink" data-title="Mes séquences" data-desc="Retrouvez, dupliquez et ajustez rapidement les séquences déjà préparées.">
+      <div class="cardKicker">Bibliothèque</div>
+      <h3>Mes séquences</h3>
+      <p>Retrouver les blocs déjà préparés.</p>
+      <div class="cardAction">Ouvrir →</div>
     </button>
   </div>
 </section>
 
 <section id="teach" class="screen">
-  <button class="back" data-go="home">← Accueil</button>
   <div class="pageHead">
     <div class="eyebrow">Enseigner</div>
-    <h1>Le cours du jour.</h1>
-    <p>Cette section sert à tester le chemin vers le mode terrain. Le déroulement complet du cours sera ajouté plus tard.</p>
+    <h1>Enseigner.</h1>
+    <p>Vos cours du jour, prêts à ouvrir.</p>
   </div>
 
-  <div class="prototypeNote"><strong>Mode exploration :</strong> les chronos, projections et commandes de séance ne sont pas encore intégrés.</div>
+  <div class="sectionHead firstSection">
+    <h2>Aujourd’hui</h2>
+    <span>Jour 4</span>
+  </div>
 
   <div class="list">
-    <button class="listCard previewLink" data-title="Secondaire 3 · Ultimate" data-desc="Ici s’ouvrira éventuellement la séance complète avec consignes, temps, projection et passage à l’activité suivante.">
-      <div><h3>Secondaire 3 · Ultimate</h3><p>70 min · Prochain cours</p></div>
+    <button class="listCard courseLink previewLink" data-title="Secondaire 3 · Ultimate" data-desc="La séance complète s’ouvrira ici avec le déroulement, les consignes, les temps, la projection et les raccourcis utiles sur le terrain.">
+      <div class="courseClock">8 h 35</div>
+      <div><h3>Secondaire 3 · Ultimate</h3><p>70 min · Se démarquer pour offrir une option de passe</p></div>
+      <div class="state">Prochain</div>
+    </button>
+    <button class="listCard courseLink previewLink" data-title="Secondaire 2 · Conditionnement" data-desc="Ouvrez la séance préparée pour ce groupe et passez directement au mode terrain.">
+      <div class="courseClock">10 h 20</div>
+      <div><h3>Secondaire 2 · Conditionnement</h3><p>60 min · Duels et jeux</p></div>
       <div class="chev">›</div>
     </button>
-    <button class="listCard previewLink" data-title="Mode projection" data-desc="L’écran élève simplifié sera intégré seulement après validation du canevas principal.">
-      <div><h3>Mode projection</h3><p>Écran simplifié pour le gymnase</p></div>
+    <button class="listCard courseLink previewLink" data-title="Secondaire 4 · Badminton" data-desc="Ouvrez la séance préparée pour ce groupe et passez directement au mode terrain.">
+      <div class="courseClock">13 h 10</div>
+      <div><h3>Secondaire 4 · Badminton</h3><p>70 min · Éducatifs et matchs</p></div>
       <div class="chev">›</div>
     </button>
   </div>
 </section>
 
 <section id="tools" class="screen">
-  <button class="back" data-go="home">← Accueil</button>
   <div class="pageHead">
     <div class="eyebrow">Outils</div>
-    <h1>Les raccourcis du gym.</h1>
-    <p>Chaque carte fonctionne pour tester la navigation, mais les vraies applications restent volontairement débranchées pour l’instant.</p>
+    <h1>Outils.</h1>
+    <p>Les outils du gymnase, accessibles en un toucher.</p>
   </div>
 
-  <div class="prototypeNote"><strong>Mode exploration :</strong> aucune donnée réelle ni logique de tournoi, de chrono ou de musculation n’est chargée ici.</div>
-
   <div class="toolGrid">
-    <button class="card toolCard previewLink" data-title="Musculation" data-desc="Le module de circuits, rotations et saisie rapide sera branché ici une fois l’interface principale approuvée.">
-      <div class="cardKicker">Séance</div><h3>Musculation</h3><p>Circuits, rotations et résultats.</p><div class="cardAction">Aperçu →</div>
+    <button class="card toolCard previewLink" data-title="Musculation" data-desc="Circuits, rotations, chrono continu et saisie rapide des résultats seront réunis dans ce module.">
+      <div class="cardKicker">Séance</div><h3>Musculation</h3><p>Circuits, rotations et résultats.</p><div class="cardAction">Ouvrir →</div>
     </button>
-    <button class="card toolCard previewLink" data-title="Gestion d’équipes" data-desc="Henri utilisera ici les listes d’élèves déjà enregistrées dans Configuration pour générer et ajuster des équipes équilibrées.">
-      <div class="cardKicker">Répartition</div><h3>Équipes</h3><p>Former des équipes équilibrées à partir de vos groupes configurés.</p><div class="cardAction">Aperçu →</div>
+    <button class="card toolCard previewLink" data-title="Gestion d’équipes" data-desc="Henri utilise les groupes déjà configurés pour générer rapidement des équipes équilibrées, puis vous laisse les ajuster.">
+      <div class="cardKicker">Répartition</div><h3>Gestion d’équipes</h3><p>Former des équipes équilibrées.</p><div class="cardAction">Ouvrir →</div>
     </button>
-    <button class="card toolCard previewLink" data-title="Tournoi" data-desc="Horaires, rotations, résultats et classement seront intégrés dans cet espace.">
-      <div class="cardKicker">Compétition</div><h3>Tournoi</h3><p>Horaire, résultats et classement.</p><div class="cardAction">Aperçu →</div>
+    <button class="card toolCard previewLink" data-title="Tournoi" data-desc="Créez les affrontements, gérez les rotations et compilez les résultats et le classement au même endroit.">
+      <div class="cardKicker">Compétition</div><h3>Tournoi</h3><p>Horaire, résultats et classement.</p><div class="cardAction">Ouvrir →</div>
     </button>
-    <button class="card toolCard previewLink" data-title="Chrono" data-desc="Compte à rebours, intervalles et rotations seront ajoutés après validation de la navigation.">
-      <div class="cardKicker">Temps</div><h3>Chrono</h3><p>Compte à rebours et intervalles.</p><div class="cardAction">Aperçu →</div>
+    <button class="card toolCard previewLink" data-title="Chrono" data-desc="Lancez un compte à rebours, des intervalles ou des rotations à projeter dans le gymnase.">
+      <div class="cardKicker">Temps</div><h3>Chrono</h3><p>Compte à rebours et intervalles.</p><div class="cardAction">Ouvrir →</div>
     </button>
-    <button class="card toolCard previewLink" data-title="Compteur" data-desc="Les compteurs de scores et fonctions de projection seront intégrés plus tard.">
-      <div class="cardKicker">Score</div><h3>Compteur</h3><p>Scores rapides et projection.</p><div class="cardAction">Aperçu →</div>
+    <button class="card toolCard previewLink" data-title="Compteur de points" data-desc="Comptez rapidement les points et projetez le score pendant une activité.">
+      <div class="cardKicker">Score</div><h3>Compteur de points</h3><p>Score rapide et projection.</p><div class="cardAction">Ouvrir →</div>
     </button>
   </div>
 </section>
@@ -378,103 +432,81 @@ main{max-width:980px;margin:auto;padding:30px 22px 44px}
   <button class="back" data-go="home">← Accueil</button>
   <div class="pageHead">
     <div class="eyebrow">Configuration</div>
-    <h1>Préparer Henri une seule fois.</h1>
-    <p>Ajoutez les documents de base de votre année scolaire. Henri pourra ensuite reconnaître vos groupes, placer vos cours sur les bonnes dates et réutiliser les listes d’élèves partout dans l’application.</p>
+    <h1>Configuration.</h1>
+    <p>Les données de base que Henri réutilise partout.</p>
   </div>
 
-  <div class="prototypeNote"><strong>Première utilisation :</strong> Henri guidera l’enseignant à travers ces étapes avant d’utiliser l’application. Tout pourra ensuite être modifié ici en tout temps.</div>
+  <div class="configStatus">
+    <div>
+      <strong>Configuration complète</strong>
+      <span>3 éléments sur 3</span>
+    </div>
+    <span class="statusPill">Prêt</span>
+  </div>
 
   <div class="setupGrid">
     <div class="setup">
-      <div class="step">1</div>
+      <div class="step done">✓</div>
       <h3>Calendrier scolaire</h3>
-      <p>Importez le PDF de l’école avec les jours-cycle, congés, pédagogiques et journées spéciales.</p>
-      <button class="btn btn-outline demoAction">Ajouter le calendrier</button>
+      <p>Jours-cycle, congés, pédagogiques et journées spéciales.</p>
+      <button class="btn btn-outline demoAction">Modifier</button>
     </div>
     <div class="setup">
-      <div class="step">2</div>
+      <div class="step done">✓</div>
       <h3>Horaire maître</h3>
-      <p>Ajoutez votre horaire pour associer automatiquement chaque groupe à ses périodes et jours-cycle.</p>
-      <button class="btn btn-outline demoAction">Ajouter l’horaire</button>
+      <p>Périodes, groupes, locaux et jours-cycle associés automatiquement.</p>
+      <button class="btn btn-outline demoAction">Modifier</button>
     </div>
     <div class="setup">
-      <div class="step">3</div>
+      <div class="step done">✓</div>
       <h3>Groupes et élèves</h3>
-      <p>Importez les listes de classe en PDF, CSV ou photo. Elles seront disponibles dans tous les outils qui en ont besoin.</p>
-      <button class="btn btn-outline demoAction">Ajouter les groupes</button>
+      <p>5 groupes configurés · listes disponibles dans tous les outils.</p>
+      <button class="btn btn-outline demoAction">Modifier</button>
     </div>
   </div>
 
-  <div class="sectionHead">
-    <h2>Ce que Henri a compris</h2>
-    <span>Exemple de validation.</span>
-  </div>
-
-  <div class="course">
-    <div class="courseTime">Jour 4 · P1</div>
-    <div><h3>Secondaire 2 · Groupe 22</h3><p>Gymnase · 8 h 35 · 28 élèves</p></div>
-    <div class="state">Validé</div>
-  </div>
-  <div class="course">
-    <div class="courseTime">Jour 4 · P3</div>
-    <div><h3>Secondaire 3 · Groupe 32</h3><p>Gymnase · 10 h 20 · 30 élèves</p></div>
-    <div class="state">Validé</div>
-  </div>
-  <div class="course">
-    <div class="courseTime">Jour 4 · P5</div>
-    <div><h3>Secondaire 4 · Groupe 41</h3><p>Gymnase · 13 h 10 · 27 élèves</p></div>
-    <div class="state">Validé</div>
-  </div>
-
-  <div class="sectionHead">
-    <h2>Utilisé automatiquement</h2>
-    <span>Plus de double saisie.</span>
-  </div>
-  <div class="grid3">
-    <div class="card">
-      <div class="cardKicker">Planification</div>
-      <h3>Bonnes dates</h3>
-      <p>Les séquences se placent selon les vraies journées où vous voyez chaque groupe.</p>
-    </div>
-    <div class="card">
-      <div class="cardKicker">Accueil</div>
-      <h3>Prochain cours</h3>
-      <p>Henri sait quel groupe vous enseignez et peut afficher le bon cours automatiquement.</p>
-    </div>
-    <div class="card">
-      <div class="cardKicker">Outils</div>
-      <h3>Listes prêtes</h3>
-      <p>Équipes, tournoi et autres outils peuvent réutiliser les élèves déjà configurés.</p>
-    </div>
+  <div class="configHint">
+    Ces données alimentent automatiquement <strong>Planifier</strong>, <strong>Enseigner</strong> et les <strong>Outils</strong>. Vous ne les entrez qu’une seule fois.
   </div>
 </section>
 
 <section id="placeholder" class="screen">
   <button class="back" id="placeholderBack">← Retour</button>
   <div class="pageHead">
-    <div class="eyebrow">Mode exploration</div>
+    <div class="eyebrow">Henri</div>
     <h1 id="placeholderTitle">Module</h1>
-    <p>Vous êtes au bon endroit dans l’application. Le contenu complet de ce module sera intégré après validation du canevas.</p>
   </div>
   <div class="placeholder">
-    <span class="placeholderLabel">À intégrer plus tard</span>
-    <h2 id="placeholderHeading">Structure validée, logique en attente.</h2>
-    <p id="placeholderDesc">Cette étape permet de tester l’intuitivité de l’application sans alourdir le prototype.</p>
+    <span class="placeholderLabel">Aperçu</span>
+    <h2 id="placeholderHeading">Le bon outil, au bon endroit.</h2>
+    <p id="placeholderDesc">Le contenu de ce module sera intégré ici.</p>
   </div>
 </section>
 </main>
 
-<nav class="bottom">
+<nav class="bottom" aria-label="Navigation principale">
   <div class="bottomin">
-    <button class="navBtn active" data-go="home">Accueil</button>
-    <button class="navBtn" data-go="plan">Planifier</button>
-    <button class="navBtn" data-go="teach">Enseigner</button>
-    <button class="navBtn" data-go="tools">Outils</button>
+    <button class="navBtn active" data-go="home" aria-current="page">
+      <svg class="navIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.75 10.25 12 3.75l8.25 6.5v9a1 1 0 0 1-1 1h-5v-6h-4.5v6h-5a1 1 0 0 1-1-1v-9Z"/></svg>
+      <span>Accueil</span>
+    </button>
+    <button class="navBtn" data-go="plan">
+      <svg class="navIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.75v2.5M17 3.75v2.5M4.5 9h15M6.25 5.25h11.5A1.75 1.75 0 0 1 19.5 7v11A1.75 1.75 0 0 1 17.75 19.75H6.25A1.75 1.75 0 0 1 4.5 18V7A1.75 1.75 0 0 1 6.25 5.25Z"/></svg>
+      <span>Planifier</span>
+    </button>
+    <button class="navBtn" data-go="teach">
+      <svg class="navIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.25"/><path d="m10.25 8.75 5 3.25-5 3.25v-6.5Z"/></svg>
+      <span>Enseigner</span>
+    </button>
+    <button class="navBtn" data-go="tools">
+      <svg class="navIcon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.25" y="4.25" width="6" height="6" rx="1.25"/><rect x="13.75" y="4.25" width="6" height="6" rx="1.25"/><rect x="4.25" y="13.75" width="6" height="6" rx="1.25"/><rect x="13.75" y="13.75" width="6" height="6" rx="1.25"/></svg>
+      <span>Outils</span>
+    </button>
   </div>
 </nav>
 </div>
 
-<div id="toast" class="toast">Import volontairement simulé dans le prototype.</div>
+<div id="toast" class="toast">Cette action sera reliée aux documents de l’enseignant.</div>
 
 <script>
 var screens = Array.from(document.querySelectorAll(".screen"));
@@ -495,7 +527,10 @@ function go(id){
   if(id !== "placeholder") previousScreen = currentScreen();
   screens.forEach(function(s){s.classList.toggle("active",s.id === id);});
   document.querySelectorAll(".navBtn").forEach(function(b){
-    b.classList.toggle("active", b.dataset.go === navGroup(id));
+    var isActive = b.dataset.go === navGroup(id);
+    b.classList.toggle("active", isActive);
+    if(isActive) b.setAttribute("aria-current","page");
+    else b.removeAttribute("aria-current");
   });
   window.scrollTo({top:0,behavior:"auto"});
 }
