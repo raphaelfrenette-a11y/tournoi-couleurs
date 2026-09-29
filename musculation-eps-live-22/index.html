@@ -57,7 +57,7 @@ button{cursor:pointer}
 .warmupVisual{width:135px;height:96px;border-radius:14px;background:#08111e;border:1px solid rgba(148,163,184,.12);display:grid;place-items:center;overflow:hidden}
 .warmupVisual svg{width:125px;height:90px}
 .warmName{font-size:21px;font-weight:1000;line-height:1.05}.warmCue{color:var(--muted);font-size:13px;margin-top:4px}.warmDose{font-weight:1000;color:#dbeafe;font-size:18px;white-space:nowrap}
-.circuitShell{width:min(1900px,99vw);height:100vh;margin:0 auto;padding:10px 12px 10px;display:flex;flex-direction:column;overflow:hidden}
+.circuitShell{width:min(1900px,99vw);height:100vh;height:var(--app-height,100dvh);min-height:0;margin:0 auto;padding:10px 12px max(10px,env(safe-area-inset-bottom));display:flex;flex-direction:column;overflow:hidden}
 .circuitTop{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:12px}
 .sessionInfo{display:flex;align-items:center;gap:12px}.modeBadge{padding:9px 12px;border-radius:999px;font-weight:950;background:rgba(255,255,255,.09);border:1px solid var(--line)}
 .timeBlock{text-align:center}.rotationLabel{font-size:13px;color:var(--muted);font-weight:900;letter-spacing:.14em;text-transform:uppercase}.rotationTimer{font-size:clamp(40px,5.5vw,78px);font-weight:1000;font-variant-numeric:tabular-nums;letter-spacing:-.05em;line-height:1}.sessionTimer{font-size:13px;color:var(--muted);margin-top:3px}
@@ -70,10 +70,10 @@ button{cursor:pointer}
 .circuitShell[data-phase="results"] .stationCard{box-shadow:0 0 0 2px rgba(251,191,36,.18),0 14px 32px rgba(0,0,0,.23)}
 .rotateBtn{background:#f8fafc;color:#07101c;border-color:#f8fafc}
 .stationGrid{display:grid;gap:10px;flex:1;min-height:0;grid-auto-rows:minmax(0,1fr)}
-.stationGrid[data-count="4"]{grid-template-columns:repeat(2,1fr)}
-.stationGrid[data-count="5"],.stationGrid[data-count="6"]{grid-template-columns:repeat(3,1fr)}
-.stationGrid[data-count="7"],.stationGrid[data-count="8"]{grid-template-columns:repeat(4,1fr)}
-.stationGrid[data-count="9"],.stationGrid[data-count="10"]{grid-template-columns:repeat(5,1fr)}
+.stationGrid[data-count="4"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+.stationGrid[data-count="5"],.stationGrid[data-count="6"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+.stationGrid[data-count="7"],.stationGrid[data-count="8"]{grid-template-columns:repeat(4,minmax(0,1fr))}
+.stationGrid[data-count="9"],.stationGrid[data-count="10"]{grid-template-columns:repeat(5,minmax(0,1fr))}
 .stationGrid[data-count="7"] .stationCard,.stationGrid[data-count="8"] .stationCard,.stationGrid[data-count="9"] .stationCard,.stationGrid[data-count="10"] .stationCard{padding:11px;min-height:0}
 .stationGrid[data-count="9"] .exerciseName,.stationGrid[data-count="10"] .exerciseName{font-size:clamp(14px,1.25vw,20px)}
 .stationGrid[data-count="9"] .exerciseDose,.stationGrid[data-count="10"] .exerciseDose{font-size:11px}
@@ -108,14 +108,15 @@ button{cursor:pointer}
 .circuitShell[data-phase="work"] .stationGrid[data-count="10"] .visualBox{height:auto;min-height:58px;margin:2px 0 0}
 .circuitShell[data-phase="work"] .stationGrid[data-count="9"] .visualBox svg,
 .circuitShell[data-phase="work"] .stationGrid[data-count="10"] .visualBox svg{height:min(76px,90%);width:min(86%,160px)}
-.stationCard{position:relative;min-height:0;overflow:hidden;border-radius:22px;background:linear-gradient(180deg,#12213a,#0c1729);border:2px solid var(--teamColor,#334155);box-shadow:0 14px 32px rgba(0,0,0,.23);padding:14px;display:flex;flex-direction:column}
+.stationCard{position:relative;min-width:0;min-height:0;overflow:hidden;border-radius:22px;background:linear-gradient(180deg,#12213a,#0c1729);border:2px solid var(--teamColor,#334155);box-shadow:0 14px 32px rgba(0,0,0,.23);padding:14px;display:flex;flex-direction:column}
+.stationCard>*{min-width:0}
 .stationCard.scored{box-shadow:0 0 0 3px rgba(74,222,128,.18),0 14px 32px rgba(0,0,0,.23)}
 .stationHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .stationNum{font-size:11px;color:var(--muted);font-weight:950;letter-spacing:.12em}
 .teamTag{width:100%;min-height:42px;margin-top:5px;padding:8px 10px;border-radius:12px;background:var(--teamColor);color:#07101c;font-weight:1000;line-height:1.08;white-space:normal;overflow:visible;word-break:break-word;display:flex;align-items:center}
 .teamNameBig{display:block;width:100%;font-size:15px;text-align:left}
 .check{font-size:20px;flex:0 0 auto}
-.exerciseName{font-size:clamp(17px,1.7vw,25px);font-weight:1000;margin:8px 0 3px;line-height:1.05}.exerciseDose{font-weight:900;color:#dce8f6;font-size:13px}.exerciseTimePill{display:inline-block;margin-top:5px;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.08);font-size:11px;font-weight:950;color:#dbeafe}.cue{font-size:12px;color:var(--muted);margin-top:3px}
+.exerciseName{font-size:clamp(17px,1.7vw,25px);font-weight:1000;margin:8px 0 3px;line-height:1.05;overflow-wrap:anywhere}.exerciseDose{font-weight:900;color:#dce8f6;font-size:13px;overflow-wrap:anywhere}.exerciseTimePill{display:inline-block;margin-top:5px;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.08);font-size:11px;font-weight:950;color:#dbeafe}.cue{font-size:12px;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}
 .visualBox{position:relative;flex:0 0 auto;height:112px;margin:7px 0;border-radius:16px;background:radial-gradient(circle at 50% 44%,rgba(96,165,250,.10),transparent 52%),linear-gradient(180deg,#0a1626,#08111e);border:1px solid rgba(148,163,184,.14);display:grid;place-items:center;overflow:hidden}
 .visualBox svg{width:min(96%,230px);height:104px;transform:translateY(-1px);filter:drop-shadow(0 8px 16px rgba(0,0,0,.16))}
 .scoreFooter{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;min-height:32px}.scoreHint{font-size:11px;color:var(--muted);line-height:1.1}.scoreValue{font-size:13px;font-weight:1000}
@@ -152,7 +153,34 @@ button{cursor:pointer}
   .modeGrid{grid-template-columns:repeat(2,1fr)}.teamEditor{grid-template-columns:1fr}.warmupWrap{grid-template-columns:1fr}
   .circuitTop{grid-template-columns:1fr auto 1fr}.sessionInfo{justify-content:flex-start}.teacherBtns{justify-content:flex-end}
 }
-@media(max-width:600px){.podium{grid-template-columns:1fr}.shell{padding:12px}.circuitShell{min-width:760px;overflow:hidden}}
+@media(max-width:700px){
+  html,body{overflow-x:hidden}
+  .podium{grid-template-columns:1fr}
+  .shell{padding:12px}
+  .circuitShell{width:100%;min-width:0;height:auto;min-height:var(--app-height,100dvh);padding:8px 8px max(12px,env(safe-area-inset-bottom));overflow:visible}
+  .circuitTop{grid-template-columns:1fr;gap:8px;margin-bottom:10px}
+  .sessionInfo{justify-content:center}
+  .timeBlock{text-align:center}
+  .teacherBtns{justify-content:center;flex-wrap:wrap}
+  .teacherBtn{padding:9px 11px;font-size:12px}
+  .rotationLabel{font-size:11px}
+  .rotationTimer{font-size:48px}
+  .phaseAction{min-width:0;width:min(100%,330px)}
+  .stationGrid{width:100%;flex:none;grid-auto-rows:auto!important}
+  .stationGrid[data-count="4"],.stationGrid[data-count="5"],.stationGrid[data-count="6"],.stationGrid[data-count="7"],.stationGrid[data-count="8"],.stationGrid[data-count="9"],.stationGrid[data-count="10"]{grid-template-columns:1fr!important}
+  .stationGrid[data-count] .stationCard{padding:14px;min-height:0}
+  .stationGrid[data-count] .teamTag{min-height:42px;padding:8px 10px}
+  .stationGrid[data-count] .teamNameBig{font-size:15px}
+  .stationGrid[data-count] .stationNum{font-size:11px}
+  .stationGrid[data-count] .exerciseName{font-size:22px;margin-top:8px}
+  .stationGrid[data-count] .exerciseDose{font-size:13px}
+  .stationGrid[data-count] .cue{font-size:12px;line-height:1.25}
+  .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{display:grid;flex:0 0 150px;height:150px;min-height:150px;margin:8px 0 0}
+  .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox svg{height:138px;width:min(94%,260px)}
+  .circuitShell[data-phase="results"] .stationGrid[data-count] .stationCard{min-height:210px}
+  .circuitShell[data-phase="results"] .scoreFooter{margin-top:12px}
+  .rankStrip{margin-bottom:8px}
+}
 </style>
 </head>
 <body>
@@ -443,6 +471,22 @@ const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const screens=["setupScreen","warmupScreen","circuitScreen","finishScreen"];
 
+function dismissNativeKeyboard(){
+  const active=document.activeElement;
+  if(active && active!==document.body && typeof active.blur==="function") active.blur();
+}
+function syncViewportHeight(){
+  const h=window.visualViewport?.height||window.innerHeight;
+  document.documentElement.style.setProperty("--app-height",Math.round(h)+"px");
+}
+syncViewportHeight();
+window.addEventListener("resize",syncViewportHeight,{passive:true});
+window.addEventListener("orientationchange",syncViewportHeight,{passive:true});
+if(window.visualViewport){
+  window.visualViewport.addEventListener("resize",syncViewportHeight,{passive:true});
+  window.visualViewport.addEventListener("scroll",syncViewportHeight,{passive:true});
+}
+
 function defaultTeams(n){
   return Array.from({length:n},(_,i)=>({name:"",size:4,color:PALETTE[i]}));
 }
@@ -493,7 +537,14 @@ function validateSetup(){
   $("#toWarmupBtn").disabled=!ok;
 }
 function showScreen(id){
+  dismissNativeKeyboard();
   screens.forEach(s=>$("#"+s).classList.toggle("hidden",s!==id));
+  syncViewportHeight();
+  requestAnimationFrame(()=>{
+    dismissNativeKeyboard();
+    syncViewportHeight();
+    window.scrollTo(0,0);
+  });
 }
 function prepareWarmup(){
   state.teams=state.teams.map((t,i)=>({name:t.name.trim()||("Équipe "+(i+1)),size:t.size,color:PALETTE[i]}));
@@ -802,6 +853,7 @@ function renderRepCalculator(){
   if(box.querySelector("#removeRepSet"))box.querySelector("#removeRepSet").onclick=removeRepSet;
 }
 function openScore(teamIndex){
+  dismissNativeKeyboard();
   const exIndex=currentExerciseIndex(teamIndex), exercise=MODES[state.mode].exercises[exIndex], team=state.teams[teamIndex];
   modalContext={teamIndex,exIndex,exercise,team,rotation:state.rotation};
   const existing=getScore(state.rotation,teamIndex);
