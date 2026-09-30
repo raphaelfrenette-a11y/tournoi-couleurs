@@ -593,16 +593,16 @@ const MODES = {
       ["💪","Push-ups faciles","Technique d'abord","8 reps"]
     ],
     exercises:[
-      ex("Push-ups","45 s / élève","Additionnez toutes les répétitions propres.","reps","rép.","pushup",{progression:8,active:12,performance:16}),
-      ex("Goblet squat léger","45 s / élève","Rythme constant, amplitude propre.","reps","rép.","squat",{progression:12,active:16,performance:20}),
-      ex("Lat pulldown léger","45 s / élève","Pas d'élan, contrôle complet.","reps","rép.","pulldown",{progression:10,active:14,performance:18}),
-      ex("Fentes alternées","45 s / élève","Chaque jambe compte 1 répétition.","reps","rép.","lunge",{progression:10,active:14,performance:18}),
-      ex("Curl EZ léger","45 s / élève","Amplitude complète.","reps","rép.","curl",{progression:10,active:14,performance:18}),
-      ex("Triceps corde","45 s / élève","Coudes immobiles.","reps","rép.","triceps",{progression:10,active:14,performance:18}),
-      ex("Squat pulsé","45 s / élève","Additionnez les répétitions contrôlées de toute l’équipe.","reps","rép.","squat",{progression:12,active:16,performance:20}),
-      ex("Corde à sauter","45 s / élève","Additionnez les sauts réussis.","reps","sauts","rope",{progression:35,active:55,performance:75}),
-      ex("Élévations latérales légères","45 s / élève","Mouvement contrôlé, sans élan.","reps","rép.","shoulder",{progression:10,active:14,performance:18}),
-      ex("Kettlebell swing","45 s / élève","Rythme constant, hanches actives.","reps","rép.","swing",{progression:12,active:16,performance:20})
+      ex("Push-ups","3 séries × 12 reps / élève","Additionnez toutes les répétitions propres.","reps","rép.","pushup",{progression:30,active:36,performance:42},45,3),
+      ex("Goblet squat léger","3 séries × 15 reps / élève","Rythme constant, amplitude propre.","reps","rép.","squat",{progression:36,active:45,performance:50},55,3),
+      ex("Lat pulldown léger","3 séries × 15 reps / élève","Pas d'élan, contrôle complet.","reps","rép.","pulldown",{progression:36,active:45,performance:50},55,3),
+      ex("Fentes alternées","3 séries × 12 reps / jambe","Chaque jambe compte 1 répétition.","reps","rép.","lunge",{progression:60,active:72,performance:80},90,3),
+      ex("Curl EZ léger","3 séries × 15 reps / élève","Amplitude complète.","reps","rép.","curl",{progression:36,active:45,performance:50},55,3),
+      ex("Triceps corde","3 séries × 15 reps / élève","Coudes immobiles.","reps","rép.","triceps",{progression:36,active:45,performance:50},55,3),
+      ex("Squat pulsé","3 séries × 20 reps / élève","Additionnez les répétitions contrôlées de toute l’équipe.","reps","rép.","squat",{progression:48,active:60,performance:66},75,3),
+      ex("Corde à sauter","3 séries × 50 sauts / élève","Additionnez les sauts réussis.","reps","sauts","rope",{progression:120,active:150,performance:170},190,3),
+      ex("Élévations latérales légères","3 séries × 15 reps / élève","Mouvement contrôlé, sans élan.","reps","rép.","shoulder",{progression:36,active:45,performance:50},55,3),
+      ex("Kettlebell swing","3 séries × 20 reps / élève","Rythme constant, hanches actives.","reps","rép.","swing",{progression:48,active:60,performance:66},75,3)
     ]
   },
   power:{
@@ -619,13 +619,13 @@ const MODES = {
       ex("Step-up explosif sur box","3 séries × 8 reps / élève","Monter de façon explosive, redescendre avec contrôle. Alterner la jambe de départ.","reps","rép.","stepup",{progression:20,active:24,performance:28},30,3),
       ex("Box jump","3 séries × 10 sauts / élève","Sauts explosifs et propres. Redescendre de la box entre chaque répétition.","reps","sauts","jump",{progression:24,active:30,performance:36},40,3),
       ex("Push press haltères","3 séries × 8 reps / élève","Petite flexion des jambes puis pousser les haltères rapidement au-dessus de la tête.","reps","rép.","shoulder",{progression:18,active:24,performance:30},36,3),
-      ex("Sprint vélo","3 séries × 30 s / élève","Chaque sprint de 30 secondes terminé compte pour 1. Additionnez les sprints de l’équipe.","reps","sprints","bike",{progression:2,active:3,performance:3},3,3),
-      ex("Kettlebell swing explosif","20 s / élève","Additionnez les répétitions explosives propres.","reps","rép.","swing",{progression:8,active:11,performance:14}),
-      ex("Squat jumps","20 s / élève","Additionnez les sauts avec atterrissage contrôlé.","reps","rép.","jump",{progression:7,active:10,performance:13}),
-      ex("Push-ups explosifs","20 s / élève","Additionnez les répétitions réellement explosives.","reps","rép.","pushup",{progression:4,active:7,performance:10}),
-      ex("Med-ball slam","20 s / élève","Additionnez les répétitions puissantes.","reps","rép.","slam",{progression:7,active:10,performance:13}),
-      ex("Fentes sautées","20 s / élève","Sauts rapides, atterrissages contrôlés.","reps","rép.","jump",{progression:5,active:8,performance:11}),
-      ex("Sauts latéraux","20 s / élève","Bondir d'un côté à l'autre avec contrôle.","reps","rép.","jump",{progression:8,active:12,performance:16})
+      ex("Sprint vélo","3 séries × 30 s de sprint / élève","Chaque série de 30 secondes terminée compte pour 1. Additionnez les séries complétées par l’équipe.","reps","séries","bike",{progression:2,active:3,performance:3},3,3),
+      ex("Kettlebell swing explosif","3 séries × 10 reps / élève","Chaque répétition doit rester explosive.","reps","rép.","swing",{progression:24,active:30,performance:34},40,3),
+      ex("Squat jumps","3 séries × 8 sauts / élève","Sauts explosifs avec atterrissage contrôlé.","reps","sauts","jump",{progression:18,active:24,performance:28},32,3),
+      ex("Push-ups explosifs","3 séries × 6 reps / élève","Chaque répétition doit rester réellement explosive.","reps","rép.","pushup",{progression:12,active:18,performance:21},24,3),
+      ex("Med-ball slam","3 séries × 8 reps / élève","Chaque slam doit être puissant.","reps","rép.","slam",{progression:18,active:24,performance:28},32,3),
+      ex("Fentes sautées","3 séries × 6 reps / jambe","Sauts explosifs, atterrissages contrôlés.","reps","rép.","jump",{progression:30,active:36,performance:42},48,3),
+      ex("Sauts latéraux","3 séries × 10 sauts / élève","Bondir d'un côté à l'autre avec contrôle.","reps","sauts","jump",{progression:24,active:30,performance:36},40,3)
     ]
   },
   cardio:{
@@ -639,16 +639,16 @@ const MODES = {
       ["🔥","Accélération progressive","Pas au maximum","30 s"]
     ],
     exercises:[
-      ex("Sprint vélo","Sprints de 10 s / élève","Chaque sprint de 10 secondes terminé compte pour 1. Additionnez les sprints de l’équipe.","reps","sprints","bike",{progression:1,active:1,performance:2}),
+      ex("Sprint vélo","3 séries × 20 s de sprint / élève","Chaque série de 20 secondes terminée compte pour 1. Additionnez les séries complétées par l’équipe.","reps","séries","bike",{progression:2,active:3,performance:3},3,3),
       ex("Corde à sauter","45 s / élève","Additionnez les sauts réussis.","reps","sauts","rope",{progression:35,active:55,performance:75}),
-      ex("Step-ups sur box","45 s / élève","Chaque montée complète compte 1.","reps","rép.","stepup",{progression:10,active:14,performance:18}),
-      ex("Shuttle run","45 s / élève","Additionnez les longueurs complètes.","reps","long.","run",{progression:5,active:7,performance:9}),
-      ex("Mountain climbers","45 s / élève","Chaque genou vers l'avant compte 1.","reps","rép.","climber",{progression:24,active:34,performance:44}),
-      ex("Kettlebell swing","45 s / élève","Rythme continu avec technique propre.","reps","rép.","swing",{progression:12,active:16,performance:20}),
-      ex("Burpees","45 s / élève","Additionnez les répétitions complètes.","reps","rép.","burpee",{progression:5,active:8,performance:11}),
-      ex("Med-ball slam","45 s / élève","Additionnez les répétitions complètes.","reps","rép.","slam",{progression:10,active:14,performance:18}),
-      ex("Jumping jacks","45 s / élève","Additionnez les répétitions complètes.","reps","rép.","jump",{progression:20,active:30,performance:40}),
-      ex("Montées de genoux","45 s / élève","Chaque genou haut compte 1 répétition.","reps","rép.","run",{progression:30,active:45,performance:60})
+      ex("Step-ups sur box","3 séries × 15 reps / élève","Chaque montée complète compte 1 répétition.","reps","rép.","stepup",{progression:36,active:45,performance:50},55,3),
+      ex("Shuttle run","3 séries × 6 longueurs / élève","Additionnez les longueurs complètes.","reps","long.","run",{progression:15,active:18,performance:21},24,3),
+      ex("Mountain climbers","3 séries × 20 reps / jambe","Chaque genou vers l’avant compte 1 répétition.","reps","rép.","climber",{progression:100,active:120,performance:135},150,3),
+      ex("Kettlebell swing","3 séries × 20 reps / élève","Rythme soutenu avec technique propre.","reps","rép.","swing",{progression:48,active:60,performance:66},75,3),
+      ex("Burpees","3 séries × 10 reps / élève","Additionnez les répétitions complètes.","reps","rép.","burpee",{progression:24,active:30,performance:36},40,3),
+      ex("Med-ball slam","3 séries × 15 reps / élève","Additionnez les répétitions complètes.","reps","rép.","slam",{progression:36,active:45,performance:50},55,3),
+      ex("Jumping jacks","3 séries × 25 reps / élève","Additionnez les répétitions complètes.","reps","rép.","jump",{progression:60,active:75,performance:85},95,3),
+      ex("Montées de genoux","3 séries × 30 reps / jambe","Chaque genou haut compte 1 répétition.","reps","rép.","run",{progression:150,active:180,performance:200},220,3)
     ]
   }
 };
@@ -964,7 +964,7 @@ function openScore(teamIndex){
   $("#modalTeam").textContent=team.name+" · TOTAL ÉQUIPE";
   $("#modalExercise").textContent=exercise.name;
   $("#modalPrompt").textContent=exercise.prompt;
-  const names={"rép.":"répétitions","sauts":"sauts","sprints":"sprints","long.":"longueurs"};
+  const names={"rép.":"répétitions","sauts":"sauts","sprints":"sprints","séries":"séries complétées","long.":"longueurs"};
   $("#teamTotalHelp").textContent="Additionnez les "+(names[exercise.unit]||exercise.unit)+" de toute l’équipe, toutes séries confondues. Un seul total, sans bonus au-delà du plafond.";
   $("#scoreInput").value=existing&&!existing.needsReview?String(existing.raw):"";
   $("#modalUnit").textContent=exercise.unit;
