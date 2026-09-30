@@ -322,6 +322,54 @@ button{cursor:pointer}
     flex:0 0 120px!important;height:120px!important
   }
 }
+
+/* Gym Arena : SVG sans rognage et retour à la saisie précédente. */
+.mainPhaseActions{gap:8px;align-items:center}
+.backPhaseBtn{min-width:102px;padding:10px 13px;background:#203551;color:#e5f2ff;border:1px solid #6583a3;font-size:14px}
+.backPhaseBtn:focus-visible,.nextPhaseBtn:focus-visible{outline:3px solid #fbbf24;outline-offset:3px}
+@media(min-width:701px){
+ .circuitShell[data-phase="work"] .stationGrid{overflow:hidden!important}
+ .circuitShell[data-phase="work"] .stationCard{
+   display:grid!important;grid-template-rows:auto auto auto minmax(52px,1fr) auto;
+   align-content:stretch;row-gap:2px;overflow:hidden!important;min-height:0!important
+ }
+ .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+   display:grid!important;place-items:center!important;grid-row:4;
+   width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;
+   max-height:100%!important;flex:none!important;margin:0!important;padding:3px!important;
+   overflow:hidden!important;box-sizing:border-box
+ }
+ .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox svg{
+   display:block!important;width:100%!important;height:100%!important;
+   min-width:0!important;min-height:0!important;max-width:100%!important;max-height:100%!important;
+   object-fit:contain!important;overflow:hidden!important;transform:none!important;
+   padding:0!important;flex:none!important
+ }
+}
+@media(max-width:1050px) and (min-width:701px){
+ .mainPhaseActions{gap:5px}
+ .phaseAction{min-width:175px;padding:9px 12px}
+ .backPhaseBtn{min-width:92px!important;font-size:13px}
+}
+@media(max-width:700px){
+ .mainPhaseActions{gap:7px;flex-wrap:wrap}
+ .backPhaseBtn{min-width:95px;width:auto!important}
+ .circuitShell[data-phase="work"] .stationCard{
+   display:grid!important;grid-template-rows:auto auto auto 140px auto;
+   row-gap:4px;overflow:hidden!important
+ }
+ .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+   display:grid!important;place-items:center!important;grid-row:4;
+   width:100%!important;height:140px!important;min-height:140px!important;
+   max-height:140px!important;margin:0!important;padding:4px!important;
+   flex:none!important;overflow:hidden!important;box-sizing:border-box
+ }
+ .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox svg{
+   display:block!important;width:100%!important;height:100%!important;
+   max-width:100%!important;max-height:100%!important;object-fit:contain!important;
+   overflow:hidden!important;transform:none!important;padding:0!important;flex:none!important
+ }
+}
 </style>
 </head>
 <body>
@@ -391,6 +439,7 @@ button{cursor:pointer}
         <div class="rotationTimer" id="rotationTimer">00:00</div>
         <div class="sessionTimer"><span id="sessionTimerLabel">Séance</span> <span id="sessionTimer">00:00</span></div>
         <div class="mainPhaseActions">
+          <button class="phaseAction backPhaseBtn hidden" id="backResultsBtn" type="button" title="Revenir à la saisie des résultats précédents">← Retour</button>
           <button class="phaseAction endExerciseBtn" id="endExerciseBtn">Terminer l’exercice</button>
           <button class="phaseAction nextPhaseBtn hidden" id="rotateBtn">Suivant →</button>
         </div>
@@ -411,7 +460,7 @@ button{cursor:pointer}
       <p class="stepText">Fin de la séance : podium et classement complet calculés automatiquement.</p>
       <div class="podium" id="podium"></div>
       <div class="allRanks" id="allRanks"></div>
-      <div class="actionRow"><button class="primary" id="newSessionBtn">Nouvelle séance</button></div>
+      <div class="actionRow"><button class="secondary" id="reopenScoresBtn">← Corriger les derniers résultats</button><button class="primary" id="newSessionBtn">Nouvelle séance</button></div>
     </section>
   </main>
 </div>
@@ -643,7 +692,7 @@ function init(){
   buildKeypad();
   buildCalculator();
   const saved=readSaved();
-  if(saved && saved.screen!=="setup" && !saved.finished){
+  if(saved && saved.screen!=="setup" && (!saved.finished || saved.screen==="finish")){
     $("#resumeBox").classList.remove("hidden");
     $("#resumeMeta").textContent=(MODES[saved.mode]?.label||"Séance")+" · "+saved.teams.length+" équipes · rotation "+(saved.rotation+1);
   }
@@ -788,9 +837,11 @@ function updateTimers(){
   $("#circuitScreen").dataset.phase=state.phase;
 
   const nextBtn=$("#rotateBtn");
+  const backBtn=$("#backResultsBtn");
   const endBtn=$("#endExerciseBtn");
   const ready=state.phase==="results";
   nextBtn.classList.toggle("hidden",!ready);
+  backBtn.classList.toggle("hidden",state.phase!=="work" || state.rotation===0);
   endBtn.classList.toggle("hidden",state.phase!=="work");
   if(ready) nextBtn.textContent=state.rotation>=state.teamCount-1?"Voir le classement →":"Suivant →";
   endBtn.textContent="Terminer l’exercice";
@@ -819,6 +870,15 @@ function finishScoreBreak(){
 }
 function advanceToNextStation(){
   if(state.phase!=="results")return;
+  // Empêche le passage accidentel lorsqu'il manque des résultats.
+  const missing=state.teams.filter((team,i)=>{
+    const score=getScore(state.rotation,i);
+    return !score || score.needsReview;
+  });
+  if(missing.length && !confirm(
+    "Équipe(s) sans résultat : "+missing.map(team=>team.name).join(", ")+
+    ". Continuer quand même ? Vous pourrez revenir avec « Retour »."
+  ))return;
   finishScoreBreak();
   if(state.rotation>=state.teamCount-1){
     finishSession(true);
@@ -827,12 +887,46 @@ function advanceToNextStation(){
   state.rotation++;
   state.phase="work";
   state.rotationStartedAt=Date.now();
+  if(state.paused)state.pauseStartedAt=state.rotationStartedAt;
   state.rotationPauseTotal=0;
   beep();
   flashRotation();
   renderCircuit();
   save();
   updateTimers();
+}
+// Retour après un « Suivant » accidentel : scores précédents et suivants conservés.
+function backToPreviousResults(){
+  if(state.screen!=="circuit" || state.phase!=="work" || state.rotation<1)return;
+  const currentScores=state.scores?.[state.rotation]||{};
+  if(Object.values(currentScores).some(score=>score && !score.needsReview) &&
+     !confirm("Revenir aux résultats précédents ? Les scores déjà enregistrés seront conservés."))return;
+  const now=Date.now();
+  if(state.paused && state.pauseStartedAt){
+    state.sessionPauseTotal+=Math.max(0,now-state.pauseStartedAt);
+    state.pauseStartedAt=now;
+  }
+  state.rotation--;
+  state.phase="results";
+  state.rotationStartedAt=now;
+  state.rotationPauseTotal=0;
+  state.sessionBreakStartedAt=now;
+  $("#rotateFlash").classList.add("hidden");
+  renderCircuit();save();updateTimers();
+}
+// Même le classement final permet une dernière correction.
+function reopenFinalScores(){
+  if(state.screen!=="finish")return;
+  const now=Date.now();
+  state.finished=false;
+  state.screen="circuit";
+  state.phase="results";
+  state.paused=false;
+  state.pauseStartedAt=null;
+  state.rotationStartedAt=now;
+  state.rotationPauseTotal=0;
+  state.sessionBreakStartedAt=now;
+  renderCircuit();showScreen("circuitScreen");startCircuitTick();save();
 }
 function currentExerciseIndex(teamIndex){
   return (teamIndex+state.rotation)%state.teamCount;
@@ -1121,6 +1215,8 @@ $("#startCircuitBtn").onclick=startCircuit;
 $("#pauseBtn").onclick=togglePause;
 $("#endExerciseBtn").onclick=endExerciseEarly;
 $("#rotateBtn").onclick=rotate;
+$("#backResultsBtn").onclick=backToPreviousResults;
+$("#reopenScoresBtn").onclick=reopenFinalScores;
 $("#finishBtn").onclick=finishSession;
 $("#newSessionBtn").onclick=resetAll;
 $("#resumeBtn").onclick=resumeSaved;
