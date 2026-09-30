@@ -282,6 +282,46 @@ button{cursor:pointer}
     flex:0 0 125px!important;height:125px!important;min-height:125px!important
   }
 }
+
+/* FIX image complète : aucune illustration ne doit être rognée. */
+.circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 clamp(72px,13vh,118px)!important;
+  height:clamp(72px,13vh,118px)!important;
+  min-height:0!important;
+  width:100%!important;
+  overflow:visible!important;
+  padding:0!important;
+  margin:3px 0 0!important;
+}
+.circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox svg{
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  max-width:96%!important;
+  max-height:96%!important;
+  overflow:visible!important;
+  transform:none!important;
+  padding:0!important;
+  flex:none!important;
+}
+.circuitShell[data-phase="work"] .stationCard{
+  overflow:visible!important;
+}
+@media(max-height:760px) and (min-width:701px){
+  .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+    flex-basis:68px!important;height:68px!important
+  }
+  .circuitShell[data-phase="work"] .exerciseName{font-size:14px!important;margin-top:3px!important}
+  .circuitShell[data-phase="work"] .cue{font-size:9px!important}
+}
+@media(max-width:700px){
+  .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+    flex:0 0 120px!important;height:120px!important
+  }
+}
 </style>
 </head>
 <body>
