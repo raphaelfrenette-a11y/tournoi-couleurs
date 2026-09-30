@@ -136,6 +136,19 @@ button{cursor:pointer}
 .modalCard{width:min(700px,96vw);max-height:94vh;overflow:auto;background:#0e1a2d;border:1px solid #30435f;border-radius:26px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
 .modalTeam{font-size:13px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;color:var(--teamColor,#93c5fd)}.modalExercise{font-size:28px;font-weight:1000;margin:5px 0}.modalPrompt{color:var(--muted);font-size:13px;margin-bottom:13px}.scoreDisplay{display:flex;align-items:baseline;gap:8px;padding:14px 16px;background:#07111f;border:1px solid var(--line);border-radius:16px;margin-bottom:12px}.scoreInput{width:100%;background:transparent;border:0;color:#fff;font-size:46px;font-weight:1000;outline:0;text-align:right}.unit{font-size:16px;color:var(--muted);font-weight:900}
 .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.key{border:1px solid var(--line);background:#15253d;color:#fff;border-radius:14px;padding:14px;font-size:22px;font-weight:950}.key.action{font-size:14px}.saveScore{width:100%;border:0;background:#4ade80;color:#06120a;border-radius:14px;padding:15px;font-size:18px;font-weight:1000;margin-top:10px}.modalMeta{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:10px}
+
+.calcToggle{display:block;margin:7px 0 12px;width:100%;border:1px solid #395773;background:#142a42;color:#dbeafe;border-radius:13px;padding:11px 14px;font-weight:900;font-size:15px}
+.calcToggle[aria-expanded="true"]{border-color:#60a5fa;background:#1a344f}
+.calcPanel{margin:0 0 15px;padding:13px;background:#091b2d;border:1px solid #385575;border-radius:16px}
+.calcNote{font-size:12px;color:#adbed2;margin:0 0 10px;line-height:1.4}
+.calcExpression{width:100%;border:1px solid #4a6482;background:#071423;border-radius:12px;padding:12px;font-size:20px;font-weight:850;color:white;outline:none}
+.calcExpression:focus{border-color:#60a5fa;box-shadow:0 0 0 2px #60a5fa44}
+.calcFeedback{min-height:52px;margin:9px 0 12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:12px;background:#122e38;color:#d1fae5;font-size:13px}
+.calcFeedback strong{font-size:24px;color:#86efac;font-variant-numeric:tabular-nums}
+.calcKeys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.calcKey{min-height:45px;border:1px solid #395270;background:#162a44;color:white;border-radius:11px;font-size:19px;font-weight:900}
+.calcKey.action{background:#213d5e}.calcKey.equal{background:#4ade80;color:#06120a;border-color:#4ade80}
+.calcKey.wide{grid-column:span 2;font-size:14px}
 .finishCard{padding:28px}.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}.podiumItem{padding:20px;border-radius:20px;background:#0f1d31;border:1px solid var(--line);text-align:center}.podiumPos{font-size:30px}.podiumTeam{font-size:21px;font-weight:1000}.podiumPts{color:#86efac;font-weight:950}
 .allRanks{display:grid;gap:8px}.allRank{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px;background:#0c1728}.allRank strong{font-size:15px}.allRank span{color:#86efac;font-weight:950}
 .rotateFlash{position:fixed;inset:0;z-index:60;background:#07111f;display:grid;place-items:center;text-align:center;padding:20px}.rotateFlash h1{font-size:clamp(50px,10vw,130px);margin:0;font-weight:1000}.rotateFlash p{font-size:clamp(20px,4vw,46px);color:#cbd5e1;margin:8px 0 0}
@@ -318,8 +331,16 @@ button{cursor:pointer}
     <div class="modalTeam" id="modalTeam"></div>
     <div class="modalExercise" id="modalExercise"></div>
     <div class="modalPrompt" id="modalPrompt"></div><div id="teamTotalHelp" style="margin:-4px 0 12px;padding:9px 11px;border-radius:12px;background:#14243b;color:#dbeafe;font-size:12px;font-weight:850"></div>
+
+    <button type="button" id="calcToggle" class="calcToggle" aria-expanded="false" aria-controls="calcPanel">+ Calculatrice (facultatif)</button>
+    <section id="calcPanel" class="calcPanel hidden" aria-label="Addition des résultats de l’équipe">
+      <p class="calcNote">Ex. : 13 + 14 + 19 + 16. Le total reste ici : inscrivez votre score manuellement ensuite.</p>
+      <input type="text" id="calcExpression" class="calcExpression" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="140" aria-label="Addition à calculer" placeholder="13 + 14 + 19 + 16">
+      <div id="calcFeedback" class="calcFeedback" role="status" aria-live="polite"><span>Total calculé (non enregistré)</span><strong id="calcResult">—</strong></div>
+      <div id="calcKeys" class="calcKeys" aria-label="Touches de la calculatrice"></div>
+    </section>
     <div id="numericEntry" class="numericEntry">
-      <div class="scoreDisplay"><input id="scoreInput" class="scoreInput" inputmode="decimal" readonly value=""><span class="unit" id="modalUnit"></span></div>
+      <div class="scoreDisplay"><input id="scoreInput" class="scoreInput" inputmode="numeric" readonly value=""><span class="unit" id="modalUnit"></span></div>
       <div class="keypad" id="keypad"></div>
     </div>
     <button class="saveScore" id="saveScoreBtn">✓ Enregistrer le résultat</button>
@@ -531,6 +552,7 @@ function init(){
   state.teams=defaultTeams(state.teamCount);
   renderSetup();
   buildKeypad();
+  buildCalculator();
   const saved=readSaved();
   if(saved && saved.screen!=="setup" && !saved.finished){
     $("#resumeBox").classList.remove("hidden");
@@ -766,12 +788,78 @@ function openScore(teamIndex){
   $("#modalProfile").textContent=team.size+" élèves · une seule saisie";
   const prescribed=standardTarget(exercise)*team.size;
   $("#modalTarget").textContent="Prescrit : "+prescribed+" "+exercise.unit+" (50 pts) · max : "+(prescribed*2)+" "+exercise.unit+" (100 pts)";
+  closeCalculator();
   $("#scoreModal").classList.remove("hidden");
 }
 function closeScore(){
   $("#scoreModal").classList.add("hidden");
   modalContext=null;
 }
+// Calculatrice facultative, indépendante du score officiel.
+function sumCalculatorExpression(expression){
+  const cleaned=String(expression).replace(/\s/g,"");
+  if(!cleaned||! /^\d+(?:\+\d+)*$/.test(cleaned))return null;
+  const entries=cleaned.split("+");
+  if(entries.some(part=>part.length>8))return null;
+  const total=entries.reduce((sum,part)=>sum+Number(part),0);
+  return Number.isSafeInteger(total)?total:null;
+}
+function updateCalculator(){
+  const expression=$("#calcExpression").value;
+  const result=sumCalculatorExpression(expression);
+  $("#calcResult").textContent=result===null?"—":result.toLocaleString("fr-CA");
+  $("#calcFeedback").querySelector("span").textContent=expression.trim()&&result===null
+    ?"Complétez l’addition (chiffres et +)"
+    :"Total calculé (non enregistré)";
+}
+function closeCalculator(){
+  $("#calcPanel").classList.add("hidden");
+  $("#calcToggle").setAttribute("aria-expanded","false");
+  $("#calcExpression").value="";
+  updateCalculator();
+}
+function calculatorKey(key){
+  const input=$("#calcExpression");
+  let value=input.value;
+  if(key==="C")value="";
+  else if(key==="⌫")value=value.slice(0,-1);
+  else if(key==="+"){
+    if(value.trim()&&/[0-9]\s*$/.test(value))value+="+";
+  }else if(/^\d$/.test(key)){
+    if(value.length<140)value+=key;
+  }else if(key==="="){
+    updateCalculator();
+    input.blur();
+    return;
+  }
+  input.value=value;
+  updateCalculator();
+}
+function buildCalculator(){
+  const keys=["7","8","9","+","4","5","6","⌫","1","2","3","=","C","0","Fermer"];
+  $("#calcKeys").innerHTML=keys.map(key=>
+    '<button type="button" class="calcKey '+
+    (key==="="?"equal":(["+","⌫","C"].includes(key)?"action":""))+
+    (key==="Fermer"?" wide":"")+
+    '" data-calc="'+key+'">'+key+"</button>"
+  ).join("");
+  $("#calcKeys").querySelectorAll("button").forEach(button=>button.addEventListener("click",()=>{
+    if(button.dataset.calc==="Fermer"){closeCalculator();return;}
+    calculatorKey(button.dataset.calc);
+  }));
+  $("#calcToggle").addEventListener("click",()=>{
+    const opening=$("#calcPanel").classList.contains("hidden");
+    $("#calcPanel").classList.toggle("hidden",!opening);
+    $("#calcToggle").setAttribute("aria-expanded",String(opening));
+    if(opening)$("#calcExpression").focus();
+  });
+  $("#calcExpression").addEventListener("input",updateCalculator);
+  $("#calcExpression").addEventListener("keydown",event=>{
+    if(event.key==="Enter"){event.preventDefault();updateCalculator();event.currentTarget.blur();}
+    event.stopPropagation(); // Empêche toute saisie dans le champ officiel.
+  });
+}
+
 function buildKeypad(){
   const keys=["1","2","3","4","5","6","7","8","9","C","0","⌫"];
   $("#keypad").innerHTML=keys.map(k=>`<button class="key ${k==="⌫"?"action":""}" data-k="${k}">${k}</button>`).join("");
