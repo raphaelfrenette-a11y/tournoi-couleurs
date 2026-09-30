@@ -194,9 +194,25 @@ button{cursor:pointer}
 .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox svg{height:100%!important;width:min(100%,240px)!important}
 .warmupVisual{padding:3px}
 .warmupVisual svg{max-height:100%}
+/* Hauteurs explicites : le SVG peut toujours calculer son échelle sans être rogné. */
+.circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+  height:118px!important;min-height:118px!important;flex:0 0 auto!important
+}
+.circuitShell[data-phase="work"] .stationGrid[data-count="4"] .visualBox{
+  height:132px!important;min-height:132px!important
+}
+.circuitShell[data-phase="work"] .stationGrid[data-count="7"] .visualBox,
+.circuitShell[data-phase="work"] .stationGrid[data-count="8"] .visualBox{
+  height:100px!important;min-height:100px!important
+}
+.circuitShell[data-phase="work"] .stationGrid[data-count="9"] .visualBox,
+.circuitShell[data-phase="work"] .stationGrid[data-count="10"] .visualBox{
+  height:88px!important;min-height:88px!important
+}
+.modalMeta{flex-wrap:wrap;gap:7px;line-height:1.35}
 @media(max-width:700px){
  .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
-   height:150px;min-height:150px;flex:0 0 150px
+   height:150px!important;min-height:150px!important;flex:0 0 150px!important
  }
  .warmupItem{grid-template-columns:100px minmax(0,1fr);gap:9px}
  .warmupVisual{width:100px;height:86px;grid-row:span 2}
