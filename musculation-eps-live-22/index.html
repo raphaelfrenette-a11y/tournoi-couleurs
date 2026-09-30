@@ -325,7 +325,7 @@ button{cursor:pointer}
 
 /* Gym Arena : SVG sans rognage et retour à la saisie précédente. */
 .mainPhaseActions{gap:8px;align-items:center}
-.backPhaseBtn{min-width:102px;padding:10px 13px;background:#203551;color:#e5f2ff;border:1px solid #6583a3;font-size:14px}
+.backPhaseBtn{background:#fbbf24!important;color:#111827!important;border:2px solid #fde68a!important;box-shadow:0 6px 18px rgba(251,191,36,.28);min-width:102px;padding:10px 13px;background:#203551;color:#e5f2ff;border:1px solid #6583a3;font-size:14px}
 .backPhaseBtn:focus-visible,.nextPhaseBtn:focus-visible{outline:3px solid #fbbf24;outline-offset:3px}
 @media(min-width:701px){
  .circuitShell[data-phase="work"] .stationGrid{overflow:hidden!important}
@@ -439,7 +439,7 @@ button{cursor:pointer}
         <div class="rotationTimer" id="rotationTimer">00:00</div>
         <div class="sessionTimer"><span id="sessionTimerLabel">Séance</span> <span id="sessionTimer">00:00</span></div>
         <div class="mainPhaseActions">
-          <button class="phaseAction backPhaseBtn hidden" id="backResultsBtn" type="button" title="Revenir à la saisie des résultats précédents">← Retour</button>
+          <button class="phaseAction backPhaseBtn hidden" id="backResultsBtn" type="button" title="Revenir à la saisie des résultats précédents">← Retour aux résultats</button>
           <button class="phaseAction endExerciseBtn" id="endExerciseBtn">Terminer l’exercice</button>
           <button class="phaseAction nextPhaseBtn hidden" id="rotateBtn">Suivant →</button>
         </div>
@@ -841,7 +841,7 @@ function updateTimers(){
   const endBtn=$("#endExerciseBtn");
   const ready=state.phase==="results";
   nextBtn.classList.toggle("hidden",!ready);
-  backBtn.classList.toggle("hidden",state.phase!=="work" || state.rotation===0);
+  backBtn.classList.toggle("hidden",state.rotation===0);
   endBtn.classList.toggle("hidden",state.phase!=="work");
   if(ready) nextBtn.textContent=state.rotation>=state.teamCount-1?"Voir le classement →":"Suivant →";
   endBtn.textContent="Terminer l’exercice";
@@ -897,7 +897,7 @@ function advanceToNextStation(){
 }
 // Retour après un « Suivant » accidentel : scores précédents et suivants conservés.
 function backToPreviousResults(){
-  if(state.screen!=="circuit" || state.phase!=="work" || state.rotation<1)return;
+  if(state.screen!=="circuit" || state.rotation<1)return;
   const currentScores=state.scores?.[state.rotation]||{};
   if(Object.values(currentScores).some(score=>score && !score.needsReview) &&
      !confirm("Revenir aux résultats précédents ? Les scores déjà enregistrés seront conservés."))return;
