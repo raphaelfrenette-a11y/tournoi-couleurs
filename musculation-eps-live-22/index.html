@@ -217,7 +217,7 @@ button{cursor:pointer}
     </div>
     <section class="card setupCard">
       <h1 class="stepTitle">Préparer la séance</h1>
-      <p class="stepText" style="color:#86efac;font-weight:850">Saisie express : additionnez les répétitions de l’équipe et entrez un seul total par exercice. Aucun détail par élève ou par série.</p>
+      <p class="stepText" style="color:#86efac;font-weight:850">Saisie express : un seul total par équipe et par exercice. Plafond de 100 points à deux fois le volume prescrit. Priorité à la technique et à la sécurité.</p>
       <p class="stepText">Une classe, un objectif, des rotations simples. L'application s'occupe du reste.</p>
 
       <div class="section">
@@ -484,7 +484,7 @@ const STORE_KEY="gymArenaEPS_v1";
 let state={
   teamCount:6,teams:[],mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,
   rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,sessionBreakStartedAt:null,paused:false,pauseStartedAt:null,
-  sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false
+  sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false,pointsRuleVersion:2
 };
 let warmupTick=null,circuitTick=null,modalContext=null;
 
@@ -719,14 +719,14 @@ function renderCircuit(){
   grid.innerHTML=state.teams.map((team,teamIndex)=>{
     const exIndex=currentExerciseIndex(teamIndex), exercise=m.exercises[exIndex];
     const score=getScore(state.rotation,teamIndex);
-    return `<article class="stationCard ${score?"scored":""}" data-team="${teamIndex}" style="--teamColor:${team.color}">
-      <div class="stationHeader"><div style="min-width:0;flex:1"><div class="stationNum">STATION ${exIndex+1}</div><div class="teamTag"><span class="teamNameBig">${escapeHtml(team.name)}</span></div></div><div class="check">${score?"✅":""}</div></div>
+    return `<article class="stationCard ${score&&!score.needsReview?"scored":""}" data-team="${teamIndex}" style="--teamColor:${team.color}">
+      <div class="stationHeader"><div style="min-width:0;flex:1"><div class="stationNum">STATION ${exIndex+1}</div><div class="teamTag"><span class="teamNameBig">${escapeHtml(team.name)}</span></div></div><div class="check">${score&&!score.needsReview?"✅":""}</div></div>
       <div class="exerciseName">${exercise.name}</div>
       <div class="exerciseDose">${exercise.dose}</div>
       <div class="visualBox" role="img" aria-label="Illustration de ${escapeHtml(exercise.name)}">${motionVisual(exercise.motion)}</div>
       <div class="cue">${exercise.prompt}</div>
       <div class="exerciseTimePill">⏱ Temps officiel : ${formatTime(CIRCUIT_TIMING[state.mode].work)}</div>
-      <div class="scoreFooter"><div><div class="scoreHint">${state.phase==="results"?"ENTREZ VOTRE RÉSULTAT MAINTENANT":"Travail en cours"}</div><div class="scoreValue">${score?escapeHtml(score.raw+" "+exercise.unit):"Score non entré"}</div></div><button class="tapScore">${score?"Modifier":"Score"}</button></div>
+      <div class="scoreFooter"><div><div class="scoreHint">${score?.needsReview?"ANCIEN RÉSULTAT À REVALIDER":state.phase==="results"?"TOTAL DE L’ÉQUIPE":"Travail en cours"}</div><div class="scoreValue">${score&&!score.needsReview?escapeHtml(score.raw+" "+exercise.unit+" · "+score.points+"/100 pts"):score?.needsReview?"À ressaisir":"Score non entré"}</div></div><button class="tapScore">${score&&!score.needsReview?"Modifier":"Score"}</button></div>
     </article>`;
   }).join("");
   $$(".stationCard").forEach(c=>c.onclick=()=>openScore(+c.dataset.team));
@@ -744,11 +744,12 @@ function openScore(teamIndex){
   $("#modalExercise").textContent=exercise.name;
   $("#modalPrompt").textContent=exercise.prompt;
   const names={"rép.":"répétitions","sauts":"sauts","sprints":"sprints","long.":"longueurs"};
-  $("#teamTotalHelp").textContent="Additionnez les "+(names[exercise.unit]||exercise.unit)+" de toute l’équipe. Entrez un seul nombre, toutes séries et tous élèves confondus.";
-  $("#scoreInput").value=existing?String(existing.raw):"";
+  $("#teamTotalHelp").textContent="Additionnez les "+(names[exercise.unit]||exercise.unit)+" de toute l’équipe, toutes séries confondues. Un seul total, sans bonus au-delà du plafond.";
+  $("#scoreInput").value=existing&&!existing.needsReview?String(existing.raw):"";
   $("#modalUnit").textContent=exercise.unit;
   $("#modalProfile").textContent=team.size+" élèves · une seule saisie";
-  $("#modalTarget").textContent="Repère équipe : "+(standardTarget(exercise)*team.size)+" "+exercise.unit;
+  const prescribed=standardTarget(exercise)*team.size;
+  $("#modalTarget").textContent="Prescrit : "+prescribed+" "+exercise.unit+" (50 pts) · max : "+(prescribed*2)+" "+exercise.unit+" (100 pts)";
   $("#scoreModal").classList.remove("hidden");
 }
 function closeScore(){
@@ -773,24 +774,38 @@ function standardTarget(exercise){
   if(typeof exercise.target==="number") return exercise.target;
   return exercise.target?.active ?? exercise.target?.progression ?? Object.values(exercise.target||{})[0] ?? 1;
 }
-function teamStreak(teamIndex){
-  let streak=0,best=0;
-  for(let r=0;r<state.teamCount;r++){
-    const s=getScore(r,teamIndex);
-    if(s && s.standardMet){streak++;best=Math.max(best,streak);}else if(s){streak=0;}else break;
-  }
-  return {current:streak,best};
+// Barème unique : 50 pts au volume prescrit; 100 pts à 2 × le volume prescrit.
+function pointsFromTotal(raw,teamSize,exercise){
+  const prescribed=standardTarget(exercise)*teamSize;
+  if(!Number.isFinite(raw)||raw<0||!prescribed)return 0;
+  return Math.min(100,Math.floor((Math.min(raw,2*prescribed)*100)/(2*prescribed)));
 }
-function recomputeStreakBonuses(teamIndex){
-  let streak=0;
-  for(let r=0;r<state.teamCount;r++){
-    const s=getScore(r,teamIndex);
-    if(!s)break;
-    if(s.standardMet) streak++; else streak=0;
-    s.streak=streak;
-    s.streakBonus=s.standardMet?Math.min(15,Math.max(0,streak-1)*5):0;
-    s.points=(s.basePoints??s.points??0)+(s.extraBonus||0)+s.streakBonus;
-  }
+// Les anciennes séances conservent leurs totaux, mais leurs points sont recalculés.
+function upgradeSavedScores(){
+  if(state.pointsRuleVersion===2)return;
+  Object.entries(state.scores||{}).forEach(([rotation,byTeam])=>{
+    Object.entries(byTeam||{}).forEach(([teamIndex,s])=>{
+      if(!s)return;
+      const exIndex=s.exIndex ?? ((+teamIndex + +rotation)%state.teamCount);
+      const exercise=MODES[state.mode]?.exercises[exIndex];
+      const team=state.teams?.[+teamIndex];
+      if(!exercise||!team)return;
+      // Deux stations changeaient d’unité (temps/distance) entre versions :
+      // conserver le résultat ancien, mais demander sa nouvelle saisie.
+      if((state.mode==="endurance"&&exIndex===6)||(state.mode==="cardio"&&exIndex===0)){
+        s.legacyRaw=s.raw;s.raw=null;s.needsReview=true;s.points=0;
+        return;
+      }
+      if(!Number.isFinite(s.raw))return;
+      s.avg=s.raw/team.size;
+      s.target=standardTarget(exercise);
+      s.standardMet=s.avg>=s.target;
+      s.points=pointsFromTotal(s.raw,team.size,exercise);
+      s.basePoints=s.points;s.extraBonus=0;s.streakBonus=0;
+    });
+  });
+  state.pointsRuleVersion=2;
+  save();
 }
 function saveScore(){
   if(!modalContext)return;
@@ -799,19 +814,15 @@ function saveScore(){
   if(!/^\d+$/.test(value))return;
   const raw=Number(value);
   if(!Number.isSafeInteger(raw)||raw<0)return;
-  // One combined total. Normalize only for fair comparison between different team sizes.
   const avg=raw/team.size;
   const target=standardTarget(exercise);
-  const basePoints=Math.round(Math.min(100,(avg/target)*100));
-  const standardMet=avg>=target;
-  // Bonus based on the same total: no need to count or enter extra series separately.
-  const extraBonus=standardMet?Math.min(10,Math.floor(Math.max(0,avg-target)/2)):0;
+  const points=pointsFromTotal(raw,team.size,exercise);
   state.scores[rotation] ||= {};
   state.scores[rotation][teamIndex]={
-    raw,avg,target,basePoints,extraBonus,standardMet,
-    points:basePoints+extraBonus,exIndex
+    raw,avg,target,basePoints:points,extraBonus:0,streakBonus:0,
+    standardMet:avg>=target,points,exIndex,ruleVersion:2
   };
-  recomputeStreakBonuses(teamIndex);
+  state.pointsRuleVersion=2;
   save();closeScore();renderCircuit();
 }
 function getScore(rotation,teamIndex){return state.scores?.[rotation]?.[teamIndex]||null;}
@@ -820,7 +831,7 @@ function teamTotal(teamIndex){
 }
 function renderRanking(){
   const ranked=state.teams.map((t,i)=>({i,name:t.name,color:t.color,total:teamTotal(i)})).sort((a,b)=>b.total-a.total);
-  $("#rankStrip").innerHTML=`<div class="rankTitle">Classement</div>`+ranked.map((r,idx)=>{const st=teamStreak(r.i).current;return `<div class="rankItem" style="border:1px solid ${r.color}55">${idx+1}. ${escapeHtml(r.name)} <b>${r.total}</b>${st>=2?` <span title="Série de standards réussis">🔥×${st}</span>`:""}</div>`;}).join("");
+  $("#rankStrip").innerHTML=`<div class="rankTitle">Classement</div>`+ranked.map((r,idx)=>`<div class="rankItem" style="border:1px solid ${r.color}55">${idx+1}. ${escapeHtml(r.name)} <b>${r.total}</b></div>`).join("");
 }
 function rotate(){
   advanceToNextStation();
@@ -846,14 +857,14 @@ function finishSession(auto=false){
   clearInterval(circuitTick);state.finished=true;state.screen="finish";save();renderFinish();showScreen("finishScreen");
 }
 function renderFinish(){
-  const ranked=state.teams.map((t,i)=>({name:t.name,total:teamTotal(i),color:t.color,bestStreak:teamStreak(i).best})).sort((a,b)=>b.total-a.total);
-  $("#podium").innerHTML=ranked.slice(0,3).map((r,i)=>`<div class="podiumItem"><div class="podiumPos">${["🥇","🥈","🥉"][i]}</div><div class="podiumTeam">${escapeHtml(r.name)}</div><div class="podiumPts">${r.total} pts${r.bestStreak>=2?` · 🔥×${r.bestStreak}`:""}</div></div>`).join("");
-  $("#allRanks").innerHTML=ranked.map((r,i)=>`<div class="allRank"><strong>${i+1}. ${escapeHtml(r.name)}</strong><span>${r.total} pts${r.bestStreak>=2?` · 🔥×${r.bestStreak}`:""}</span></div>`).join("");
+  const ranked=state.teams.map((t,i)=>({name:t.name,total:teamTotal(i),color:t.color})).sort((a,b)=>b.total-a.total);
+  $("#podium").innerHTML=ranked.slice(0,3).map((r,i)=>`<div class="podiumItem"><div class="podiumPos">${["🥇","🥈","🥉"][i]}</div><div class="podiumTeam">${escapeHtml(r.name)}</div><div class="podiumPts">${r.total} pts</div></div>`).join("");
+  $("#allRanks").innerHTML=ranked.map((r,i)=>`<div class="allRank"><strong>${i+1}. ${escapeHtml(r.name)}</strong><span>${r.total} pts</span></div>`).join("");
 }
 function save(){localStorage.setItem(STORE_KEY,JSON.stringify(state));}
 function readSaved(){try{return JSON.parse(localStorage.getItem(STORE_KEY)||"null")}catch{return null}}
 function resumeSaved(){
-  const s=readSaved();if(!s)return;state=s;
+  const s=readSaved();if(!s)return;state=s;upgradeSavedScores();
   if(state.screen==="warmup"){renderWarmup();showScreen("warmupScreen");startWarmupTick();}
   else if(state.screen==="circuit"){
     state.phase=state.phase==="results"?"results":"work";
@@ -866,7 +877,7 @@ function resumeSaved(){
 function resetAll(){
   localStorage.removeItem(STORE_KEY);
   clearInterval(warmupTick);clearInterval(circuitTick);
-  state={teamCount:6,teams:defaultTeams(6),mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,sessionBreakStartedAt:null,paused:false,pauseStartedAt:null,sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false};
+  state={teamCount:6,teams:defaultTeams(6),mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,sessionBreakStartedAt:null,paused:false,pauseStartedAt:null,sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false,pointsRuleVersion:2};
   $("#resumeBox").classList.add("hidden");renderSetup();showScreen("setupScreen");
 }
 function beep(){try{const A=new(window.AudioContext||window.webkitAudioContext)();const o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=740;g.gain.value=.08;o.start();setTimeout(()=>{o.stop();A.close()},180)}catch{}}
