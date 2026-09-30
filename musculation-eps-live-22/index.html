@@ -334,9 +334,8 @@ button{cursor:pointer}
 
     <button type="button" id="calcToggle" class="calcToggle" aria-expanded="false" aria-controls="calcPanel">+ Calculatrice (facultatif)</button>
     <section id="calcPanel" class="calcPanel hidden" aria-label="Addition des résultats de l’équipe">
-      <p class="calcNote">Ex. : 13 + 14 + 19 + 16. Le total reste ici : inscrivez votre score manuellement ensuite.</p>
-      <input type="text" id="calcExpression" class="calcExpression" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="140" aria-label="Addition à calculer" placeholder="13 + 14 + 19 + 16">
-      <div id="calcFeedback" class="calcFeedback" role="status" aria-live="polite"><span>Total calculé (non enregistré)</span><strong id="calcResult">—</strong></div>
+      <input type="text" id="calcExpression" class="calcExpression" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="140" aria-label="Addition à calculer">
+      <div id="calcFeedback" class="calcFeedback" role="status" aria-live="polite"><span>Total calculé (non enregistré)</span><strong id="calcResult">0</strong></div>
       <div id="calcKeys" class="calcKeys" aria-label="Touches de la calculatrice"></div>
     </section>
     <div id="numericEntry" class="numericEntry">
@@ -807,7 +806,7 @@ function sumCalculatorExpression(expression){
 function updateCalculator(){
   const expression=$("#calcExpression").value;
   const result=sumCalculatorExpression(expression);
-  $("#calcResult").textContent=result===null?"—":result.toLocaleString("fr-CA");
+  $("#calcResult").textContent=!expression.trim()?"0":result===null?"—":result.toLocaleString("fr-CA");
   $("#calcFeedback").querySelector("span").textContent=expression.trim()&&result===null
     ?"Complétez l’addition (chiffres et +)"
     :"Total calculé (non enregistré)";
