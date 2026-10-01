@@ -439,7 +439,7 @@ button{cursor:pointer}
         <div class="rotationTimer" id="rotationTimer">00:00</div>
         <div class="sessionTimer"><span id="sessionTimerLabel">Séance</span> <span id="sessionTimer">00:00</span></div>
         <div class="mainPhaseActions">
-          <button class="phaseAction backPhaseBtn hidden" id="backResultsBtn" type="button" title="Revenir à la saisie des résultats précédents">← Retour aux résultats</button>
+          <button class="phaseAction backPhaseBtn hidden" id="backResultsBtn" type="button" title="Revenir à l’exercice précédent et compléter les scores">← Exercice précédent</button>
           <button class="phaseAction endExerciseBtn" id="endExerciseBtn">Terminer l’exercice</button>
           <button class="phaseAction nextPhaseBtn hidden" id="rotateBtn">Suivant →</button>
         </div>
@@ -877,7 +877,7 @@ function advanceToNextStation(){
   });
   if(missing.length && !confirm(
     "Équipe(s) sans résultat : "+missing.map(team=>team.name).join(", ")+
-    ". Continuer quand même ? Vous pourrez revenir avec « Retour »."
+    ". Continuer quand même ? Vous pourrez revenir avec « Exercice précédent »."
   ))return;
   finishScoreBreak();
   if(state.rotation>=state.teamCount-1){
