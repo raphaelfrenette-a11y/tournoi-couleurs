@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b1220">
-<title>Gym Arena ÉPS · V2</title>
+<title>Gym Arena ÉPS · LIVE 21</title>
 <style>
 :root{
   --bg:#08101d;--panel:#101b2e;--panel2:#16243b;--text:#f7fafc;--muted:#9fb0c6;
@@ -57,7 +57,7 @@ button{cursor:pointer}
 .warmupVisual{width:135px;height:96px;border-radius:14px;background:#08111e;border:1px solid rgba(148,163,184,.12);display:grid;place-items:center;overflow:hidden}
 .warmupVisual svg{width:125px;height:90px}
 .warmName{font-size:21px;font-weight:1000;line-height:1.05}.warmCue{color:var(--muted);font-size:13px;margin-top:4px}.warmDose{font-weight:1000;color:#dbeafe;font-size:18px;white-space:nowrap}
-.circuitShell{width:min(1900px,99vw);height:100vh;margin:0 auto;padding:10px 12px 10px;display:flex;flex-direction:column;overflow:hidden}
+.circuitShell{width:min(1900px,99vw);height:100vh;height:var(--app-height,100dvh);min-height:0;margin:0 auto;padding:10px 12px max(10px,env(safe-area-inset-bottom));display:flex;flex-direction:column;overflow:hidden}
 .circuitTop{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:12px}
 .sessionInfo{display:flex;align-items:center;gap:12px}.modeBadge{padding:9px 12px;border-radius:999px;font-weight:950;background:rgba(255,255,255,.09);border:1px solid var(--line)}
 .timeBlock{text-align:center}.rotationLabel{font-size:13px;color:var(--muted);font-weight:900;letter-spacing:.14em;text-transform:uppercase}.rotationTimer{font-size:clamp(40px,5.5vw,78px);font-weight:1000;font-variant-numeric:tabular-nums;letter-spacing:-.05em;line-height:1}.sessionTimer{font-size:13px;color:var(--muted);margin-top:3px}
@@ -70,10 +70,10 @@ button{cursor:pointer}
 .circuitShell[data-phase="results"] .stationCard{box-shadow:0 0 0 2px rgba(251,191,36,.18),0 14px 32px rgba(0,0,0,.23)}
 .rotateBtn{background:#f8fafc;color:#07101c;border-color:#f8fafc}
 .stationGrid{display:grid;gap:10px;flex:1;min-height:0;grid-auto-rows:minmax(0,1fr)}
-.stationGrid[data-count="4"]{grid-template-columns:repeat(2,1fr)}
-.stationGrid[data-count="5"],.stationGrid[data-count="6"]{grid-template-columns:repeat(3,1fr)}
-.stationGrid[data-count="7"],.stationGrid[data-count="8"]{grid-template-columns:repeat(4,1fr)}
-.stationGrid[data-count="9"],.stationGrid[data-count="10"]{grid-template-columns:repeat(5,1fr)}
+.stationGrid[data-count="4"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+.stationGrid[data-count="5"],.stationGrid[data-count="6"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+.stationGrid[data-count="7"],.stationGrid[data-count="8"]{grid-template-columns:repeat(4,minmax(0,1fr))}
+.stationGrid[data-count="9"],.stationGrid[data-count="10"]{grid-template-columns:repeat(5,minmax(0,1fr))}
 .stationGrid[data-count="7"] .stationCard,.stationGrid[data-count="8"] .stationCard,.stationGrid[data-count="9"] .stationCard,.stationGrid[data-count="10"] .stationCard{padding:11px;min-height:0}
 .stationGrid[data-count="9"] .exerciseName,.stationGrid[data-count="10"] .exerciseName{font-size:clamp(14px,1.25vw,20px)}
 .stationGrid[data-count="9"] .exerciseDose,.stationGrid[data-count="10"] .exerciseDose{font-size:11px}
@@ -108,14 +108,15 @@ button{cursor:pointer}
 .circuitShell[data-phase="work"] .stationGrid[data-count="10"] .visualBox{height:auto;min-height:58px;margin:2px 0 0}
 .circuitShell[data-phase="work"] .stationGrid[data-count="9"] .visualBox svg,
 .circuitShell[data-phase="work"] .stationGrid[data-count="10"] .visualBox svg{height:min(76px,90%);width:min(86%,160px)}
-.stationCard{position:relative;min-height:0;overflow:hidden;border-radius:22px;background:linear-gradient(180deg,#12213a,#0c1729);border:2px solid var(--teamColor,#334155);box-shadow:0 14px 32px rgba(0,0,0,.23);padding:14px;display:flex;flex-direction:column}
+.stationCard{position:relative;min-width:0;min-height:0;overflow:hidden;border-radius:22px;background:linear-gradient(180deg,#12213a,#0c1729);border:2px solid var(--teamColor,#334155);box-shadow:0 14px 32px rgba(0,0,0,.23);padding:14px;display:flex;flex-direction:column}
+.stationCard>*{min-width:0}
 .stationCard.scored{box-shadow:0 0 0 3px rgba(74,222,128,.18),0 14px 32px rgba(0,0,0,.23)}
 .stationHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .stationNum{font-size:11px;color:var(--muted);font-weight:950;letter-spacing:.12em}
 .teamTag{width:100%;min-height:42px;margin-top:5px;padding:8px 10px;border-radius:12px;background:var(--teamColor);color:#07101c;font-weight:1000;line-height:1.08;white-space:normal;overflow:visible;word-break:break-word;display:flex;align-items:center}
 .teamNameBig{display:block;width:100%;font-size:15px;text-align:left}
 .check{font-size:20px;flex:0 0 auto}
-.exerciseName{font-size:clamp(17px,1.7vw,25px);font-weight:1000;margin:8px 0 3px;line-height:1.05}.exerciseDose{font-weight:900;color:#dce8f6;font-size:13px}.exerciseTimePill{display:inline-block;margin-top:5px;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.08);font-size:11px;font-weight:950;color:#dbeafe}.cue{font-size:12px;color:var(--muted);margin-top:3px}
+.exerciseName{font-size:clamp(17px,1.7vw,25px);font-weight:1000;margin:8px 0 3px;line-height:1.05;overflow-wrap:anywhere}.exerciseDose{font-weight:900;color:#dce8f6;font-size:13px;overflow-wrap:anywhere}.exerciseTimePill{display:inline-block;margin-top:5px;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.08);font-size:11px;font-weight:950;color:#dbeafe}.cue{font-size:12px;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}
 .visualBox{position:relative;flex:0 0 auto;height:112px;margin:7px 0;border-radius:16px;background:radial-gradient(circle at 50% 44%,rgba(96,165,250,.10),transparent 52%),linear-gradient(180deg,#0a1626,#08111e);border:1px solid rgba(148,163,184,.14);display:grid;place-items:center;overflow:hidden}
 .visualBox svg{width:min(96%,230px);height:104px;transform:translateY(-1px);filter:drop-shadow(0 8px 16px rgba(0,0,0,.16))}
 .scoreFooter{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;min-height:32px}.scoreHint{font-size:11px;color:var(--muted);line-height:1.1}.scoreValue{font-size:13px;font-weight:1000}
@@ -135,8 +136,19 @@ button{cursor:pointer}
 .modalCard{width:min(700px,96vw);max-height:94vh;overflow:auto;background:#0e1a2d;border:1px solid #30435f;border-radius:26px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
 .modalTeam{font-size:13px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;color:var(--teamColor,#93c5fd)}.modalExercise{font-size:28px;font-weight:1000;margin:5px 0}.modalPrompt{color:var(--muted);font-size:13px;margin-bottom:13px}.scoreDisplay{display:flex;align-items:baseline;gap:8px;padding:14px 16px;background:#07111f;border:1px solid var(--line);border-radius:16px;margin-bottom:12px}.scoreInput{width:100%;background:transparent;border:0;color:#fff;font-size:46px;font-weight:1000;outline:0;text-align:right}.unit{font-size:16px;color:var(--muted);font-weight:900}
 .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.key{border:1px solid var(--line);background:#15253d;color:#fff;border-radius:14px;padding:14px;font-size:22px;font-weight:950}.key.action{font-size:14px}.saveScore{width:100%;border:0;background:#4ade80;color:#06120a;border-radius:14px;padding:15px;font-size:18px;font-weight:1000;margin-top:10px}.modalMeta{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:10px}
-.repCalculator{display:grid;gap:9px;margin:8px 0 12px}.repSet{padding:9px 10px;border:1px solid var(--line);border-radius:14px;background:#0a1626}.repSetHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.repSetTitle{font-size:12px;font-weight:1000;letter-spacing:.08em;text-transform:uppercase}.repSetTotal{font-size:12px;color:#86efac;font-weight:950}.repStudents{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.repCell{border:1px solid #334155;background:#13233a;color:#fff;border-radius:10px;padding:7px 5px;font-size:12px;font-weight:900;min-height:39px}.repCell.active{border-color:#60a5fa;box-shadow:0 0 0 2px rgba(96,165,250,.22);background:#193354}.repCell.empty{color:#94a3b8}.repQuick{padding:10px;border-radius:14px;background:#07111f;border:1px solid var(--line)}.repQuickTitle{font-size:11px;color:#cbd5e1;font-weight:850;margin-bottom:7px}.repChoices{display:flex;flex-wrap:wrap;gap:6px}.repChoice{flex:1 1 46px;min-width:46px;border:1px solid #3b526f;background:#162a44;color:#fff;border-radius:10px;padding:9px 7px;font-size:16px;font-weight:1000}.repChoice.zero{color:#fda4af}.repTotalBox{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;border-radius:14px;background:#10273b;border:1px solid #28506f}.repTotalLabel{font-size:12px;color:#cbd5e1;font-weight:900}.repTotalValue{font-size:28px;font-weight:1000;color:#86efac}.repHint{font-size:11px;color:#94a3b8;margin-top:5px}.numericEntry.hidden{display:none!important}.closeModal{position:absolute;top:18px;right:18px}
-.repExtraControls{display:flex;gap:8px;flex-wrap:wrap}.repExtraControls button,.repNext{border:1px solid #3b526f;background:#162a44;color:#fff;border-radius:10px;padding:9px 12px;font-size:14px;font-weight:850}.repDigits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:10px}.repDigits button{min-height:48px;border:1px solid #3b526f;background:#162a44;color:#fff;border-radius:10px;font-size:20px;font-weight:950}.repDigits .repNext{font-size:14px;background:#20517a}.repCurrent{font-size:16px;color:#dbeafe;font-weight:900;margin-top:8px}.repBonusHelp{color:#86efac;font-size:13px;line-height:1.4}.repRemove{border:0;background:transparent;color:#fda4af;font-size:13px;font-weight:800}
+
+.calcToggle{display:block;margin:7px 0 12px;width:100%;border:1px solid #395773;background:#142a42;color:#dbeafe;border-radius:13px;padding:11px 14px;font-weight:900;font-size:15px}
+.calcToggle[aria-expanded="true"]{border-color:#60a5fa;background:#1a344f}
+.calcPanel{margin:0 0 15px;padding:13px;background:#091b2d;border:1px solid #385575;border-radius:16px}
+.calcNote{font-size:12px;color:#adbed2;margin:0 0 10px;line-height:1.4}
+.calcExpression{width:100%;border:1px solid #4a6482;background:#071423;border-radius:12px;padding:12px;font-size:20px;font-weight:850;color:white;outline:none}
+.calcExpression:focus{border-color:#60a5fa;box-shadow:0 0 0 2px #60a5fa44}
+.calcFeedback{min-height:52px;margin:9px 0 12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:12px;background:#122e38;color:#d1fae5;font-size:13px}
+.calcFeedback strong{font-size:24px;color:#86efac;font-variant-numeric:tabular-nums}
+.calcKeys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.calcKey{min-height:45px;border:1px solid #395270;background:#162a44;color:white;border-radius:11px;font-size:19px;font-weight:900}
+.calcKey.action{background:#213d5e}.calcKey.equal{background:#4ade80;color:#06120a;border-color:#4ade80}
+.calcKey.wide{grid-column:span 2;font-size:14px}
 .finishCard{padding:28px}.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}.podiumItem{padding:20px;border-radius:20px;background:#0f1d31;border:1px solid var(--line);text-align:center}.podiumPos{font-size:30px}.podiumTeam{font-size:21px;font-weight:1000}.podiumPts{color:#86efac;font-weight:950}
 .allRanks{display:grid;gap:8px}.allRank{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px;background:#0c1728}.allRank strong{font-size:15px}.allRank span{color:#86efac;font-weight:950}
 .rotateFlash{position:fixed;inset:0;z-index:60;background:#07111f;display:grid;place-items:center;text-align:center;padding:20px}.rotateFlash h1{font-size:clamp(50px,10vw,130px);margin:0;font-weight:1000}.rotateFlash p{font-size:clamp(20px,4vw,46px);color:#cbd5e1;margin:8px 0 0}
@@ -145,14 +157,226 @@ button{cursor:pointer}
   .modeGrid{grid-template-columns:repeat(2,1fr)}.teamEditor{grid-template-columns:1fr}.warmupWrap{grid-template-columns:1fr}
   .circuitTop{grid-template-columns:1fr auto 1fr}.sessionInfo{justify-content:flex-start}.teacherBtns{justify-content:flex-end}
 }
-@media(max-width:600px){.podium{grid-template-columns:1fr}.shell{padding:12px}.circuitShell{min-width:760px;overflow:hidden}}
+@media(max-width:700px){
+  html,body{overflow-x:hidden}
+  .podium{grid-template-columns:1fr}
+  .shell{padding:12px}
+  .circuitShell{width:100%;min-width:0;height:auto;min-height:var(--app-height,100dvh);padding:8px 8px max(12px,env(safe-area-inset-bottom));overflow:visible}
+  .circuitTop{grid-template-columns:1fr;gap:8px;margin-bottom:10px}
+  .sessionInfo{justify-content:center}
+  .timeBlock{text-align:center}
+  .teacherBtns{justify-content:center;flex-wrap:wrap}
+  .teacherBtn{padding:9px 11px;font-size:12px}
+  .rotationLabel{font-size:11px}
+  .rotationTimer{font-size:48px}
+  .phaseAction{min-width:0;width:min(100%,330px)}
+  .stationGrid{width:100%;flex:none;grid-auto-rows:auto!important}
+  .stationGrid[data-count="4"],.stationGrid[data-count="5"],.stationGrid[data-count="6"],.stationGrid[data-count="7"],.stationGrid[data-count="8"],.stationGrid[data-count="9"],.stationGrid[data-count="10"]{grid-template-columns:1fr!important}
+  .stationGrid[data-count] .stationCard{padding:14px;min-height:0}
+  .stationGrid[data-count] .teamTag{min-height:42px;padding:8px 10px}
+  .stationGrid[data-count] .teamNameBig{font-size:15px}
+  .stationGrid[data-count] .stationNum{font-size:11px}
+  .stationGrid[data-count] .exerciseName{font-size:22px;margin-top:8px}
+  .stationGrid[data-count] .exerciseDose{font-size:13px}
+  .stationGrid[data-count] .cue{font-size:12px;line-height:1.25}
+  .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{display:grid;flex:0 0 150px;height:150px;min-height:150px;margin:8px 0 0}
+  .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox svg{height:138px;width:min(94%,260px)}
+  .circuitShell[data-phase="results"] .stationGrid[data-count] .stationCard{min-height:210px}
+  .circuitShell[data-phase="results"] .scoreFooter{margin-top:12px}
+  .rankStrip{margin-bottom:8px}
+}
+
+/* Protection universelle des dessins SVG, en force, puissance et tous les modes. */
+.stationGrid{overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}
+.stationCard{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}
+.circuitShell[data-phase="work"] .visualBox{
+ display:grid;place-items:center;flex:1 0 82px;min-height:82px;
+ margin:8px 0 5px;padding:6px;overflow:hidden
+}
+.circuitShell[data-phase="work"] .visualBox svg,
+.warmupVisual svg{
+ display:block;width:min(100%,240px)!important;height:100%!important;
+ max-width:100%;max-height:100%;box-sizing:border-box;padding:3px;
+ transform:none!important;overflow:visible
+}
+.circuitShell[data-phase="work"] .stationGrid[data-count="4"] .visualBox{min-height:112px;flex-basis:112px}
+.circuitShell[data-phase="work"] .stationGrid[data-count="7"] .visualBox,
+.circuitShell[data-phase="work"] .stationGrid[data-count="8"] .visualBox{min-height:75px;flex-basis:75px}
+.circuitShell[data-phase="work"] .stationGrid[data-count="9"] .visualBox,
+.circuitShell[data-phase="work"] .stationGrid[data-count="10"] .visualBox{min-height:68px;flex-basis:68px}
+.circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox svg{height:100%!important;width:min(100%,240px)!important}
+.warmupVisual{padding:3px}
+.warmupVisual svg{max-height:100%}
+/* Hauteurs explicites : le SVG peut toujours calculer son échelle sans être rogné. */
+.circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+  height:118px!important;min-height:118px!important;flex:0 0 auto!important
+}
+.circuitShell[data-phase="work"] .stationGrid[data-count="4"] .visualBox{
+  height:132px!important;min-height:132px!important
+}
+.circuitShell[data-phase="work"] .stationGrid[data-count="7"] .visualBox,
+.circuitShell[data-phase="work"] .stationGrid[data-count="8"] .visualBox{
+  height:100px!important;min-height:100px!important
+}
+.circuitShell[data-phase="work"] .stationGrid[data-count="9"] .visualBox,
+.circuitShell[data-phase="work"] .stationGrid[data-count="10"] .visualBox{
+  height:88px!important;min-height:88px!important
+}
+.modalMeta{flex-wrap:wrap;gap:7px;line-height:1.35}
+@media(max-width:700px){
+ .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+   height:150px!important;min-height:150px!important;flex:0 0 150px!important
+ }
+ .warmupItem{grid-template-columns:100px minmax(0,1fr);gap:9px}
+ .warmupVisual{width:100px;height:86px;grid-row:span 2}
+ .warmName{font-size:18px}
+ .warmDose{grid-column:2;white-space:normal;font-size:15px}
+}
+
+/* Vue travail : une carte doit tenir entièrement dans la hauteur disponible, sans roulette. */
+.circuitShell[data-phase="work"] .stationGrid{
+  overflow:hidden!important;
+  min-height:0;
+}
+.circuitShell[data-phase="work"] .stationCard{
+  overflow:hidden!important;
+  min-height:0!important;
+  padding:clamp(7px,1vh,12px)!important;
+}
+.circuitShell[data-phase="work"] .stationHeader{gap:4px}
+.circuitShell[data-phase="work"] .teamTag{
+  min-height:0!important;margin-top:2px!important;padding:5px 7px!important
+}
+.circuitShell[data-phase="work"] .teamNameBig{font-size:clamp(11px,1.35vh,14px)!important}
+.circuitShell[data-phase="work"] .stationNum{font-size:9px!important}
+.circuitShell[data-phase="work"] .check{font-size:14px}
+.circuitShell[data-phase="work"] .exerciseName{
+  font-size:clamp(14px,2.05vh,21px)!important;
+  line-height:1!important;margin:4px 0 2px!important
+}
+.circuitShell[data-phase="work"] .exerciseDose{
+  font-size:clamp(10px,1.4vh,12px)!important;line-height:1.05!important
+}
+.circuitShell[data-phase="work"] .cue{
+  font-size:clamp(9px,1.18vh,11px)!important;
+  line-height:1.08!important;margin-top:2px!important
+}
+/* Le dessin prend l'espace restant et rétrécit si nécessaire. */
+.circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+  flex:1 1 0!important;
+  height:auto!important;
+  min-height:42px!important;
+  max-height:none!important;
+  margin:3px 0 0!important;
+  padding:2px!important;
+}
+.circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox svg{
+  width:100%!important;height:100%!important;
+  max-width:210px!important;max-height:100%!important;
+  padding:0!important;object-fit:contain
+}
+@media(max-width:700px){
+  .circuitShell[data-phase="work"] .stationGrid{overflow:visible!important}
+  .circuitShell[data-phase="work"] .stationCard{overflow:hidden!important}
+  .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+    flex:0 0 125px!important;height:125px!important;min-height:125px!important
+  }
+}
+
+/* FIX image complète : aucune illustration ne doit être rognée. */
+.circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 clamp(72px,13vh,118px)!important;
+  height:clamp(72px,13vh,118px)!important;
+  min-height:0!important;
+  width:100%!important;
+  overflow:visible!important;
+  padding:0!important;
+  margin:3px 0 0!important;
+}
+.circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox svg{
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  max-width:96%!important;
+  max-height:96%!important;
+  overflow:visible!important;
+  transform:none!important;
+  padding:0!important;
+  flex:none!important;
+}
+.circuitShell[data-phase="work"] .stationCard{
+  overflow:visible!important;
+}
+@media(max-height:760px) and (min-width:701px){
+  .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+    flex-basis:68px!important;height:68px!important
+  }
+  .circuitShell[data-phase="work"] .exerciseName{font-size:14px!important;margin-top:3px!important}
+  .circuitShell[data-phase="work"] .cue{font-size:9px!important}
+}
+@media(max-width:700px){
+  .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+    flex:0 0 120px!important;height:120px!important
+  }
+}
+
+/* Gym Arena : SVG sans rognage et retour à la saisie précédente. */
+.mainPhaseActions{gap:8px;align-items:center}
+.backPhaseBtn{background:#fbbf24!important;color:#111827!important;border:2px solid #fde68a!important;box-shadow:0 6px 18px rgba(251,191,36,.28);min-width:102px;padding:10px 13px;background:#203551;color:#e5f2ff;border:1px solid #6583a3;font-size:14px}
+.backPhaseBtn:focus-visible,.nextPhaseBtn:focus-visible{outline:3px solid #fbbf24;outline-offset:3px}
+@media(min-width:701px){
+ .circuitShell[data-phase="work"] .stationGrid{overflow:hidden!important}
+ .circuitShell[data-phase="work"] .stationCard{
+   display:grid!important;grid-template-rows:auto auto auto minmax(52px,1fr) auto;
+   align-content:stretch;row-gap:2px;overflow:hidden!important;min-height:0!important
+ }
+ .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+   display:grid!important;place-items:center!important;grid-row:4;
+   width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;
+   max-height:100%!important;flex:none!important;margin:0!important;padding:3px!important;
+   overflow:hidden!important;box-sizing:border-box
+ }
+ .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox svg{
+   display:block!important;width:100%!important;height:100%!important;
+   min-width:0!important;min-height:0!important;max-width:100%!important;max-height:100%!important;
+   object-fit:contain!important;overflow:hidden!important;transform:none!important;
+   padding:0!important;flex:none!important
+ }
+}
+@media(max-width:1050px) and (min-width:701px){
+ .mainPhaseActions{gap:5px}
+ .phaseAction{min-width:175px;padding:9px 12px}
+ .backPhaseBtn{min-width:92px!important;font-size:13px}
+}
+@media(max-width:700px){
+ .mainPhaseActions{gap:7px;flex-wrap:wrap}
+ .backPhaseBtn{min-width:95px;width:auto!important}
+ .circuitShell[data-phase="work"] .stationCard{
+   display:grid!important;grid-template-rows:auto auto auto 140px auto;
+   row-gap:4px;overflow:hidden!important
+ }
+ .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox{
+   display:grid!important;place-items:center!important;grid-row:4;
+   width:100%!important;height:140px!important;min-height:140px!important;
+   max-height:140px!important;margin:0!important;padding:4px!important;
+   flex:none!important;overflow:hidden!important;box-sizing:border-box
+ }
+ .circuitShell[data-phase="work"] .stationGrid[data-count] .visualBox svg{
+   display:block!important;width:100%!important;height:100%!important;
+   max-width:100%!important;max-height:100%!important;object-fit:contain!important;
+   overflow:hidden!important;transform:none!important;padding:0!important;flex:none!important
+ }
+}
 </style>
 </head>
 <body>
 <div class="app">
   <main id="setupScreen" class="shell">
     <div class="topbar">
-      <div class="brand"><div class="brandMark">GA</div><div>GYM ARENA <span class="brandSub">Éducation physique · VERSION 17</span></div></div>
+      <div class="brand"><div class="brandMark">GA</div><div>GYM ARENA <span class="brandSub">Éducation physique · VERSION 22</span></div></div>
     </div>
     <div id="resumeBox" class="card resumeBox hidden">
       <div class="resumeText"><strong>Séance en cours trouvée</strong><span id="resumeMeta"></span></div>
@@ -160,6 +384,7 @@ button{cursor:pointer}
     </div>
     <section class="card setupCard">
       <h1 class="stepTitle">Préparer la séance</h1>
+      <p class="stepText" style="color:#86efac;font-weight:850">Saisie express : un seul total par équipe et par exercice. Plafond de 100 points à deux fois le volume prescrit. Priorité à la technique et à la sécurité.</p>
       <p class="stepText">Une classe, un objectif, des rotations simples. L'application s'occupe du reste.</p>
 
       <div class="section">
@@ -214,6 +439,7 @@ button{cursor:pointer}
         <div class="rotationTimer" id="rotationTimer">00:00</div>
         <div class="sessionTimer"><span id="sessionTimerLabel">Séance</span> <span id="sessionTimer">00:00</span></div>
         <div class="mainPhaseActions">
+          <button class="phaseAction backPhaseBtn hidden" id="backResultsBtn" type="button" title="Revenir à la saisie des résultats précédents">← Retour aux résultats</button>
           <button class="phaseAction endExerciseBtn" id="endExerciseBtn">Terminer l’exercice</button>
           <button class="phaseAction nextPhaseBtn hidden" id="rotateBtn">Suivant →</button>
         </div>
@@ -234,7 +460,7 @@ button{cursor:pointer}
       <p class="stepText">Fin de la séance : podium et classement complet calculés automatiquement.</p>
       <div class="podium" id="podium"></div>
       <div class="allRanks" id="allRanks"></div>
-      <div class="actionRow"><button class="primary" id="newSessionBtn">Nouvelle séance</button></div>
+      <div class="actionRow"><button class="secondary" id="reopenScoresBtn">← Corriger les derniers résultats</button><button class="primary" id="newSessionBtn">Nouvelle séance</button></div>
     </section>
   </main>
 </div>
@@ -244,9 +470,15 @@ button{cursor:pointer}
     <div class="modalTeam" id="modalTeam"></div>
     <div class="modalExercise" id="modalExercise"></div>
     <div class="modalPrompt" id="modalPrompt"></div><div id="teamTotalHelp" style="margin:-4px 0 12px;padding:9px 11px;border-radius:12px;background:#14243b;color:#dbeafe;font-size:12px;font-weight:850"></div>
-    <div id="repCalculator" class="repCalculator hidden"></div>
+
+    <button type="button" id="calcToggle" class="calcToggle" aria-expanded="false" aria-controls="calcPanel">+ Calculatrice d’équipe (facultatif)</button>
+    <section id="calcPanel" class="calcPanel hidden" aria-label="Addition des résultats de l’équipe">
+      <input type="text" id="calcExpression" class="calcExpression" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="140" aria-label="Addition à calculer">
+      <div id="calcFeedback" class="calcFeedback" role="status" aria-live="polite"><span>Total calculé (non enregistré)</span><strong id="calcResult">0</strong></div>
+      <div id="calcKeys" class="calcKeys" aria-label="Touches de la calculatrice"></div>
+    </section>
     <div id="numericEntry" class="numericEntry">
-      <div class="scoreDisplay"><input id="scoreInput" class="scoreInput" inputmode="decimal" readonly value=""><span class="unit" id="modalUnit"></span></div>
+      <div class="scoreDisplay"><input id="scoreInput" class="scoreInput" inputmode="numeric" readonly value=""><span class="unit" id="modalUnit"></span></div>
       <div class="keypad" id="keypad"></div>
     </div>
     <button class="saveScore" id="saveScoreBtn">✓ Enregistrer le résultat</button>
@@ -284,7 +516,7 @@ const WARMUP_BANK = {
     ["🦵","Squats dynamiques","Accélérer à la montée","10 reps"],
     ["⬆️","Petits sauts verticaux","Atterrissage silencieux","6 reps"],
     ["↔️","Fentes dynamiques","Contrôle","6 / côté"],
-    ["⚡","Pogos légers","Petits rebonds rapides","20 s"]
+    ["⬆️","Montées de genoux explosives","Rythme rapide et dynamique","20 s"]
   ],
   cardio:[
     ["🚶","Marche rapide sur place","Bras actifs","60 s"],
@@ -361,16 +593,16 @@ const MODES = {
       ["💪","Push-ups faciles","Technique d'abord","8 reps"]
     ],
     exercises:[
-      ex("Push-ups","45 s / élève","Additionnez toutes les répétitions propres.","reps","rép.","pushup",{progression:8,active:12,performance:16}),
-      ex("Goblet squat léger","45 s / élève","Rythme constant, amplitude propre.","reps","rép.","squat",{progression:12,active:16,performance:20}),
-      ex("Lat pulldown léger","45 s / élève","Pas d'élan, contrôle complet.","reps","rép.","pulldown",{progression:10,active:14,performance:18}),
-      ex("Fentes alternées","45 s / élève","Chaque jambe compte 1 répétition.","reps","rép.","lunge",{progression:10,active:14,performance:18}),
-      ex("Curl EZ léger","45 s / élève","Amplitude complète.","reps","rép.","curl",{progression:10,active:14,performance:18}),
-      ex("Triceps corde","45 s / élève","Coudes immobiles.","reps","rép.","triceps",{progression:10,active:14,performance:18}),
-      ex("Wall sit","Meilleur temps / élève","Additionnez les secondes de chaque élève.","seconds","s","wallsit",{progression:25,active:40,performance:55}),
-      ex("Corde à sauter","45 s / élève","Additionnez les sauts réussis.","reps","sauts","rope",{progression:35,active:55,performance:75}),
-      ex("Élévations latérales légères","45 s / élève","Mouvement contrôlé, sans élan.","reps","rép.","shoulder",{progression:10,active:14,performance:18}),
-      ex("Kettlebell swing","45 s / élève","Rythme constant, hanches actives.","reps","rép.","swing",{progression:12,active:16,performance:20})
+      ex("Push-ups","3 séries × 12 reps / élève","Additionnez toutes les répétitions propres.","reps","rép.","pushup",{progression:30,active:36,performance:42},45,3),
+      ex("Goblet squat léger","3 séries × 15 reps / élève","Rythme constant, amplitude propre.","reps","rép.","squat",{progression:36,active:45,performance:50},55,3),
+      ex("Lat pulldown léger","3 séries × 15 reps / élève","Pas d'élan, contrôle complet.","reps","rép.","pulldown",{progression:36,active:45,performance:50},55,3),
+      ex("Fentes alternées","3 séries × 12 reps / jambe","Chaque jambe compte 1 répétition.","reps","rép.","lunge",{progression:60,active:72,performance:80},90,3),
+      ex("Curl EZ léger","3 séries × 15 reps / élève","Amplitude complète.","reps","rép.","curl",{progression:36,active:45,performance:50},55,3),
+      ex("Triceps corde","3 séries × 15 reps / élève","Coudes immobiles.","reps","rép.","triceps",{progression:36,active:45,performance:50},55,3),
+      ex("Squat pulsé","3 séries × 20 reps / élève","Additionnez les répétitions contrôlées de toute l’équipe.","reps","rép.","squat",{progression:48,active:60,performance:66},75,3),
+      ex("Corde à sauter","3 séries × 50 sauts / élève","Additionnez les sauts réussis.","reps","sauts","rope",{progression:120,active:150,performance:170},190,3),
+      ex("Élévations latérales légères","3 séries × 15 reps / élève","Mouvement contrôlé, sans élan.","reps","rép.","shoulder",{progression:36,active:45,performance:50},55,3),
+      ex("Kettlebell swing","3 séries × 20 reps / élève","Rythme constant, hanches actives.","reps","rép.","swing",{progression:48,active:60,performance:66},75,3)
     ]
   },
   power:{
@@ -384,16 +616,16 @@ const MODES = {
       ["⚡","3 accélérations explosives","70 % → 85 %","3 essais"]
     ],
     exercises:[
-      ex("Saut en longueur sans élan","3 essais / élève","Additionnez le meilleur saut de chaque élève.","distance","cm","jump",{progression:120,active:150,performance:180}),
-      ex("Box jump","3 essais / élève","Additionnez la hauteur réussie par chaque élève.","height","cm","jump",{progression:35,active:45,performance:55}),
-      ex("Med-ball chest throw","3 essais / élève","Additionnez le meilleur lancer de chacun.","distance","cm","throw",{progression:250,active:350,performance:450}),
-      ex("Sprint vélo 15 s","1 essai / élève","Additionnez la distance de tous les élèves.","distance","m","bike",{progression:90,active:120,performance:150}),
-      ex("Kettlebell swing explosif","20 s / élève","Additionnez les répétitions explosives propres.","reps","rép.","swing",{progression:8,active:11,performance:14}),
-      ex("Squat jumps","20 s / élève","Additionnez les sauts avec atterrissage contrôlé.","reps","rép.","jump",{progression:7,active:10,performance:13}),
-      ex("Push-ups explosifs","20 s / élève","Additionnez les répétitions réellement explosives.","reps","rép.","pushup",{progression:4,active:7,performance:10}),
-      ex("Med-ball slam","20 s / élève","Additionnez les répétitions puissantes.","reps","rép.","slam",{progression:7,active:10,performance:13}),
-      ex("Fentes sautées","20 s / élève","Sauts rapides, atterrissages contrôlés.","reps","rép.","jump",{progression:5,active:8,performance:11}),
-      ex("Sauts latéraux","20 s / élève","Bondir d'un côté à l'autre avec contrôle.","reps","rép.","jump",{progression:8,active:12,performance:16})
+      ex("Step-up explosif sur box","3 séries × 8 reps / élève","Monter de façon explosive, redescendre avec contrôle. Alterner la jambe de départ.","reps","rép.","stepup",{progression:20,active:24,performance:28},30,3),
+      ex("Box jump","3 séries × 10 sauts / élève","Sauts explosifs et propres. Redescendre de la box entre chaque répétition.","reps","sauts","boxjump",{progression:24,active:30,performance:36},40,3),
+      ex("Push press haltères","3 séries × 8 reps / élève","Petite flexion des jambes puis pousser les haltères rapidement au-dessus de la tête.","reps","rép.","shoulder",{progression:18,active:24,performance:30},36,3),
+      ex("Sprint vélo","3 × 30 s de sprint / élève","Chaque sprint complet de 30 secondes compte pour 1. Additionnez le nombre total de sprints complétés par l’équipe.","reps","sprints","bike",{progression:2,active:3,performance:3},3,3),
+      ex("Kettlebell swing explosif","3 séries × 10 reps / élève","Chaque répétition doit rester explosive.","reps","rép.","swing",{progression:24,active:30,performance:34},40,3),
+      ex("Squat jumps","3 séries × 8 sauts / élève","Sauts explosifs avec atterrissage contrôlé.","reps","sauts","squatjump",{progression:18,active:24,performance:28},32,3),
+      ex("Push-ups explosifs","3 séries × 6 reps / élève","Chaque répétition doit rester réellement explosive.","reps","rép.","pushup",{progression:12,active:18,performance:21},24,3),
+      ex("Med-ball slam","3 séries × 8 reps / élève","Chaque slam doit être puissant.","reps","rép.","slam",{progression:18,active:24,performance:28},32,3),
+      ex("Fentes sautées","3 séries × 6 reps / jambe","Sauts explosifs, atterrissages contrôlés.","reps","rép.","jumplunge",{progression:30,active:36,performance:42},48,3),
+      ex("Sauts latéraux","3 séries × 10 sauts / élève","Bondir d'un côté à l'autre avec contrôle.","reps","sauts","lateraljump",{progression:24,active:30,performance:36},40,3)
     ]
   },
   cardio:{
@@ -407,16 +639,16 @@ const MODES = {
       ["🔥","Accélération progressive","Pas au maximum","30 s"]
     ],
     exercises:[
-      ex("Vélo stationnaire","45 s / élève","Additionnez la distance de toute l'équipe.","distance","m","bike",{progression:250,active:330,performance:420}),
-      ex("Corde à sauter","45 s / élève","Additionnez les sauts réussis.","reps","sauts","rope",{progression:35,active:55,performance:75}),
-      ex("Step-ups sur box","45 s / élève","Chaque montée complète compte 1.","reps","rép.","stepup",{progression:10,active:14,performance:18}),
-      ex("Shuttle run","45 s / élève","Additionnez les longueurs complètes.","reps","long.","run",{progression:5,active:7,performance:9}),
-      ex("Mountain climbers","45 s / élève","Chaque genou vers l'avant compte 1.","reps","rép.","climber",{progression:24,active:34,performance:44}),
-      ex("Kettlebell swing","45 s / élève","Rythme continu avec technique propre.","reps","rép.","swing",{progression:12,active:16,performance:20}),
-      ex("Burpees","45 s / élève","Additionnez les répétitions complètes.","reps","rép.","burpee",{progression:5,active:8,performance:11}),
-      ex("Med-ball slam","45 s / élève","Additionnez les répétitions complètes.","reps","rép.","slam",{progression:10,active:14,performance:18}),
-      ex("Jumping jacks","45 s / élève","Additionnez les répétitions complètes.","reps","rép.","jump",{progression:20,active:30,performance:40}),
-      ex("Montées de genoux","45 s / élève","Chaque genou haut compte 1 répétition.","reps","rép.","run",{progression:30,active:45,performance:60})
+      ex("Sprint vélo","3 × 30 s de sprint / élève","Chaque sprint complet de 30 secondes compte pour 1. Additionnez le nombre total de sprints complétés par l’équipe.","reps","sprints","bike",{progression:2,active:3,performance:3},3,3),
+      ex("Corde à sauter","3 séries × 50 sauts / élève","Additionnez les sauts réussis.","reps","sauts","rope",{progression:120,active:150,performance:170},190,3),
+      ex("Step-ups sur box","3 séries × 15 reps / élève","Chaque montée complète compte 1 répétition.","reps","rép.","stepup",{progression:36,active:45,performance:50},55,3),
+      ex("Allers-retours dans les escaliers","3 allers-retours / élève","Chaque élève effectue 3 allers-retours complets dans les escaliers. Additionnez les allers-retours complétés par toute l’équipe.","reps","A/R","run",{progression:3,active:3,performance:3},3,1),
+      ex("Mountain climbers","3 séries × 20 reps / jambe","Chaque genou vers l’avant compte 1 répétition.","reps","rép.","climber",{progression:100,active:120,performance:135},150,3),
+      ex("Kettlebell swing","3 séries × 20 reps / élève","Rythme soutenu avec technique propre.","reps","rép.","swing",{progression:48,active:60,performance:66},75,3),
+      ex("Burpees","3 séries × 10 reps / élève","Additionnez les répétitions complètes.","reps","rép.","burpee",{progression:24,active:30,performance:36},40,3),
+      ex("Med-ball slam","3 séries × 15 reps / élève","Additionnez les répétitions complètes.","reps","rép.","slam",{progression:36,active:45,performance:50},55,3),
+      ex("Jumping jacks","3 séries × 25 reps / élève","Additionnez les répétitions complètes.","reps","rép.","jumpingjack",{progression:60,active:75,performance:85},95,3),
+      ex("Montées de genoux","3 séries × 30 reps / jambe","Chaque genou haut compte 1 répétition.","reps","rép.","run",{progression:150,active:180,performance:200},220,3)
     ]
   }
 };
@@ -427,13 +659,29 @@ const STORE_KEY="gymArenaEPS_v1";
 let state={
   teamCount:6,teams:[],mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,
   rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,sessionBreakStartedAt:null,paused:false,pauseStartedAt:null,
-  sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false
+  sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false,pointsRuleVersion:2
 };
-let warmupTick=null,circuitTick=null,modalContext=null,modalRepData=null,activeRepCell=null,repDigitDraft="";
+let warmupTick=null,circuitTick=null,modalContext=null;
 
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const screens=["setupScreen","warmupScreen","circuitScreen","finishScreen"];
+
+function dismissNativeKeyboard(){
+  const active=document.activeElement;
+  if(active && active!==document.body && typeof active.blur==="function") active.blur();
+}
+function syncViewportHeight(){
+  const h=window.visualViewport?.height||window.innerHeight;
+  document.documentElement.style.setProperty("--app-height",Math.round(h)+"px");
+}
+syncViewportHeight();
+window.addEventListener("resize",syncViewportHeight,{passive:true});
+window.addEventListener("orientationchange",syncViewportHeight,{passive:true});
+if(window.visualViewport){
+  window.visualViewport.addEventListener("resize",syncViewportHeight,{passive:true});
+  window.visualViewport.addEventListener("scroll",syncViewportHeight,{passive:true});
+}
 
 function defaultTeams(n){
   return Array.from({length:n},(_,i)=>({name:"",size:4,color:PALETTE[i]}));
@@ -442,8 +690,9 @@ function init(){
   state.teams=defaultTeams(state.teamCount);
   renderSetup();
   buildKeypad();
+  buildCalculator();
   const saved=readSaved();
-  if(saved && saved.screen!=="setup" && !saved.finished){
+  if(saved && saved.screen!=="setup" && (!saved.finished || saved.screen==="finish")){
     $("#resumeBox").classList.remove("hidden");
     $("#resumeMeta").textContent=(MODES[saved.mode]?.label||"Séance")+" · "+saved.teams.length+" équipes · rotation "+(saved.rotation+1);
   }
@@ -485,7 +734,14 @@ function validateSetup(){
   $("#toWarmupBtn").disabled=!ok;
 }
 function showScreen(id){
+  dismissNativeKeyboard();
   screens.forEach(s=>$("#"+s).classList.toggle("hidden",s!==id));
+  syncViewportHeight();
+  requestAnimationFrame(()=>{
+    dismissNativeKeyboard();
+    syncViewportHeight();
+    window.scrollTo(0,0);
+  });
 }
 function prepareWarmup(){
   state.teams=state.teams.map((t,i)=>({name:t.name.trim()||("Équipe "+(i+1)),size:t.size,color:PALETTE[i]}));
@@ -581,9 +837,11 @@ function updateTimers(){
   $("#circuitScreen").dataset.phase=state.phase;
 
   const nextBtn=$("#rotateBtn");
+  const backBtn=$("#backResultsBtn");
   const endBtn=$("#endExerciseBtn");
   const ready=state.phase==="results";
   nextBtn.classList.toggle("hidden",!ready);
+  backBtn.classList.toggle("hidden",state.rotation===0);
   endBtn.classList.toggle("hidden",state.phase!=="work");
   if(ready) nextBtn.textContent=state.rotation>=state.teamCount-1?"Voir le classement →":"Suivant →";
   endBtn.textContent="Terminer l’exercice";
@@ -612,6 +870,15 @@ function finishScoreBreak(){
 }
 function advanceToNextStation(){
   if(state.phase!=="results")return;
+  // Empêche le passage accidentel lorsqu'il manque des résultats.
+  const missing=state.teams.filter((team,i)=>{
+    const score=getScore(state.rotation,i);
+    return !score || score.needsReview;
+  });
+  if(missing.length && !confirm(
+    "Équipe(s) sans résultat : "+missing.map(team=>team.name).join(", ")+
+    ". Continuer quand même ? Vous pourrez revenir avec « Retour »."
+  ))return;
   finishScoreBreak();
   if(state.rotation>=state.teamCount-1){
     finishSession(true);
@@ -620,12 +887,46 @@ function advanceToNextStation(){
   state.rotation++;
   state.phase="work";
   state.rotationStartedAt=Date.now();
+  if(state.paused)state.pauseStartedAt=state.rotationStartedAt;
   state.rotationPauseTotal=0;
   beep();
   flashRotation();
   renderCircuit();
   save();
   updateTimers();
+}
+// Retour après un « Suivant » accidentel : scores précédents et suivants conservés.
+function backToPreviousResults(){
+  if(state.screen!=="circuit" || state.rotation<1)return;
+  const currentScores=state.scores?.[state.rotation]||{};
+  if(Object.values(currentScores).some(score=>score && !score.needsReview) &&
+     !confirm("Revenir aux résultats précédents ? Les scores déjà enregistrés seront conservés."))return;
+  const now=Date.now();
+  if(state.paused && state.pauseStartedAt){
+    state.sessionPauseTotal+=Math.max(0,now-state.pauseStartedAt);
+    state.pauseStartedAt=now;
+  }
+  state.rotation--;
+  state.phase="results";
+  state.rotationStartedAt=now;
+  state.rotationPauseTotal=0;
+  state.sessionBreakStartedAt=now;
+  $("#rotateFlash").classList.add("hidden");
+  renderCircuit();save();updateTimers();
+}
+// Même le classement final permet une dernière correction.
+function reopenFinalScores(){
+  if(state.screen!=="finish")return;
+  const now=Date.now();
+  state.finished=false;
+  state.screen="circuit";
+  state.phase="results";
+  state.paused=false;
+  state.pauseStartedAt=null;
+  state.rotationStartedAt=now;
+  state.rotationPauseTotal=0;
+  state.sessionBreakStartedAt=now;
+  renderCircuit();showScreen("circuitScreen");startCircuitTick();save();
 }
 function currentExerciseIndex(teamIndex){
   return (teamIndex+state.rotation)%state.teamCount;
@@ -639,181 +940,176 @@ function renderCircuit(){
   grid.innerHTML=state.teams.map((team,teamIndex)=>{
     const exIndex=currentExerciseIndex(teamIndex), exercise=m.exercises[exIndex];
     const score=getScore(state.rotation,teamIndex);
-    return `<article class="stationCard ${score?"scored":""}" data-team="${teamIndex}" style="--teamColor:${team.color}">
-      <div class="stationHeader"><div style="min-width:0;flex:1"><div class="stationNum">STATION ${exIndex+1}</div><div class="teamTag"><span class="teamNameBig">${escapeHtml(team.name)}</span></div></div><div class="check">${score?"✅":""}</div></div>
+    return `<article class="stationCard ${score&&!score.needsReview?"scored":""}" data-team="${teamIndex}" style="--teamColor:${team.color}">
+      <div class="stationHeader"><div style="min-width:0;flex:1"><div class="stationNum">STATION ${exIndex+1}</div><div class="teamTag"><span class="teamNameBig">${escapeHtml(team.name)}</span></div></div><div class="check">${score&&!score.needsReview?"✅":""}</div></div>
       <div class="exerciseName">${exercise.name}</div>
       <div class="exerciseDose">${exercise.dose}</div>
-      <div class="exerciseTimePill">⏱ Temps officiel : ${formatTime(CIRCUIT_TIMING[state.mode].work)}</div>
+      <div class="visualBox" role="img" aria-label="Illustration de ${escapeHtml(exercise.name)}">${motionVisual(exercise.motion)}</div>
       <div class="cue">${exercise.prompt}</div>
-      <div class="visualBox">${motionVisual(exercise.motion)}</div>
-      <div class="scoreFooter"><div><div class="scoreHint">${state.phase==="results"?"ENTREZ VOTRE RÉSULTAT MAINTENANT":"Travail en cours"}</div><div class="scoreValue">${score?escapeHtml(score.raw+" "+exercise.unit):"Score non entré"}</div></div><button class="tapScore">${score?"Modifier":"Score"}</button></div>
+      <div class="exerciseTimePill">⏱ Temps officiel : ${formatTime(CIRCUIT_TIMING[state.mode].work)}</div>
+      <div class="scoreFooter"><div><div class="scoreHint">${score?.needsReview?"ANCIEN RÉSULTAT À REVALIDER":state.phase==="results"?"TOTAL DE L’ÉQUIPE":"Travail en cours"}</div><div class="scoreValue">${score&&!score.needsReview?escapeHtml(score.raw+" "+exercise.unit+" · "+score.points+"/100 pts"):score?.needsReview?"À ressaisir":"Score non entré"}</div></div><button class="tapScore">${score&&!score.needsReview?"Modifier":"Score"}</button></div>
     </article>`;
   }).join("");
   $$(".stationCard").forEach(c=>c.onclick=()=>openScore(+c.dataset.team));
   renderRanking();
 }
-function parseRepRange(exercise){
-  if(exercise.type!=="reps")return null;
-  const m=exercise.dose.match(/(\d+)\s*[–-]\s*(\d+)\s*reps/i);
-  return m?{min:+m[1],max:+m[2]}:null;
-}
-function usesRepCalculator(exercise){return !!parseRepRange(exercise);}
-function makeRepData(exercise,team,existing){
-  const sets=Math.max(1,exercise.sets||1);
-  if(existing?.breakdown && existing.breakdown.length>=sets && existing.breakdown.every(r=>Array.isArray(r)&&r.length===team.size)){
-    return existing.breakdown.map(r=>r.map(v=>Number.isFinite(v)?v:null));
-  }
-  return Array.from({length:sets},()=>Array(team.size).fill(null));
-}
-function repTotal(){
-  return (modalRepData||[]).flat().reduce((s,v)=>s+(Number.isFinite(v)?v:0),0);
-}
-function findNextRepCell(fromSet=0,fromStudent=-1){
-  if(!modalRepData)return null;
-  const cols=modalRepData[0]?.length||0,total=modalRepData.length*cols;
-  const start=fromSet*cols+fromStudent+1;
-  for(let step=0;step<total;step++){
-    const idx=(start+step)%total,s=Math.floor(idx/cols),p=idx%cols;
-    if(modalRepData[s][p]===null)return {set:s,student:p};
-  }
-  return {set:fromSet,student:Math.max(0,fromStudent)};
-}
-function setActiveRepCell(set,student){
-  activeRepCell={set,student};repDigitDraft="";renderRepCalculator();
-}
-function enterRepDigit(key){
-  if(!modalRepData||!activeRepCell)return;
-  const {set,student}=activeRepCell;
-  if(key==="clear")repDigitDraft="";
-  else if(key==="back")repDigitDraft=(repDigitDraft||String(modalRepData[set][student]??"")).slice(0,-1);
-  else repDigitDraft=(repDigitDraft+key).slice(0,3);
-  modalRepData[set][student]=repDigitDraft===""?null:Number(repDigitDraft);
-  renderRepCalculator();
-}
-function nextRepCell(){
-  if(!modalRepData||!activeRepCell)return;
-  const cols=modalRepData[0].length;
-  const next=(activeRepCell.set*cols+activeRepCell.student+1)%(modalRepData.length*cols);
-  setActiveRepCell(Math.floor(next/cols),next%cols);
-}
-function addRepSet(){
-  if(!modalRepData||!modalContext||modalRepData.length>=10)return;
-  modalRepData.push(Array(modalContext.team.size).fill(null));
-  activeRepCell={set:modalRepData.length-1,student:0};repDigitDraft="";
-  renderRepCalculator();
-}
-function removeRepSet(){
-  if(!modalRepData||!modalContext||modalRepData.length<=(modalContext.exercise.sets||1))return;
-  modalRepData.pop();activeRepCell=null;repDigitDraft="";renderRepCalculator();
-}
-function renderRepCalculator(){
-  if(!modalContext||!modalRepData)return;
-  const {exercise,team}=modalContext,range=parseRepRange(exercise);
-  const box=$("#repCalculator");
-  if(!range)return;
-  if(!activeRepCell)activeRepCell=findNextRepCell(0,-1);
-  const current=modalRepData[activeRepCell.set][activeRepCell.student];
-  box.innerHTML=`
-    <div class="repTotalBox"><div><div class="repTotalLabel">TOTAL ÉQUIPE</div><div class="repHint">Touchez une case, puis le nombre de reps. Les cases vides comptent 0.</div></div><div class="repTotalValue">${repTotal()} <span style="font-size:13px;color:#cbd5e1">rép.</span></div></div>
-    ${modalRepData.map((row,s)=>`<div class="repSet">
-      <div class="repSetHead"><div class="repSetTitle">Série ${s+1}${s>=(exercise.sets||1)?" · bonus":""}</div><div class="repSetTotal">${row.reduce((a,v)=>a+(Number.isFinite(v)?v:0),0)} reps</div></div>
-      <div class="repStudents">${row.map((v,p)=>`<button type="button" class="repCell ${activeRepCell?.set===s&&activeRepCell?.student===p?"active":""} ${v===null?"empty":""}" data-set="${s}" data-student="${p}">É${p+1} · ${v===null?"—":v}</button>`).join("")}</div>
-    </div>`).join("")}
-    <div class="repExtraControls"><button type="button" id="addRepSet">+ Ajouter une série</button>${modalRepData.length>(exercise.sets||1)?'<button type="button" class="repRemove" id="removeRepSet">Retirer la dernière série</button>':""}</div>
-    <div class="repQuick"><div class="repQuickTitle">Série ${activeRepCell.set+1} · élève ${activeRepCell.student+1}</div><div class="repCurrent">${current===null?"—":current} répétition${current===1?"":"s"} · tapez 1 puis 5 pour 15</div><div class="repDigits">${[1,2,3,4,5,6,7,8,9,"Effacer",0,"⌫"].map(v=>`<button type="button" data-digit="${v=== "Effacer"?"clear":v==="⌫"?"back":v}">${v}</button>`).join("")}</div><button type="button" class="repNext" id="nextRepCell" style="width:100%;margin-top:8px">Élève suivant →</button></div>
-    <div class="repBonusHelp">Bonus après le standard : +1 point par 2 reps supplémentaires par élève (max. 10), +5 points par série supplémentaire complétée par l’équipe (max. 10). Reps propres seulement.</div>`;
-  box.querySelectorAll(".repCell").forEach(b=>b.onclick=()=>setActiveRepCell(+b.dataset.set,+b.dataset.student));
-  box.querySelectorAll("[data-digit]").forEach(b=>b.onclick=()=>enterRepDigit(b.dataset.digit));
-  box.querySelector("#nextRepCell").onclick=nextRepCell;
-  box.querySelector("#addRepSet").onclick=addRepSet;
-  if(box.querySelector("#removeRepSet"))box.querySelector("#removeRepSet").onclick=removeRepSet;
-}
+// Une seule donnée par équipe et par station, quel que soit le mode.
 function openScore(teamIndex){
-  const exIndex=currentExerciseIndex(teamIndex), exercise=MODES[state.mode].exercises[exIndex], team=state.teams[teamIndex];
+  dismissNativeKeyboard();
+  const exIndex=currentExerciseIndex(teamIndex);
+  const exercise=MODES[state.mode].exercises[exIndex], team=state.teams[teamIndex];
   modalContext={teamIndex,exIndex,exercise,team,rotation:state.rotation};
   const existing=getScore(state.rotation,teamIndex);
   $("#modalCard").style.setProperty("--teamColor",team.color);
-  $("#modalTeam").textContent=team.name;
+  $("#modalTeam").textContent=team.name+" · TOTAL ÉQUIPE";
   $("#modalExercise").textContent=exercise.name;
   $("#modalPrompt").textContent=exercise.prompt;
-  const calc=usesRepCalculator(exercise);
-  $("#repCalculator").classList.toggle("hidden",!calc);
-  $("#numericEntry").classList.toggle("hidden",calc);
-  const totalHelp=$("#teamTotalHelp");
-  if(calc){
-    totalHelp.textContent=(exercise.sets||1)>1
-      ? "Entrez simplement les reps de chaque élève, série par série. L’application fait l’addition."
-      : "Entrez les reps de chaque élève. L’application fait l’addition.";
-    modalRepData=makeRepData(exercise,team,existing);
-    activeRepCell=findNextRepCell(0,-1);repDigitDraft="";
-    renderRepCalculator();
-  }else{
-    modalRepData=null;activeRepCell=null;
-    if(exercise.type==="seconds") totalHelp.textContent="Entrez le total des secondes de tous les élèves de l’équipe.";
-    else totalHelp.textContent="Entrez une seule valeur totale pour toute l’équipe.";
-    $("#scoreInput").value=existing?existing.raw:"";
-  }
+  const names={"rép.":"répétitions","sauts":"sauts","sprints":"sprints","séries":"séries complétées","long.":"longueurs"};
+  $("#teamTotalHelp").textContent="Additionnez les "+(names[exercise.unit]||exercise.unit)+" de toute l’équipe, toutes séries confondues. Un seul total, sans bonus au-delà du plafond.";
+  $("#scoreInput").value=existing&&!existing.needsReview?String(existing.raw):"";
   $("#modalUnit").textContent=exercise.unit;
-  $("#modalProfile").textContent=team.size+" élèves · cible : 1–3 RIR";
-  $("#modalTarget").textContent="Standard : "+standardTarget(exercise)+" "+exercise.unit+" / élève"+((exercise.sets||1)>1?" au total":"");
+  $("#modalProfile").textContent=team.size+" élèves · une seule saisie";
+  const prescribed=standardTarget(exercise)*team.size;
+  $("#modalTarget").textContent="Prescrit : "+prescribed+" "+exercise.unit+" (50 pts) · max : "+(prescribed*2)+" "+exercise.unit+" (100 pts)";
+  closeCalculator();
   $("#scoreModal").classList.remove("hidden");
 }
-function closeScore(){$("#scoreModal").classList.add("hidden");modalContext=null;modalRepData=null;activeRepCell=null;repDigitDraft="";}
+function closeScore(){
+  $("#scoreModal").classList.add("hidden");
+  modalContext=null;
+}
+// Calculatrice facultative, indépendante du score officiel.
+function sumCalculatorExpression(expression){
+  const cleaned=String(expression).replace(/\s/g,"");
+  if(!cleaned||! /^\d+(?:\+\d+)*$/.test(cleaned))return null;
+  const entries=cleaned.split("+");
+  if(entries.some(part=>part.length>8))return null;
+  const total=entries.reduce((sum,part)=>sum+Number(part),0);
+  return Number.isSafeInteger(total)?total:null;
+}
+function updateCalculator(){
+  const expression=$("#calcExpression").value;
+  const result=sumCalculatorExpression(expression);
+  $("#calcResult").textContent=!expression.trim()?"0":result===null?"—":result.toLocaleString("fr-CA");
+  $("#calcFeedback").querySelector("span").textContent=expression.trim()&&result===null
+    ?"Complétez l’addition (chiffres et +)"
+    :"Total calculé (non enregistré)";
+}
+function closeCalculator(){
+  $("#calcPanel").classList.add("hidden");
+  $("#calcToggle").setAttribute("aria-expanded","false");
+  $("#calcExpression").value="";
+  updateCalculator();
+}
+function calculatorKey(key){
+  const input=$("#calcExpression");
+  let value=input.value;
+  if(key==="C")value="";
+  else if(key==="⌫")value=value.slice(0,-1);
+  else if(key==="+"){
+    if(value.trim()&&/[0-9]\s*$/.test(value))value+="+";
+  }else if(/^\d$/.test(key)){
+    if(value.length<140)value+=key;
+  }else if(key==="="){
+    updateCalculator();
+    input.blur();
+    return;
+  }
+  input.value=value;
+  updateCalculator();
+}
+function buildCalculator(){
+  const keys=["7","8","9","+","4","5","6","⌫","1","2","3","=","C","0","Fermer"];
+  $("#calcKeys").innerHTML=keys.map(key=>
+    '<button type="button" class="calcKey '+
+    (key==="="?"equal":(["+","⌫","C"].includes(key)?"action":""))+
+    (key==="Fermer"?" wide":"")+
+    '" data-calc="'+key+'">'+key+"</button>"
+  ).join("");
+  $("#calcKeys").querySelectorAll("button").forEach(button=>button.addEventListener("click",()=>{
+    if(button.dataset.calc==="Fermer"){closeCalculator();return;}
+    calculatorKey(button.dataset.calc);
+  }));
+  $("#calcToggle").addEventListener("click",()=>{
+    const opening=$("#calcPanel").classList.contains("hidden");
+    $("#calcPanel").classList.toggle("hidden",!opening);
+    $("#calcToggle").setAttribute("aria-expanded",String(opening));
+    if(opening)$("#calcExpression").focus();
+  });
+  $("#calcExpression").addEventListener("input",updateCalculator);
+  $("#calcExpression").addEventListener("keydown",event=>{
+    if(event.key==="Enter"){event.preventDefault();updateCalculator();event.currentTarget.blur();}
+    event.stopPropagation(); // Empêche toute saisie dans le champ officiel.
+  });
+}
+
 function buildKeypad(){
-  const keys=["1","2","3","4","5","6","7","8","9",".","0","⌫"];
+  const keys=["1","2","3","4","5","6","7","8","9","C","0","⌫"];
   $("#keypad").innerHTML=keys.map(k=>`<button class="key ${k==="⌫"?"action":""}" data-k="${k}">${k}</button>`).join("");
   $$("#keypad .key").forEach(b=>b.onclick=()=>keyPress(b.dataset.k));
   $("#saveScoreBtn").onclick=saveScore;
 }
 function keyPress(k){
-  const input=$("#scoreInput");let v=input.value;
-  if(k==="⌫")v=v.slice(0,-1);
-  else if(k==="." && !v.includes("."))v=(v||"0")+".";
-  else if(k!==".")v+=(k);
-  if(v.length<=7)input.value=v;
+  const input=$("#scoreInput");
+  let v=input.value;
+  if(k==="C")v="";
+  else if(k==="⌫")v=v.slice(0,-1);
+  else if(/^\d$/.test(k))v=(v==="0"?k:v+k).slice(0,6);
+  input.value=v;
 }
 function standardTarget(exercise){
   if(typeof exercise.target==="number") return exercise.target;
   return exercise.target?.active ?? exercise.target?.progression ?? Object.values(exercise.target||{})[0] ?? 1;
 }
-function teamStreak(teamIndex){
-  let streak=0,best=0;
-  for(let r=0;r<state.teamCount;r++){
-    const s=getScore(r,teamIndex);
-    if(s && s.standardMet){streak++;best=Math.max(best,streak);}else if(s){streak=0;}else break;
-  }
-  return {current:streak,best};
+// Barème unique : 50 pts au volume prescrit; 100 pts à 2 × le volume prescrit.
+function pointsFromTotal(raw,teamSize,exercise){
+  const prescribed=standardTarget(exercise)*teamSize;
+  if(!Number.isFinite(raw)||raw<0||!prescribed)return 0;
+  return Math.min(100,Math.floor((Math.min(raw,2*prescribed)*100)/(2*prescribed)));
 }
-function recomputeStreakBonuses(teamIndex){
-  let streak=0;
-  for(let r=0;r<state.teamCount;r++){
-    const s=getScore(r,teamIndex);
-    if(!s)break;
-    if(s.standardMet) streak++; else streak=0;
-    s.streak=streak;
-    s.streakBonus=s.standardMet?Math.min(15,Math.max(0,streak-1)*5):0;
-    s.points=(s.basePoints??s.points??0)+(s.extraBonus||0)+s.streakBonus;
-  }
+// Les anciennes séances conservent leurs totaux, mais leurs points sont recalculés.
+function upgradeSavedScores(){
+  if(state.pointsRuleVersion===2)return;
+  Object.entries(state.scores||{}).forEach(([rotation,byTeam])=>{
+    Object.entries(byTeam||{}).forEach(([teamIndex,s])=>{
+      if(!s)return;
+      const exIndex=s.exIndex ?? ((+teamIndex + +rotation)%state.teamCount);
+      const exercise=MODES[state.mode]?.exercises[exIndex];
+      const team=state.teams?.[+teamIndex];
+      if(!exercise||!team)return;
+      // Deux stations changeaient d’unité (temps/distance) entre versions :
+      // conserver le résultat ancien, mais demander sa nouvelle saisie.
+      if((state.mode==="endurance"&&exIndex===6)||(state.mode==="cardio"&&exIndex===0)){
+        s.legacyRaw=s.raw;s.raw=null;s.needsReview=true;s.points=0;
+        return;
+      }
+      if(!Number.isFinite(s.raw))return;
+      s.avg=s.raw/team.size;
+      s.target=standardTarget(exercise);
+      s.standardMet=s.avg>=s.target;
+      s.points=pointsFromTotal(s.raw,team.size,exercise);
+      s.basePoints=s.points;s.extraBonus=0;s.streakBonus=0;
+    });
+  });
+  state.pointsRuleVersion=2;
+  save();
 }
 function saveScore(){
   if(!modalContext)return;
   const {teamIndex,exIndex,exercise,team,rotation}=modalContext;
-  const calc=usesRepCalculator(exercise);
-  const raw=calc?repTotal():parseFloat($("#scoreInput").value);
-  if(!Number.isFinite(raw)||raw<0)return;
-  const requiredSets=exercise.sets||1;
-  const requiredTotal=calc?modalRepData.slice(0,requiredSets).flat().reduce((sum,v)=>sum+(Number.isFinite(v)?v:0),0):raw;
-  const avg=requiredTotal/team.size;
-  const validAvg=calc?avg:(exercise.maxPerPerson?Math.min(avg,exercise.maxPerPerson):avg);
+  const value=$("#scoreInput").value.trim();
+  if(!/^\d+$/.test(value))return;
+  const raw=Number(value);
+  if(!Number.isSafeInteger(raw)||raw<0)return;
+  const avg=raw/team.size;
   const target=standardTarget(exercise);
-  const basePoints=Math.round(Math.min(calc?100:110,(validAvg/target)*100));
-  const standardMet=validAvg>=target;
-  const extraReps=calc&&standardMet?Math.min(10,Math.floor(Math.max(0,validAvg-target)/2)):0;
-  const extraSets=calc&&standardMet?Math.min(2,modalRepData.slice(requiredSets).filter(row=>row.every(v=>Number.isFinite(v)&&v>0)).length):0;
-  const extraBonus=extraReps+extraSets*5;
+  const points=pointsFromTotal(raw,team.size,exercise);
   state.scores[rotation] ||= {};
-  state.scores[rotation][teamIndex]={raw,avg:validAvg,target,basePoints,extraBonus,standardMet,points:basePoints+extraBonus,exIndex,...(calc?{breakdown:modalRepData.map(r=>r.map(v=>Number.isFinite(v)?v:0))}:{})};
-  recomputeStreakBonuses(teamIndex);
+  state.scores[rotation][teamIndex]={
+    raw,avg,target,basePoints:points,extraBonus:0,streakBonus:0,
+    standardMet:avg>=target,points,exIndex,ruleVersion:2
+  };
+  state.pointsRuleVersion=2;
   save();closeScore();renderCircuit();
 }
 function getScore(rotation,teamIndex){return state.scores?.[rotation]?.[teamIndex]||null;}
@@ -822,7 +1118,7 @@ function teamTotal(teamIndex){
 }
 function renderRanking(){
   const ranked=state.teams.map((t,i)=>({i,name:t.name,color:t.color,total:teamTotal(i)})).sort((a,b)=>b.total-a.total);
-  $("#rankStrip").innerHTML=`<div class="rankTitle">Classement</div>`+ranked.map((r,idx)=>{const st=teamStreak(r.i).current;return `<div class="rankItem" style="border:1px solid ${r.color}55">${idx+1}. ${escapeHtml(r.name)} <b>${r.total}</b>${st>=2?` <span title="Série de standards réussis">🔥×${st}</span>`:""}</div>`;}).join("");
+  $("#rankStrip").innerHTML=`<div class="rankTitle">Classement</div>`+ranked.map((r,idx)=>`<div class="rankItem" style="border:1px solid ${r.color}55">${idx+1}. ${escapeHtml(r.name)} <b>${r.total}</b></div>`).join("");
 }
 function rotate(){
   advanceToNextStation();
@@ -848,14 +1144,14 @@ function finishSession(auto=false){
   clearInterval(circuitTick);state.finished=true;state.screen="finish";save();renderFinish();showScreen("finishScreen");
 }
 function renderFinish(){
-  const ranked=state.teams.map((t,i)=>({name:t.name,total:teamTotal(i),color:t.color,bestStreak:teamStreak(i).best})).sort((a,b)=>b.total-a.total);
-  $("#podium").innerHTML=ranked.slice(0,3).map((r,i)=>`<div class="podiumItem"><div class="podiumPos">${["🥇","🥈","🥉"][i]}</div><div class="podiumTeam">${escapeHtml(r.name)}</div><div class="podiumPts">${r.total} pts${r.bestStreak>=2?` · 🔥×${r.bestStreak}`:""}</div></div>`).join("");
-  $("#allRanks").innerHTML=ranked.map((r,i)=>`<div class="allRank"><strong>${i+1}. ${escapeHtml(r.name)}</strong><span>${r.total} pts${r.bestStreak>=2?` · 🔥×${r.bestStreak}`:""}</span></div>`).join("");
+  const ranked=state.teams.map((t,i)=>({name:t.name,total:teamTotal(i),color:t.color})).sort((a,b)=>b.total-a.total);
+  $("#podium").innerHTML=ranked.slice(0,3).map((r,i)=>`<div class="podiumItem"><div class="podiumPos">${["🥇","🥈","🥉"][i]}</div><div class="podiumTeam">${escapeHtml(r.name)}</div><div class="podiumPts">${r.total} pts</div></div>`).join("");
+  $("#allRanks").innerHTML=ranked.map((r,i)=>`<div class="allRank"><strong>${i+1}. ${escapeHtml(r.name)}</strong><span>${r.total} pts</span></div>`).join("");
 }
 function save(){localStorage.setItem(STORE_KEY,JSON.stringify(state));}
 function readSaved(){try{return JSON.parse(localStorage.getItem(STORE_KEY)||"null")}catch{return null}}
 function resumeSaved(){
-  const s=readSaved();if(!s)return;state=s;
+  const s=readSaved();if(!s)return;state=s;upgradeSavedScores();
   if(state.screen==="warmup"){renderWarmup();showScreen("warmupScreen");startWarmupTick();}
   else if(state.screen==="circuit"){
     state.phase=state.phase==="results"?"results":"work";
@@ -868,7 +1164,7 @@ function resumeSaved(){
 function resetAll(){
   localStorage.removeItem(STORE_KEY);
   clearInterval(warmupTick);clearInterval(circuitTick);
-  state={teamCount:6,teams:defaultTeams(6),mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,sessionBreakStartedAt:null,paused:false,pauseStartedAt:null,sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false};
+  state={teamCount:6,teams:defaultTeams(6),mode:null,screen:"setup",warmupPlan:[],warmupRemaining:240,warmupRunning:false,rotation:0,phase:"work",sessionStartedAt:null,rotationStartedAt:null,sessionBreakStartedAt:null,paused:false,pauseStartedAt:null,sessionPauseTotal:0,rotationPauseTotal:0,scores:{},finished:false,pointsRuleVersion:2};
   $("#resumeBox").classList.add("hidden");renderSetup();showScreen("setupScreen");
 }
 function beep(){try{const A=new(window.AudioContext||window.webkitAudioContext)();const o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=740;g.gain.value=.08;o.start();setTimeout(()=>{o.stop();A.close()},180)}catch{}}
@@ -897,21 +1193,27 @@ function motionVisual(type){
     .sk{stroke:#dbeafe;stroke-width:5;stroke-linecap:round;fill:none}.eq{stroke:#60a5fa;stroke-width:5;stroke-linecap:round;fill:none}.ball{fill:#facc15}.base{stroke:#334155;stroke-width:3}
   </style></defs>`;
   const head=`<circle cx="80" cy="25" r="10" fill="#dbeafe"/>`;
-  if(type==="squat")return `<svg viewBox="0 0 160 120">${common}<line class="base" x1="20" y1="108" x2="140" y2="108"/><g>${head}<line class="sk" x1="80" y1="38" x2="80" y2="70"/><line class="sk" x1="80" y1="48" x2="60" y2="62"/><line class="sk" x1="80" y1="48" x2="100" y2="62"/><line class="sk" x1="80" y1="70" x2="58" y2="90"/><line class="sk" x1="80" y1="70" x2="102" y2="90"/></g></svg>`;
-  if(type==="press")return `<svg viewBox="0 0 160 120">${common}<line class="base" x1="35" y1="88" x2="125" y2="88"/><circle cx="55" cy="70" r="9" fill="#dbeafe"/><line class="sk" x1="65" y1="72" x2="105" y2="78"/><line class="sk" x1="105" y1="78" x2="122" y2="92"/><g><line class="eq" x1="48" y1="50" x2="110" y2="50"/><line class="sk" x1="72" y1="72" x2="72" y2="52"/><line class="sk" x1="96" y1="76" x2="96" y2="52"/></g></svg>`;
-  if(type==="pulldown")return `<svg viewBox="0 0 160 120">${common}<line class="base" x1="55" y1="100" x2="105" y2="100"/>${head}<line class="sk" x1="80" y1="38" x2="80" y2="80"/><line class="sk" x1="80" y1="80" x2="60" y2="100"/><line class="sk" x1="80" y1="80" x2="100" y2="100"/><g><line class="eq" x1="45" y1="20" x2="115" y2="20"/><line class="sk" x1="60" y1="22" x2="72" y2="52"/><line class="sk" x1="100" y1="22" x2="88" y2="52"/></g></svg>`;
-  if(type==="row")return `<svg viewBox="0 0 160 120">${common}<circle cx="62" cy="32" r="9" fill="#dbeafe"/><line class="sk" x1="68" y1="40" x2="92" y2="70"/><line class="sk" x1="92" y1="70" x2="72" y2="103"/><line class="sk" x1="92" y1="70" x2="115" y2="102"/><g><line class="eq" x1="55" y1="68" x2="105" y2="68"/><line class="sk" x1="78" y1="52" x2="78" y2="66"/></g></svg>`;
-  if(type==="fly")return `<svg viewBox="0 0 160 120">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="83"/><line class="sk" x1="80" y1="83" x2="62" y2="105"/><line class="sk" x1="80" y1="83" x2="98" y2="105"/><g><line class="eq" x1="28" y1="55" x2="75" y2="55"/><line class="eq" x1="85" y1="55" x2="132" y2="55"/></g></svg>`;
-  if(type==="curl"||type==="triceps"||type==="shoulder")return `<svg viewBox="0 0 160 120">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="76"/><line class="sk" x1="80" y1="76" x2="62" y2="105"/><line class="sk" x1="80" y1="76" x2="98" y2="105"/><g><line class="eq" x1="55" y1="57" x2="105" y2="57"/><line class="sk" x1="65" y1="48" x2="65" y2="60"/><line class="sk" x1="95" y1="48" x2="95" y2="60"/></g></svg>`;
-  if(type==="hinge"||type==="swing")return `<svg viewBox="0 0 160 120">${common}<circle cx="62" cy="30" r="9" fill="#dbeafe"/><line class="sk" x1="67" y1="39" x2="88" y2="68"/><line class="sk" x1="88" y1="68" x2="68" y2="103"/><line class="sk" x1="88" y1="68" x2="110" y2="103"/><g><line class="sk" x1="75" y1="50" x2="95" y2="75"/><circle class="ball" cx="101" cy="82" r="9"/></g></svg>`;
-  if(type==="lunge"||type==="stepup"||type==="run")return `<svg viewBox="0 0 160 120">${common}<line class="base" x1="20" y1="106" x2="140" y2="106"/><g>${head}<line class="sk" x1="80" y1="38" x2="80" y2="70"/><line class="sk" x1="80" y1="50" x2="60" y2="62"/><line class="sk" x1="80" y1="50" x2="100" y2="62"/><line class="sk" x1="80" y1="70" x2="50" y2="103"/><line class="sk" x1="80" y1="70" x2="116" y2="94"/></g></svg>`;
-  if(type==="pushup"||type==="climber")return `<svg viewBox="0 0 160 120">${common}<line class="base" x1="20" y1="102" x2="140" y2="102"/><g><circle cx="112" cy="56" r="8" fill="#dbeafe"/><line class="sk" x1="105" y1="63" x2="63" y2="72"/><line class="sk" x1="63" y1="72" x2="30" y2="94"/><line class="sk" x1="95" y1="66" x2="110" y2="95"/><line class="sk" x1="72" y1="71" x2="68" y2="96"/></g></svg>`;
-  if(type==="wallsit")return `<svg viewBox="0 0 160 120">${common}<line class="base" x1="45" y1="15" x2="45" y2="108"/><circle cx="70" cy="32" r="9" fill="#dbeafe"/><line class="sk" x1="65" y1="42" x2="65" y2="70"/><line class="sk" x1="65" y1="70" x2="95" y2="70"/><line class="sk" x1="95" y1="70" x2="95" y2="103"/><circle cx="126" cy="38" r="17" fill="none" stroke="#60a5fa" stroke-width="4"/><line class="eq" x1="126" y1="38" x2="126" y2="27"></line></svg>`;
-  if(type==="jump"||type==="burpee")return `<svg viewBox="0 0 160 120">${common}<line class="base" x1="20" y1="107" x2="140" y2="107"/><g>${head}<line class="sk" x1="80" y1="38" x2="80" y2="70"/><line class="sk" x1="80" y1="49" x2="58" y2="35"/><line class="sk" x1="80" y1="49" x2="102" y2="35"/><line class="sk" x1="80" y1="70" x2="62" y2="98"/><line class="sk" x1="80" y1="70" x2="98" y2="98"/></g></svg>`;
-  if(type==="throw"||type==="slam")return `<svg viewBox="0 0 160 120">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="78"/><line class="sk" x1="80" y1="78" x2="62" y2="106"/><line class="sk" x1="80" y1="78" x2="98" y2="106"/><line class="sk" x1="80" y1="48" x2="103" y2="58"/><circle class="ball" cx="108" cy="58" r="10"></circle></svg>`;
-  if(type==="bike")return `<svg viewBox="0 0 160 120">${common}<circle class="eq" cx="48" cy="88" r="24"/><circle class="eq" cx="112" cy="88" r="24"/><circle cx="80" cy="30" r="9" fill="#dbeafe"/><line class="sk" x1="78" y1="39" x2="68" y2="65"/><line class="sk" x1="68" y1="65" x2="90" y2="75"/><line class="sk" x1="68" y1="65" x2="50" y2="88"/><circle cx="82" cy="76" r="5" fill="#facc15"></circle><line class="eq" x1="68" y1="65" x2="108" y2="57"/></svg>`;
-  if(type==="rope")return `<svg viewBox="0 0 160 120">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="74"/><line class="sk" x1="80" y1="74" x2="66" y2="104"/><line class="sk" x1="80" y1="74" x2="94" y2="104"/><ellipse cx="80" cy="66" rx="48" ry="44" fill="none" stroke="#60a5fa" stroke-width="4"></ellipse></svg>`;
-  return `<svg viewBox="0 0 160 120">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="75"/><line class="sk" x1="80" y1="50" x2="60" y2="67"/><line class="sk" x1="80" y1="50" x2="100" y2="67"/><line class="sk" x1="80" y1="75" x2="65" y2="105"/><line class="sk" x1="80" y1="75" x2="95" y2="105"/></svg>`;
+  if(type==="squat")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<line class="base" x1="20" y1="108" x2="140" y2="108"/><g>${head}<line class="sk" x1="80" y1="38" x2="80" y2="70"/><line class="sk" x1="80" y1="48" x2="60" y2="62"/><line class="sk" x1="80" y1="48" x2="100" y2="62"/><line class="sk" x1="80" y1="70" x2="58" y2="90"/><line class="sk" x1="80" y1="70" x2="102" y2="90"/></g></svg>`;
+  if(type==="press")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<line class="base" x1="35" y1="88" x2="125" y2="88"/><circle cx="55" cy="70" r="9" fill="#dbeafe"/><line class="sk" x1="65" y1="72" x2="105" y2="78"/><line class="sk" x1="105" y1="78" x2="122" y2="92"/><g><line class="eq" x1="48" y1="50" x2="110" y2="50"/><line class="sk" x1="72" y1="72" x2="72" y2="52"/><line class="sk" x1="96" y1="76" x2="96" y2="52"/></g></svg>`;
+  if(type==="pulldown")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<line class="base" x1="55" y1="100" x2="105" y2="100"/>${head}<line class="sk" x1="80" y1="38" x2="80" y2="80"/><line class="sk" x1="80" y1="80" x2="60" y2="100"/><line class="sk" x1="80" y1="80" x2="100" y2="100"/><g><line class="eq" x1="45" y1="20" x2="115" y2="20"/><line class="sk" x1="60" y1="22" x2="72" y2="52"/><line class="sk" x1="100" y1="22" x2="88" y2="52"/></g></svg>`;
+  if(type==="row")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<circle cx="62" cy="32" r="9" fill="#dbeafe"/><line class="sk" x1="68" y1="40" x2="92" y2="70"/><line class="sk" x1="92" y1="70" x2="72" y2="103"/><line class="sk" x1="92" y1="70" x2="115" y2="102"/><g><line class="eq" x1="55" y1="68" x2="105" y2="68"/><line class="sk" x1="78" y1="52" x2="78" y2="66"/></g></svg>`;
+  if(type==="fly")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="83"/><line class="sk" x1="80" y1="83" x2="62" y2="105"/><line class="sk" x1="80" y1="83" x2="98" y2="105"/><g><line class="eq" x1="28" y1="55" x2="75" y2="55"/><line class="eq" x1="85" y1="55" x2="132" y2="55"/></g></svg>`;
+  if(type==="curl"||type==="triceps"||type==="shoulder")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="76"/><line class="sk" x1="80" y1="76" x2="62" y2="105"/><line class="sk" x1="80" y1="76" x2="98" y2="105"/><g><line class="eq" x1="55" y1="57" x2="105" y2="57"/><line class="sk" x1="65" y1="48" x2="65" y2="60"/><line class="sk" x1="95" y1="48" x2="95" y2="60"/></g></svg>`;
+  if(type==="hinge"||type==="swing")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<circle cx="62" cy="30" r="9" fill="#dbeafe"/><line class="sk" x1="67" y1="39" x2="88" y2="68"/><line class="sk" x1="88" y1="68" x2="68" y2="103"/><line class="sk" x1="88" y1="68" x2="110" y2="103"/><g><line class="sk" x1="75" y1="50" x2="95" y2="75"/><circle class="ball" cx="101" cy="82" r="9"/></g></svg>`;
+  if(type==="stepup")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<rect x="84" y="78" width="52" height="28" rx="3" fill="#172b46" stroke="#60a5fa" stroke-width="4"/><path d="M105 68 L105 52 M99 58 L105 52 L111 58" stroke="#facc15" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="61" cy="27" r="9" fill="#dbeafe"/><line class="sk" x1="64" y1="37" x2="72" y2="66"/><line class="sk" x1="70" y1="48" x2="91" y2="58"/><line class="sk" x1="72" y1="66" x2="95" y2="79"/><line class="sk" x1="72" y1="66" x2="52" y2="104"/><line class="base" x1="20" y1="107" x2="140" y2="107"/></svg>`;
+  if(type==="lunge"||type==="run")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<line class="base" x1="20" y1="106" x2="140" y2="106"/><g>${head}<line class="sk" x1="80" y1="38" x2="80" y2="70"/><line class="sk" x1="80" y1="50" x2="60" y2="62"/><line class="sk" x1="80" y1="50" x2="100" y2="62"/><line class="sk" x1="80" y1="70" x2="50" y2="103"/><line class="sk" x1="80" y1="70" x2="116" y2="94"/></g></svg>`;
+  if(type==="pushup"||type==="climber")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<line class="base" x1="20" y1="102" x2="140" y2="102"/><g><circle cx="112" cy="56" r="8" fill="#dbeafe"/><line class="sk" x1="105" y1="63" x2="63" y2="72"/><line class="sk" x1="63" y1="72" x2="30" y2="94"/><line class="sk" x1="95" y1="66" x2="110" y2="95"/><line class="sk" x1="72" y1="71" x2="68" y2="96"/></g></svg>`;
+  if(type==="wallsit")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<line class="base" x1="45" y1="15" x2="45" y2="108"/><circle cx="70" cy="32" r="9" fill="#dbeafe"/><line class="sk" x1="65" y1="42" x2="65" y2="70"/><line class="sk" x1="65" y1="70" x2="95" y2="70"/><line class="sk" x1="95" y1="70" x2="95" y2="103"/><circle cx="126" cy="38" r="17" fill="none" stroke="#60a5fa" stroke-width="4"/><line class="eq" x1="126" y1="38" x2="126" y2="27"></line></svg>`;
+  if(type==="boxjump")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<rect x="88" y="77" width="54" height="30" rx="3" fill="#172b46" stroke="#60a5fa" stroke-width="4"/><path d="M78 78 Q94 58 108 48" stroke="#facc15" stroke-width="4" fill="none" stroke-dasharray="5 5"/><path d="M101 50 L109 47 L108 56" stroke="#facc15" stroke-width="4" fill="none"/><circle cx="59" cy="28" r="9" fill="#dbeafe"/><line class="sk" x1="62" y1="38" x2="68" y2="66"/><line class="sk" x1="67" y1="49" x2="85" y2="59"/><line class="sk" x1="68" y1="66" x2="82" y2="84"/><line class="sk" x1="68" y1="66" x2="54" y2="85"/><line class="base" x1="18" y1="107" x2="142" y2="107"/></svg>`;
+  if(type==="squatjump")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<rect x="54" y="96" width="52" height="11" rx="2" fill="#172b46" stroke="#60a5fa" stroke-width="3"/><path d="M80 87 L80 48 M73 57 L80 47 L87 57" stroke="#facc15" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="80" cy="25" r="9" fill="#dbeafe"/><line class="sk" x1="80" y1="37" x2="80" y2="67"/><line class="sk" x1="80" y1="48" x2="59" y2="61"/><line class="sk" x1="80" y1="48" x2="101" y2="61"/><line class="sk" x1="80" y1="67" x2="62" y2="88"/><line class="sk" x1="80" y1="67" x2="98" y2="88"/></svg>`;
+  if(type==="jumplunge")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<line class="base" x1="18" y1="107" x2="142" y2="107"/><path d="M80 82 L80 49 M73 58 L80 48 L87 58" stroke="#facc15" stroke-width="4" fill="none"/><circle cx="80" cy="26" r="9" fill="#dbeafe"/><line class="sk" x1="80" y1="38" x2="80" y2="68"/><line class="sk" x1="80" y1="68" x2="48" y2="96"/><line class="sk" x1="80" y1="68" x2="116" y2="96"/><path d="M42 91 L34 91 M118 91 L126 91" stroke="#60a5fa" stroke-width="4"/></svg>`;
+  if(type==="lateraljump")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<rect x="24" y="99" width="38" height="8" rx="2" fill="#172b46" stroke="#60a5fa" stroke-width="3"/><rect x="98" y="99" width="38" height="8" rx="2" fill="#172b46" stroke="#60a5fa" stroke-width="3"/><path d="M57 55 Q80 36 103 55" stroke="#facc15" stroke-width="4" fill="none"/><path d="M96 49 L104 55 L95 59" stroke="#facc15" stroke-width="4" fill="none"/><circle cx="60" cy="29" r="9" fill="#dbeafe"/><line class="sk" x1="63" y1="39" x2="70" y2="69"/><line class="sk" x1="70" y1="69" x2="54" y2="91"/><line class="sk" x1="70" y1="69" x2="84" y2="91"/></svg>`;
+  if(type==="jumpingjack")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<circle cx="80" cy="26" r="9" fill="#dbeafe"/><line class="sk" x1="80" y1="38" x2="80" y2="70"/><line class="sk" x1="80" y1="48" x2="49" y2="25"/><line class="sk" x1="80" y1="48" x2="111" y2="25"/><line class="sk" x1="80" y1="70" x2="50" y2="104"/><line class="sk" x1="80" y1="70" x2="110" y2="104"/><path d="M43 41 Q31 55 42 70 M117 41 Q129 55 118 70" stroke="#facc15" stroke-width="3" fill="none"/></svg>`;
+  if(type==="jump"||type==="burpee")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<line class="base" x1="20" y1="107" x2="140" y2="107"/><g>${head}<line class="sk" x1="80" y1="38" x2="80" y2="70"/><line class="sk" x1="80" y1="49" x2="58" y2="35"/><line class="sk" x1="80" y1="49" x2="102" y2="35"/><line class="sk" x1="80" y1="70" x2="62" y2="98"/><line class="sk" x1="80" y1="70" x2="98" y2="98"/></g></svg>`;
+  if(type==="throw"||type==="slam")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="78"/><line class="sk" x1="80" y1="78" x2="62" y2="106"/><line class="sk" x1="80" y1="78" x2="98" y2="106"/><line class="sk" x1="80" y1="48" x2="103" y2="58"/><circle class="ball" cx="108" cy="58" r="10"></circle></svg>`;
+  if(type==="bike")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}<circle class="eq" cx="48" cy="88" r="24"/><circle class="eq" cx="112" cy="88" r="24"/><circle cx="80" cy="30" r="9" fill="#dbeafe"/><line class="sk" x1="78" y1="39" x2="68" y2="65"/><line class="sk" x1="68" y1="65" x2="90" y2="75"/><line class="sk" x1="68" y1="65" x2="50" y2="88"/><circle cx="82" cy="76" r="5" fill="#facc15"></circle><line class="eq" x1="68" y1="65" x2="108" y2="57"/></svg>`;
+  if(type==="rope")return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="74"/><line class="sk" x1="80" y1="74" x2="66" y2="104"/><line class="sk" x1="80" y1="74" x2="94" y2="104"/><ellipse cx="80" cy="66" rx="48" ry="44" fill="none" stroke="#60a5fa" stroke-width="4"></ellipse></svg>`;
+  return `<svg viewBox="0 0 160 120" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true">${common}${head}<line class="sk" x1="80" y1="38" x2="80" y2="75"/><line class="sk" x1="80" y1="50" x2="60" y2="67"/><line class="sk" x1="80" y1="50" x2="100" y2="67"/><line class="sk" x1="80" y1="75" x2="65" y2="105"/><line class="sk" x1="80" y1="75" x2="95" y2="105"/></svg>`;
 }
 
 $("#toWarmupBtn").onclick=prepareWarmup;
@@ -919,12 +1221,14 @@ $("#startCircuitBtn").onclick=startCircuit;
 $("#pauseBtn").onclick=togglePause;
 $("#endExerciseBtn").onclick=endExerciseEarly;
 $("#rotateBtn").onclick=rotate;
+$("#backResultsBtn").onclick=backToPreviousResults;
+$("#reopenScoresBtn").onclick=reopenFinalScores;
 $("#finishBtn").onclick=finishSession;
 $("#newSessionBtn").onclick=resetAll;
 $("#resumeBtn").onclick=resumeSaved;
 $("#discardBtn").onclick=()=>{if(confirm("Supprimer la séance enregistrée et repartir à zéro?"))resetAll();};
 $("#scoreModal").onclick=e=>{if(e.target.id==="scoreModal")closeScore();};
-document.addEventListener("keydown",e=>{if(!$("#scoreModal").classList.contains("hidden")){if(e.key==="Enter")saveScore();else if(e.key==="Escape")closeScore();else if(!$("#repCalculator").classList.contains("hidden")){if(/^[0-9]$/.test(e.key))enterRepDigit(e.key);else if(e.key==="Backspace")enterRepDigit("back");}else if(!$("#numericEntry").classList.contains("hidden")){if(/^[0-9]$/.test(e.key))keyPress(e.key);else if(e.key==="Backspace")keyPress("⌫");}}});
+document.addEventListener("keydown",e=>{if($("#scoreModal").classList.contains("hidden"))return;if(e.key==="Enter")saveScore();else if(e.key==="Escape")closeScore();else if(/^[0-9]$/.test(e.key))keyPress(e.key);else if(e.key==="Backspace")keyPress("⌫");});
 
 init();
 </script>
