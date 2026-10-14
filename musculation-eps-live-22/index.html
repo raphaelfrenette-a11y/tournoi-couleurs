@@ -528,6 +528,16 @@ const WARMUP_BANK = {
   ]
 };
 
+function exerciseAlternative(name){
+  const n=name.toLowerCase();
+  if(n.includes("lat pulldown"))return "Tractions assistées (élastique ou pieds au sol)";
+  if(n.includes("bench press")||n.includes("chest press"))return "Pompes au sol (sur les genoux au besoin)";
+  if(n.includes("chest fly"))return "Écartés avec haltères légers";
+  if(n.includes("triceps corde"))return "Extensions triceps avec haltère";
+  if(n.includes("tirage poulie"))return "Tirage avec élastique";
+  return "";
+}
+
 const CIRCUIT_TIMING={
   force:{work:300,results:90},
   hypertrophie:{work:390,results:90},
@@ -946,6 +956,7 @@ function renderCircuit(){
       <div class="stationHeader"><div style="min-width:0;flex:1"><div class="stationNum">STATION ${exIndex+1}</div><div class="teamTag"><span class="teamNameBig">${escapeHtml(team.name)}</span></div></div><div class="check">${score&&!score.needsReview?"✅":""}</div></div>
       <div class="exerciseName">${exercise.name}</div>
       <div class="exerciseDose">${exercise.dose}</div>
+       ${exerciseAlternative(exercise.name)?`<div class="cue" style="color:#a7f3d0"><strong>Alternative sans machine :</strong> ${escapeHtml(exerciseAlternative(exercise.name))} · répétitions comptabilisées.</div>`:""}
       ${machineAlternative(exercise.name)?`<div class="machineAlternative">↔ Alternative sans machine : ${escapeHtml(machineAlternative(exercise.name))}</div>`:""}
       <div class="visualBox" role="img" aria-label="Illustration de ${escapeHtml(exercise.name)}">${motionVisual(exercise.motion)}</div>
       <div class="cue">${exercise.prompt}</div>
