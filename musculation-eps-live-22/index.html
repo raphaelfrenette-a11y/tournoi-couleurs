@@ -117,6 +117,7 @@ button{cursor:pointer}
 .teamNameBig{display:block;width:100%;font-size:15px;text-align:left}
 .check{font-size:20px;flex:0 0 auto}
 .exerciseName{font-size:clamp(17px,1.7vw,25px);font-weight:1000;margin:8px 0 3px;line-height:1.05;overflow-wrap:anywhere}.exerciseDose{font-weight:900;color:#dce8f6;font-size:13px;overflow-wrap:anywhere}.exerciseTimePill{display:inline-block;margin-top:5px;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.08);font-size:11px;font-weight:950;color:#dbeafe}.cue{font-size:12px;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}
+.machineAlternative{font-size:12px;line-height:1.25;color:#bbf7d0;font-weight:800;margin-top:5px;overflow-wrap:anywhere}
 .visualBox{position:relative;flex:0 0 auto;height:112px;margin:7px 0;border-radius:16px;background:radial-gradient(circle at 50% 44%,rgba(96,165,250,.10),transparent 52%),linear-gradient(180deg,#0a1626,#08111e);border:1px solid rgba(148,163,184,.14);display:grid;place-items:center;overflow:hidden}
 .visualBox svg{width:min(96%,230px);height:104px;transform:translateY(-1px);filter:drop-shadow(0 8px 16px rgba(0,0,0,.16))}
 .scoreFooter{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;min-height:32px}.scoreHint{font-size:11px;color:var(--muted);line-height:1.1}.scoreValue{font-size:13px;font-weight:1000}
@@ -652,6 +653,7 @@ const MODES = {
     ]
   }
 };
+function machineAlternative(name){const n=name.toLowerCase();if(n.includes("bench press"))return "Pompes au sol ou inclinées sur banc";if(n.includes("lat pulldown"))return "Tractions assistées ou tirage inversé";if(n.includes("triceps corde"))return "Extensions des triceps avec haltère ou élastique";if(n.includes("chest press"))return "Développé avec haltères ou pompes";if(n.includes("chest fly"))return "Écartés avec haltères sur banc";return null;}
 function ex(name,dose,prompt,type,unit,motion,target,maxPerPerson=null,sets=1){return{name,dose,prompt,type,unit,motion,target,maxPerPerson,sets};}
 
 const PALETTE=["#60a5fa","#fb7185","#facc15","#4ade80","#f8fafc","#fb923c","#c084fc","#22d3ee","#f472b6","#a3e635"];
@@ -944,6 +946,7 @@ function renderCircuit(){
       <div class="stationHeader"><div style="min-width:0;flex:1"><div class="stationNum">STATION ${exIndex+1}</div><div class="teamTag"><span class="teamNameBig">${escapeHtml(team.name)}</span></div></div><div class="check">${score&&!score.needsReview?"✅":""}</div></div>
       <div class="exerciseName">${exercise.name}</div>
       <div class="exerciseDose">${exercise.dose}</div>
+      ${machineAlternative(exercise.name)?`<div class="machineAlternative">↔ Alternative sans machine : ${escapeHtml(machineAlternative(exercise.name))}</div>`:""}
       <div class="visualBox" role="img" aria-label="Illustration de ${escapeHtml(exercise.name)}">${motionVisual(exercise.motion)}</div>
       <div class="cue">${exercise.prompt}</div>
       <div class="exerciseTimePill">⏱ Temps officiel : ${formatTime(CIRCUIT_TIMING[state.mode].work)}</div>
